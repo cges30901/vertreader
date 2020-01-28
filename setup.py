@@ -1,0 +1,37 @@
+# Always prefer setuptools over distutils
+from setuptools import setup, find_packages
+# To use a consistent encoding
+from codecs import open
+from os import path
+
+here = path.abspath(path.dirname(__file__))
+
+# Get the long description from the README file
+with open(path.join(here, 'README.md'), encoding='utf-8') as f:
+    long_description = f.read()
+
+setup(
+    name='vertreader',
+    version='0.0.1',
+    description='EPUB reader supporting vertical text',
+    long_description=long_description,
+    long_description_content_type='text/markdown',
+    author='Hsiu-Ming Chang',
+    author_email='cges30901@gmail.com',
+    license='GPLv3+',
+    classifiers=[
+        'Development Status :: 5 - Production/Stable',
+        'Intended Audience :: End Users/Desktop',
+        'Topic :: Office/Business',
+        'License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)',
+        'Programming Language :: Python :: 3',
+        'Operating System :: OS Independent',
+    ],
+    keywords='epub',
+    project_urls={
+        'Source': 'https://github.com/cges30901/pdfhandoutcrop/',
+    },
+    packages=find_packages(exclude=['contrib', 'docs', 'tests']),
+    install_requires=['PyQt5', 'ebooklib'],
+    python_requires='>=3',
+)
