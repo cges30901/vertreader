@@ -100,5 +100,8 @@ ENV/
 .mypy_cache/
 
 # qt project files
-vertreader/mainwindow.pyproject*
+vertreader/*.pyproject*
+
+# epub files
+*.epub
 
