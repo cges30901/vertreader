@@ -37,4 +37,22 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         for i in self.book.spine:
             item = self.book.get_item_with_id(i[0])
             self.doc.append(self.tempdir+"/OEBPS/"+item.get_name())
+        if len(self.doc) > 1:
+            self.btnNext.setEnabled(True)
         self.view.load(QUrl.fromLocalFile(self.doc[0]))
+
+    @pyqtSlot(bool)
+    def on_btnPrev_clicked(self):
+        self.docIndex-=1
+        self.btnNext.setEnabled(True)
+        if self.docIndex == 1:
+            self.btnPrev.setEnabled(False)
+        self.view.load(QUrl.fromLocalFile(self.doc[self.docIndex]))
+
+    @pyqtSlot(bool)
+    def on_btnNext_clicked(self):
+        self.docIndex+=1
+        self.btnPrev.setEnabled(True)
+        if self.docIndex == len(self.doc) - 1:
+            self.btnNext.setEnabled(False)
+        self.view.load(QUrl.fromLocalFile(self.doc[self.docIndex]))

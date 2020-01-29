@@ -34,6 +34,9 @@
      <layout class="QHBoxLayout" name="horizontalLayout">
       <item>
        <widget class="QPushButton" name="btnNext">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
         <property name="text">
          <string>下一頁</string>
         </property>
@@ -41,6 +44,9 @@
       </item>
       <item>
        <widget class="QPushButton" name="btnPrev">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
         <property name="text">
          <string>上一頁</string>
         </property>
@@ -69,7 +75,7 @@
      <x>0</x>
      <y>0</y>
      <width>800</width>
-     <height>35</height>
+     <height>44</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu">

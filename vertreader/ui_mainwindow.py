@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'mainwindow.ui'
 #
-# Created by: PyQt5 UI code generator 5.14.1
+# Created by: PyQt5 UI code generator 5.14.0
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -30,9 +30,11 @@ class Ui_MainWindow(object):
         self.horizontalLayout = QtWidgets.QHBoxLayout()
         self.horizontalLayout.setObjectName("horizontalLayout")
         self.btnNext = QtWidgets.QPushButton(self.centralwidget)
+        self.btnNext.setEnabled(False)
         self.btnNext.setObjectName("btnNext")
         self.horizontalLayout.addWidget(self.btnNext)
         self.btnPrev = QtWidgets.QPushButton(self.centralwidget)
+        self.btnPrev.setEnabled(False)
         self.btnPrev.setObjectName("btnPrev")
         self.horizontalLayout.addWidget(self.btnPrev)
         spacerItem = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
@@ -40,7 +42,7 @@ class Ui_MainWindow(object):
         self.verticalLayout.addLayout(self.horizontalLayout)
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
-        self.menubar.setGeometry(QtCore.QRect(0, 0, 800, 35))
+        self.menubar.setGeometry(QtCore.QRect(0, 0, 800, 44))
         self.menubar.setObjectName("menubar")
         self.menu = QtWidgets.QMenu(self.menubar)
         self.menu.setObjectName("menu")
