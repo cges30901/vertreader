@@ -4,7 +4,7 @@ import ebooklib
 from ebooklib import epub
 import tempfile
 import zipfile
-from PyQt5.QtCore import QUrl, QEvent, pyqtSlot
+from PyQt5.QtCore import QUrl, QEvent, pyqtSlot, Qt
 from vertreader.ui_mainwindow import Ui_MainWindow
 
 
@@ -21,15 +21,25 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.view.focusProxy().installEventFilter(self)
 
     def eventFilter(self, source, e):
-        if source == self.view.focusProxy() and e.type() == QEvent.Wheel:
+        if source == self.view.focusProxy():
             # The coordinate of javascript and Qt WebEngine is different.
             # In javascript, the beginning of document is 0.
             # In Qt WebEngine, the end of document is 0.
             # So I have to convert it to use javascript to scroll.
             pos_js = self.view.page().scrollPosition().x() - self.view.page().contentsSize().width() + self.view.width()
-            self.view.page().runJavaScript("window.scrollTo({0}, {1});"
-                .format(pos_js + e.angleDelta().y(), self.view.page().scrollPosition().y()))
-            return True
+
+            if e.type() == QEvent.Wheel:
+                self.view.page().runJavaScript("window.scrollTo({0}, {1});"
+                    .format(pos_js + e.angleDelta().y(), self.view.page().scrollPosition().y()))
+                return True
+            elif e.type() == QEvent.KeyPress and e.key() == Qt.Key_PageUp:
+                self.view.page().runJavaScript("window.scrollTo({0}, {1});"
+                    .format(pos_js + self.view.width() * 0.9, self.view.page().scrollPosition().y()))
+                return True
+            elif e.type() == QEvent.KeyPress and e.key() == Qt.Key_PageDown:
+                self.view.page().runJavaScript("window.scrollTo({0}, {1});"
+                    .format(pos_js - self.view.width() * 0.9, self.view.page().scrollPosition().y()))
+                return True
         return False
 
     @pyqtSlot()
