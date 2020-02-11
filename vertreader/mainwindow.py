@@ -64,13 +64,15 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.btnPrev.setEnabled(False)
         if len(self.doc) > 1:
             self.btnNext.setEnabled(True)
+        else:
+            self.btnNext.setEnabled(False)
         self.view.load(QUrl.fromLocalFile(self.doc[0]))
 
     @pyqtSlot(bool)
     def on_btnPrev_clicked(self):
         self.docIndex -= 1
         self.btnNext.setEnabled(True)
-        if self.docIndex == 1:
+        if self.docIndex == 0:
             self.btnPrev.setEnabled(False)
         self.view.load(QUrl.fromLocalFile(self.doc[self.docIndex]))
 
