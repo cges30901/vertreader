@@ -14,7 +14,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         super().__init__()
         self.setupUi(self)
         self.filename = ''
-        self.tempdir = tempfile.TemporaryDirectory().name
+        self.tempdir = ''
         self.book = None
         self.doc = []
         self.docIndex = 0
@@ -51,6 +51,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.open(filename)
 
     def open(self, filename):
+        self.tempdir = tempfile.TemporaryDirectory().name
+        self.doc = []
+        self.docIndex = 0
         with zipfile.ZipFile(filename, "r") as zip_ref:
             zip_ref.extractall(self.tempdir)
             zip_ref.close()
@@ -58,6 +61,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         for i in self.book.spine:
             item = self.book.get_item_with_id(i[0])
             self.doc.append(self.tempdir+"/OEBPS/"+item.get_name())
+        self.btnPrev.setEnabled(False)
         if len(self.doc) > 1:
             self.btnNext.setEnabled(True)
         self.view.load(QUrl.fromLocalFile(self.doc[0]))
