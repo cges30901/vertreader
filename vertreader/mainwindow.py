@@ -4,6 +4,7 @@ import ebooklib
 from ebooklib import epub
 import tempfile
 import zipfile
+import os
 from PyQt5.QtCore import QUrl, QEvent, pyqtSlot, Qt
 from vertreader.ui_mainwindow import Ui_MainWindow
 
@@ -57,10 +58,17 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         with zipfile.ZipFile(filename, "r") as zip_ref:
             zip_ref.extractall(self.tempdir)
             zip_ref.close()
-        self.book = epub.read_epub(filename)
+
+        # This is used instead of epub.read_epub()
+        # because I need reader.opf_dir
+        reader = epub.EpubReader(filename)
+        self.book = reader.load()
+        reader.process()
+
         for i in self.book.spine:
             item = self.book.get_item_with_id(i[0])
-            self.doc.append(self.tempdir+"/OEBPS/"+item.get_name())
+            self.doc.append(os.path.join(self.tempdir, reader.opf_dir, item.get_name()))
+
         self.btnPrev.setEnabled(False)
         if len(self.doc) > 1:
             self.btnNext.setEnabled(True)
