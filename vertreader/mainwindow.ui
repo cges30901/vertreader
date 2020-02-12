@@ -75,16 +75,22 @@
      <x>0</x>
      <y>0</y>
      <width>800</width>
-     <height>44</height>
+     <height>35</height>
     </rect>
    </property>
-   <widget class="QMenu" name="menu">
+   <widget class="QMenu" name="menuFile">
     <property name="title">
      <string>檔案</string>
     </property>
     <addaction name="action_Open"/>
    </widget>
-   <addaction name="menu"/>
+   <widget class="QMenu" name="menuTOC">
+    <property name="title">
+     <string>TOC</string>
+    </property>
+   </widget>
+   <addaction name="menuFile"/>
+   <addaction name="menuTOC"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
   <action name="action_Open">
