@@ -19,6 +19,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.book = None
         self.doc = []
         self.docIndex = 0
+        self.toc = []
         self.view.focusProxy().installEventFilter(self)
 
     def eventFilter(self, source, e):
@@ -68,6 +69,18 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         for i in self.book.spine:
             item = self.book.get_item_with_id(i[0])
             self.doc.append(os.path.join(self.tempdir, reader.opf_dir, item.get_name()))
+
+        def get_toc(input, level):
+            toc = []
+            for a in input:
+                if isinstance(a, tuple):
+                    toc.extend(get_toc(a, level))
+                elif isinstance(a, list):
+                    toc.extend(get_toc(a, level + 1))
+                else:
+                    toc.append([a.title, a.href, level])
+            return toc
+        self.toc = get_toc(self.book.toc, 0)
 
         self.btnPrev.setEnabled(False)
         if len(self.doc) > 1:
