@@ -78,7 +78,11 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 elif isinstance(a, list):
                     toc.extend(get_toc(a, level + 1))
                 else:
-                    toc.append([a.title, os.path.join(self.tempdir, reader.opf_dir, a.href), level])
+                    fullname = os.path.join(self.tempdir, reader.opf_dir, a.href)
+                    for i in range(len(self.doc)):
+                        if fullname.split('#')[0] == self.doc[i]:
+                            toc.append([a.title, fullname, level, i])
+                            break
             return toc
         self.toc = get_toc(self.book.toc, 0)
         self.actionTOC = [QAction(self.toc[x][0]) for x in range(len(self.toc))]
@@ -98,8 +102,17 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         sender = self.sender()
         for x in range(len(self.actionTOC)):
             if self.actionTOC[x] == sender:
-                print(self.toc[x][1])
-                self.view.load(QUrl.fromLocalFile(self.toc[x][1]))
+                self.view.load(QUrl.fromLocalFile(self.toc[x][1].split('#')[0]))
+                self.docIndex = self.toc[x][3]
+                if self.docIndex == 0:
+                    self.btnPrev.setEnabled(False)
+                else:
+                    self.btnPrev.setEnabled(True)
+                if self.docIndex == len(self.doc) - 1:
+                    self.btnNext.setEnabled(False)
+                else:
+                    self.btnNext.setEnabled(True)
+                break
 
     @pyqtSlot(bool)
     def on_btnPrev_clicked(self):
