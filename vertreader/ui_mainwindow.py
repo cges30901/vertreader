@@ -63,10 +63,10 @@ class Ui_MainWindow(object):
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
-        MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
-        self.btnNext.setText(_translate("MainWindow", "下一頁"))
-        self.btnPrev.setText(_translate("MainWindow", "上一頁"))
-        self.menuFile.setTitle(_translate("MainWindow", "檔案"))
-        self.menuTOC.setTitle(_translate("MainWindow", "TOC"))
-        self.action_Open.setText(_translate("MainWindow", "開啟"))
+        MainWindow.setWindowTitle(_translate("MainWindow", "VertReader"))
+        self.btnNext.setText(_translate("MainWindow", "&Next"))
+        self.btnPrev.setText(_translate("MainWindow", "&Previous"))
+        self.menuFile.setTitle(_translate("MainWindow", "&File"))
+        self.menuTOC.setTitle(_translate("MainWindow", "&TOC"))
+        self.action_Open.setText(_translate("MainWindow", "&Open"))
 from PyQt5 import QtWebEngineWidgets

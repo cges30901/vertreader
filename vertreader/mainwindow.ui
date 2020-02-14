@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>MainWindow</string>
+   <string>VertReader</string>
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QVBoxLayout" name="verticalLayout">
@@ -38,7 +38,7 @@
          <bool>false</bool>
         </property>
         <property name="text">
-         <string>下一頁</string>
+         <string>&amp;Next</string>
         </property>
        </widget>
       </item>
@@ -48,7 +48,7 @@
          <bool>false</bool>
         </property>
         <property name="text">
-         <string>上一頁</string>
+         <string>&amp;Previous</string>
         </property>
        </widget>
       </item>
@@ -80,13 +80,13 @@
    </property>
    <widget class="QMenu" name="menuFile">
     <property name="title">
-     <string>檔案</string>
+     <string>&amp;File</string>
     </property>
     <addaction name="action_Open"/>
    </widget>
    <widget class="QMenu" name="menuTOC">
     <property name="title">
-     <string>TOC</string>
+     <string>&amp;TOC</string>
     </property>
    </widget>
    <addaction name="menuFile"/>
@@ -95,7 +95,7 @@
   <widget class="QStatusBar" name="statusbar"/>
   <action name="action_Open">
    <property name="text">
-    <string>開啟</string>
+    <string>&amp;Open</string>
    </property>
   </action>
  </widget>
