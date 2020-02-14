@@ -85,7 +85,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                             break
             return toc
         self.toc = get_toc(self.book.toc, 0)
-        self.actionTOC = [QAction(self.toc[x][0]) for x in range(len(self.toc))]
+        self.actionTOC = [QAction('>' * self.toc[x][2] + self.toc[x][0]) for x in range(len(self.toc))]
         for x in self.actionTOC:
             x.triggered.connect(self.toc_triggered)
         self.menuTOC.addActions(self.actionTOC)
