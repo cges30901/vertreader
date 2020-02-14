@@ -82,6 +82,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             return toc
         self.toc = get_toc(self.book.toc, 0)
         self.actionTOC = [QAction(self.toc[x][0]) for x in range(len(self.toc))]
+        for x in self.actionTOC:
+            x.triggered.connect(self.toc_triggered)
         self.menuTOC.addActions(self.actionTOC)
 
         self.btnPrev.setEnabled(False)
@@ -90,6 +92,14 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         else:
             self.btnNext.setEnabled(False)
         self.view.load(QUrl.fromLocalFile(self.doc[0]))
+
+    @pyqtSlot(bool)
+    def toc_triggered(self):
+        sender = self.sender()
+        for x in range(len(self.actionTOC)):
+            if self.actionTOC[x] == sender:
+                print(self.toc[x][1])
+                self.view.load(QUrl.fromLocalFile(self.toc[x][1]))
 
     @pyqtSlot(bool)
     def on_btnPrev_clicked(self):
