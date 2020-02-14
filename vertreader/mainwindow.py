@@ -11,16 +11,18 @@ from vertreader.ui_mainwindow import Ui_MainWindow
 
 class MainWindow(QMainWindow, Ui_MainWindow):
 
-    def __init__(self):
+    def __init__(self, args):
         super().__init__()
         self.setupUi(self)
-        self.filename = ''
+        self.filename = args.file
         self.tempdir = ''
         self.book = None
         self.doc = []
         self.docIndex = 0
         self.toc = []
         self.view.focusProxy().installEventFilter(self)
+        if self.filename:
+            self.open(self.filename)
 
     def eventFilter(self, source, e):
         if source == self.view.focusProxy():
