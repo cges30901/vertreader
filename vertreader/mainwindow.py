@@ -1,5 +1,5 @@
 # This Python file uses the following encoding: utf-8
-from PyQt5.QtWidgets import QMainWindow, QFileDialog, QMessageBox
+from PyQt5.QtWidgets import QMainWindow, QFileDialog, QAction
 import ebooklib
 from ebooklib import epub
 import tempfile
@@ -78,9 +78,11 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 elif isinstance(a, list):
                     toc.extend(get_toc(a, level + 1))
                 else:
-                    toc.append([a.title, a.href, level])
+                    toc.append([a.title, os.path.join(self.tempdir, reader.opf_dir, a.href), level])
             return toc
         self.toc = get_toc(self.book.toc, 0)
+        self.actionTOC = [QAction(self.toc[x][0]) for x in range(len(self.toc))]
+        self.menuTOC.addActions(self.actionTOC)
 
         self.btnPrev.setEnabled(False)
         if len(self.doc) > 1:
