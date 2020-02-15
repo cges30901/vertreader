@@ -24,12 +24,12 @@
         <translation>目錄(&amp;T)</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="98"/>
+        <location filename="../mainwindow.ui" line="106"/>
         <source>&amp;Open</source>
         <translation>開啟(&amp;O)</translation>
     </message>
     <message>
-        <location filename="../mainwindow.py" line="49"/>
+        <location filename="../mainwindow.py" line="50"/>
         <source>EPUB documents (*.epub)</source>
         <translation>EPUB 文件 (*.epub)</translation>
     </message>
@@ -42,6 +42,42 @@
         <location filename="../mainwindow.ui" line="14"/>
         <source>VertReader</source>
         <translation>VertReader</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.ui" line="94"/>
+        <source>&amp;Help</source>
+        <translation>說明(&amp;H)</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.ui" line="111"/>
+        <source>&amp;About</source>
+        <translation>關於(&amp;A)</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.py" line="137"/>
+        <source>About</source>
+        <translation>關於</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.py" line="137"/>
+        <source>&lt;h3&gt;VertReader {0}&lt;/h3&gt;
+&lt;p&gt;Author: Hsiu-Ming Chang&lt;/p&gt;
+&lt;p&gt;e-mail: cges30901@gmail.com&lt;/p&gt;
+&lt;p&gt;License: GPL v3&lt;/p&gt;</source>
+        <translation>&lt;h3&gt;VertReader {0}&lt;/h3&gt;
+&lt;p&gt;作者：張修銘&lt;/p&gt;
+&lt;p&gt;電子郵件：cges30901@gmail.com&lt;/p&gt;
+&lt;p&gt;授權：GPL v3&lt;/p&gt;</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.py" line="145"/>
+        <source>Libraries used</source>
+        <translation>使用的函式庫</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.py" line="145"/>
+        <source>&lt;h3&gt;Libraries:&lt;/h3&gt;</source>
+        <translation>&lt;h3&gt;函式庫：&lt;/h3&gt;</translation>
     </message>
 </context>
 </TS>

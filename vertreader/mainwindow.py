@@ -1,6 +1,5 @@
 # This Python file uses the following encoding: utf-8
-from PyQt5.QtWidgets import QMainWindow, QFileDialog, QAction
-import ebooklib
+from PyQt5.QtWidgets import QMainWindow, QFileDialog, QAction, QMessageBox
 from ebooklib import epub
 import tempfile
 import zipfile
@@ -131,3 +130,19 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         if self.docIndex == len(self.doc) - 1:
             self.btnNext.setEnabled(False)
         self.view.load(QUrl.fromLocalFile(self.doc[self.docIndex]))
+
+    @pyqtSlot()
+    def on_action_About_triggered(self):
+        version = "0.0.1"
+        QMessageBox.about(self, self.tr("About"), self.tr(
+'''<h3>VertReader {0}</h3>
+<p>Author: Hsiu-Ming Chang</p>
+<p>e-mail: cges30901@gmail.com</p>
+<p>License: GPL v3</p>''').format(version))
+
+    @pyqtSlot()
+    def on_actionLibrary_triggered(self):
+        QMessageBox.about(self, self.tr("Libraries used"),
+            self.tr("<h3>Libraries:</h3>") +
+'''<p>PyQt5 (GPL v3)</p>
+<p>EbookLib (AGPL v3)<p>''')

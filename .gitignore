@@ -105,3 +105,6 @@ vertreader/*.pyproject*
 # epub files
 *.epub
 
+# Qt translation files
+vertreader/language/*.qm
+
