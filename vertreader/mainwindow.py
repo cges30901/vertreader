@@ -97,6 +97,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         else:
             self.btnNext.setEnabled(False)
         self.view.load(QUrl.fromLocalFile(self.doc[0]))
+        self.setWindowTitle("{} - VertReader".format(self.book.get_metadata('DC', 'title')[0][0]))
 
     @pyqtSlot(bool)
     def toc_triggered(self):
