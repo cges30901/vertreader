@@ -5,6 +5,7 @@ import tempfile
 import zipfile
 import os
 from PyQt5.QtCore import QUrl, QEvent, pyqtSlot, Qt
+from PyQt5.QtGui import QIcon
 from vertreader.ui_mainwindow import Ui_MainWindow
 
 
@@ -12,6 +13,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def __init__(self, args):
         super().__init__()
+        self.setWindowIcon(QIcon(os.path.dirname(os.path.abspath(__file__))+'/vertreader.svg'))
         self.setupUi(self)
         self.filename = args.file
         self.tempdir = ''
