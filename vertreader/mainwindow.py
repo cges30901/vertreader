@@ -104,7 +104,12 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         sender = self.sender()
         for x in range(len(self.actionTOC)):
             if self.actionTOC[x] == sender:
-                self.view.load(QUrl.fromLocalFile(self.toc[x][1].split('#')[0]))
+                href_split = self.toc[x][1].split('#', 1)
+                url = QUrl.fromLocalFile(href_split[0])
+                if len(href_split) > 1:
+                    url.setFragment(self.toc[x][1].split('#', 1)[1])
+                self.view.load(url)
+
                 self.docIndex = self.toc[x][3]
                 if self.docIndex == 0:
                     self.btnPrev.setEnabled(False)
