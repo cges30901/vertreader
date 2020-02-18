@@ -95,17 +95,12 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             x.triggered.connect(self.toc_triggered)
         self.menuTOC.addActions(self.actionTOC)
 
-        self.btnPrev.setEnabled(False)
-        if len(self.doc) > 1:
-            self.btnNext.setEnabled(True)
-        else:
-            self.btnNext.setEnabled(False)
-
         settings = QSettings(QSettings.IniFormat, QSettings.UserScope, "cges30901", "VertReader")
         settings.beginGroup(self.filename.replace('/', '>').replace('\\', '>'))
         self.docIndex = int(settings.value("index", 0))
         settings.endGroup()
         self.need_scroll = True
+        self.setButtons()
 
         self.view.load(QUrl.fromLocalFile(self.doc[self.docIndex]))
         self.setWindowTitle("{} - VertReader".format(self.book.get_metadata('DC', 'title')[0][0]))
@@ -122,30 +117,19 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 self.view.load(url)
 
                 self.docIndex = self.toc[x][3]
-                if self.docIndex == 0:
-                    self.btnPrev.setEnabled(False)
-                else:
-                    self.btnPrev.setEnabled(True)
-                if self.docIndex == len(self.doc) - 1:
-                    self.btnNext.setEnabled(False)
-                else:
-                    self.btnNext.setEnabled(True)
+                self.setButtons()
                 break
 
     @pyqtSlot(bool)
     def on_btnPrev_clicked(self):
         self.docIndex -= 1
-        self.btnNext.setEnabled(True)
-        if self.docIndex == 0:
-            self.btnPrev.setEnabled(False)
+        self.setButtons()
         self.view.load(QUrl.fromLocalFile(self.doc[self.docIndex]))
 
     @pyqtSlot(bool)
     def on_btnNext_clicked(self):
         self.docIndex += 1
-        self.btnPrev.setEnabled(True)
-        if self.docIndex == len(self.doc) - 1:
-            self.btnNext.setEnabled(False)
+        self.setButtons()
         self.view.load(QUrl.fromLocalFile(self.doc[self.docIndex]))
 
     @pyqtSlot()
@@ -188,3 +172,13 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.view.page().runJavaScript("window.scrollTo({0}, {1});"
                 .format(settings.value("posX", 0), settings.value("posY", 0)))
             settings.endGroup()
+
+    def setButtons(self):
+        if self.docIndex == 0:
+            self.btnPrev.setEnabled(False)
+        else:
+            self.btnPrev.setEnabled(True)
+        if self.docIndex == len(self.doc) - 1:
+            self.btnNext.setEnabled(False)
+        else:
+            self.btnNext.setEnabled(True)
