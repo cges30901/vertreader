@@ -1,10 +1,10 @@
 # This Python file uses the following encoding: utf-8
-from PyQt5.QtWidgets import QMainWindow, QFileDialog, QAction, QMessageBox
+from PyQt5.QtWidgets import QMainWindow, QFileDialog, QAction, QMessageBox, QApplication
 from ebooklib import epub
 import tempfile
 import zipfile
 import os
-from PyQt5.QtCore import QUrl, QEvent, pyqtSlot, Qt
+from PyQt5.QtCore import QUrl, QEvent, pyqtSlot, Qt, QSettings
 from PyQt5.QtGui import QIcon
 from vertreader.ui_mainwindow import Ui_MainWindow
 
@@ -21,7 +21,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.doc = []
         self.docIndex = 0
         self.toc = []
+        self.need_scroll = False
         self.view.focusProxy().installEventFilter(self)
+        QApplication.instance().aboutToQuit.connect(self.writeSettings)
         if self.filename:
             self.open(self.filename)
 
@@ -52,13 +54,13 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         filename = QFileDialog.getOpenFileName(self, "", "",
             self.tr("EPUB documents (*.epub)"))[0]
         if filename:
+            self.writeSettings()
             self.filename = filename
             self.open(filename)
 
     def open(self, filename):
         self.tempdir = tempfile.TemporaryDirectory().name
         self.doc = []
-        self.docIndex = 0
         with zipfile.ZipFile(filename, "r") as zip_ref:
             zip_ref.extractall(self.tempdir)
             zip_ref.close()
@@ -98,7 +100,14 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.btnNext.setEnabled(True)
         else:
             self.btnNext.setEnabled(False)
-        self.view.load(QUrl.fromLocalFile(self.doc[0]))
+
+        settings = QSettings(QSettings.IniFormat, QSettings.UserScope, "cges30901", "VertReader")
+        settings.beginGroup(self.filename.replace('/', '>').replace('\\', '>'))
+        self.docIndex = int(settings.value("index", 0))
+        settings.endGroup()
+        self.need_scroll = True
+
+        self.view.load(QUrl.fromLocalFile(self.doc[self.docIndex]))
         self.setWindowTitle("{} - VertReader".format(self.book.get_metadata('DC', 'title')[0][0]))
 
     @pyqtSlot(bool)
@@ -154,3 +163,28 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.tr("<h3>Libraries:</h3>") +
 '''<p>PyQt5 (GPL v3)</p>
 <p>EbookLib (AGPL v3)<p>''')
+
+    @pyqtSlot()
+    def writeSettings(self):
+        # No need to write settings if no file is loaded
+        if self.view.url().fileName() == 'blank':
+            return
+        settings = QSettings(QSettings.IniFormat, QSettings.UserScope, "cges30901", "VertReader")
+        # replace slash and backslash with '>'
+        # because they have special meaning in QSettings
+        settings.beginGroup(self.filename.replace('/', '>').replace('\\', '>'))
+        settings.setValue("index", self.docIndex)
+        settings.setValue("posX", self.view.page().scrollPosition().x()
+            - self.view.page().contentsSize().width() + self.view.width())
+        settings.setValue("posY", self.view.page().scrollPosition().y())
+        settings.endGroup()
+
+    @pyqtSlot(bool)
+    def on_view_loadFinished(self):
+        if self.need_scroll is True:
+            self.need_scroll = False
+            settings = QSettings(QSettings.IniFormat, QSettings.UserScope, "cges30901", "VertReader")
+            settings.beginGroup(self.filename.replace('/', '>').replace('\\', '>'))
+            self.view.page().runJavaScript("window.scrollTo({0}, {1});"
+                .format(settings.value("posX", 0), settings.value("posY", 0)))
+            settings.endGroup()
