@@ -23,6 +23,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.book = None
         self.doc = []
         self.docIndex = 0
+        self.pageIndex = 0
         self.toc = []
         self.need_scroll = False
         self.view.focusProxy().installEventFilter(self)
@@ -32,24 +33,39 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def eventFilter(self, source, e):
         if source == self.view.focusProxy():
-            # The coordinate of javascript and Qt WebEngine is different.
-            # In javascript, the beginning of document is 0.
-            # In Qt WebEngine, the end of document is 0.
-            # So I have to convert it to use javascript to scroll.
-            pos_js = self.view.page().scrollPosition().x() - self.view.page().contentsSize().width() + self.view.width()
+            if self.actionPaged.isChecked():
+                if e.type() == QEvent.Wheel:
+                    self.pageCount = round(self.view.page().contentsSize().height()/self.view.height())
+                    pageHeight = self.view.page().contentsSize().height()/self.pageCount
+                    if e.angleDelta().y() > 0:
+                        if self.pageIndex > 0:
+                            self.pageIndex -= 1
+                    elif e.angleDelta().y() < 0:
+                        if self.pageIndex < self.pageCount - 1:
+                            self.pageIndex += 1
+                    self.view.page().runJavaScript("window.scrollTo({0}, {1});"
+                        .format(self.view.page().scrollPosition().x(), pageHeight * self.pageIndex))
+                    print(self.pageIndex,self.view.height(), self.view.page().scrollPosition().y(), self.view.page().contentsSize().height())
+                    return True
+            else:
+                # The coordinate of javascript and Qt WebEngine is different.
+                # In javascript, the beginning of document is 0.
+                # In Qt WebEngine, the end of document is 0.
+                # So I have to convert it to use javascript to scroll.
+                pos_js = self.view.page().scrollPosition().x() - self.view.page().contentsSize().width() + self.view.width()
 
-            if e.type() == QEvent.Wheel:
-                self.view.page().runJavaScript("window.scrollTo({0}, {1});"
-                    .format(pos_js + e.angleDelta().y(), self.view.page().scrollPosition().y()))
-                return True
-            elif e.type() == QEvent.KeyPress and e.key() == Qt.Key_PageUp:
-                self.view.page().runJavaScript("window.scrollTo({0}, {1});"
-                    .format(pos_js + self.view.width() * 0.9, self.view.page().scrollPosition().y()))
-                return True
-            elif e.type() == QEvent.KeyPress and e.key() == Qt.Key_PageDown:
-                self.view.page().runJavaScript("window.scrollTo({0}, {1});"
-                    .format(pos_js - self.view.width() * 0.9, self.view.page().scrollPosition().y()))
-                return True
+                if e.type() == QEvent.Wheel:
+                    self.view.page().runJavaScript("window.scrollTo({0}, {1});"
+                        .format(pos_js + e.angleDelta().y(), self.view.page().scrollPosition().y()))
+                    return True
+                elif e.type() == QEvent.KeyPress and e.key() == Qt.Key_PageUp:
+                    self.view.page().runJavaScript("window.scrollTo({0}, {1});"
+                        .format(pos_js + self.view.width() * 0.9, self.view.page().scrollPosition().y()))
+                    return True
+                elif e.type() == QEvent.KeyPress and e.key() == Qt.Key_PageDown:
+                    self.view.page().runJavaScript("window.scrollTo({0}, {1});"
+                        .format(pos_js - self.view.width() * 0.9, self.view.page().scrollPosition().y()))
+                    return True
         return False
 
     @pyqtSlot()
@@ -126,12 +142,14 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     @pyqtSlot(bool)
     def on_btnPrev_clicked(self):
         self.docIndex -= 1
+        self.pageIndex = 0
         self.setButtons()
         self.view.load(QUrl.fromLocalFile(self.doc[self.docIndex]))
 
     @pyqtSlot(bool)
     def on_btnNext_clicked(self):
         self.docIndex += 1
+        self.pageIndex = 0
         self.setButtons()
         self.view.load(QUrl.fromLocalFile(self.doc[self.docIndex]))
 
@@ -168,6 +186,34 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     @pyqtSlot(bool)
     def on_view_loadFinished(self):
+        if self.actionPaged.isChecked():
+            self.view.page().runJavaScript('''
+var el = document.querySelectorAll('img');
+for(var i = 0; i < el.length; i++){
+    //wrap image in div so two consecutive images can be separated
+    var wrapper = document.createElement('div');
+    el[i].parentNode.insertBefore(wrapper, el[i]);
+    wrapper.appendChild(el[i]);
+
+    //prevent pagination failure when wide images exist
+    el[i].style.maxHeight = "100%";
+    el[i].style.maxWidth = document.documentElement.clientWidth + "px";
+    el[i].style.margin = 0;
+}
+
+//paginate with CSS Multiple Columns
+var columnInit = Math.floor(document.body.scrollWidth / document.documentElement.clientWidth);
+for(var column = columnInit; column < columnInit * 2; column++){
+    document.body.style.columnCount = column;
+    document.body.style.height = column + "00vh";
+    if(document.body.scrollWidth <= document.documentElement.clientWidth){
+        break;
+    }
+}
+
+//hide scroll bar
+document.body.style.overflow='hidden';
+''')
         if self.need_scroll is True:
             self.need_scroll = False
             settings = QSettings(QSettings.IniFormat, QSettings.UserScope, "cges30901", "VertReader")
