@@ -35,17 +35,31 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         if source == self.view.focusProxy():
             if self.actionPaged.isChecked():
                 if e.type() == QEvent.Wheel:
-                    self.pageCount = round(self.view.page().contentsSize().height()/self.view.height())
-                    pageHeight = self.view.page().contentsSize().height()/self.pageCount
+                    self.pageCount = round(self.view.page().contentsSize().height() / self.view.height())
+                    pageHeight = self.view.page().contentsSize().height() / self.pageCount
+                    if self.pageIndex == -1:
+                        self.pageIndex = self.pageCount - 1
+                    print(pageHeight, self.view.page().contentsSize().height(), self.pageCount)
                     if e.angleDelta().y() > 0:
                         if self.pageIndex > 0:
                             self.pageIndex -= 1
+                        elif self.docIndex > 0:
+                            self.docIndex -= 1
+                            self.pageIndex = -1
+                            self.setButtons()
+                            self.view.load(QUrl.fromLocalFile(self.doc[self.docIndex]))
+                            return True
                     elif e.angleDelta().y() < 0:
                         if self.pageIndex < self.pageCount - 1:
                             self.pageIndex += 1
+                        elif self.docIndex < len(self.doc) - 1:
+                            self.docIndex += 1
+                            self.pageIndex = 0
+                            self.setButtons()
+                            self.view.load(QUrl.fromLocalFile(self.doc[self.docIndex]))
+                            return True
                     self.view.page().runJavaScript("window.scrollTo({0}, {1});"
                         .format(self.view.page().scrollPosition().x(), pageHeight * self.pageIndex))
-                    print(self.pageIndex,self.view.height(), self.view.page().scrollPosition().y(), self.view.page().contentsSize().height())
                     return True
             else:
                 # The coordinate of javascript and Qt WebEngine is different.
@@ -212,8 +226,10 @@ for(var column = columnInit; column < columnInit * 2; column++){
 }
 
 //hide scroll bar
-document.body.style.overflow='hidden';
+document.body.style.overflow = 'hidden';
 ''')
+            if self.pageIndex == -1:
+                self.view.page().runJavaScript("window.scrollTo(0,document.body.scrollHeight);")
         if self.need_scroll is True:
             self.need_scroll = False
             settings = QSettings(QSettings.IniFormat, QSettings.UserScope, "cges30901", "VertReader")
