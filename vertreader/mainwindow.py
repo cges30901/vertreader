@@ -1,9 +1,9 @@
 # This Python file uses the following encoding: utf-8
-from PyQt5.QtWidgets import QMainWindow, QFileDialog, QAction, QMessageBox, QApplication
 from ebooklib import epub
 import tempfile
 import zipfile
 import os
+from PyQt5.QtWidgets import QMainWindow, QFileDialog, QAction, QMessageBox, QApplication, QActionGroup
 from PyQt5.QtCore import QUrl, QEvent, pyqtSlot, Qt, QSettings
 from PyQt5.QtGui import QIcon
 from vertreader.ui_mainwindow import Ui_MainWindow
@@ -15,6 +15,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         super().__init__()
         self.setWindowIcon(QIcon(os.path.dirname(os.path.abspath(__file__))+'/vertreader.svg'))
         self.setupUi(self)
+        group = QActionGroup(self)
+        group.addAction(self.actionPaged)
+        group.addAction(self.actionScroll)
         self.filename = args.file
         self.tempdir = ''
         self.book = None

@@ -75,7 +75,7 @@
      <x>0</x>
      <y>0</y>
      <width>800</width>
-     <height>35</height>
+     <height>30</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -96,7 +96,15 @@
     <addaction name="action_About"/>
     <addaction name="actionLibrary"/>
    </widget>
+   <widget class="QMenu" name="menu_View">
+    <property name="title">
+     <string>&amp;View</string>
+    </property>
+    <addaction name="actionPaged"/>
+    <addaction name="actionScroll"/>
+   </widget>
    <addaction name="menuFile"/>
+   <addaction name="menu_View"/>
    <addaction name="menuTOC"/>
    <addaction name="menu_Help"/>
   </widget>
@@ -114,6 +122,25 @@
   <action name="actionLibrary">
    <property name="text">
     <string>Libraries used</string>
+   </property>
+  </action>
+  <action name="actionPaged">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>&amp;Paged View</string>
+   </property>
+  </action>
+  <action name="actionScroll">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>&amp;Scroll View</string>
    </property>
   </action>
  </widget>
