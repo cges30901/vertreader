@@ -231,3 +231,11 @@ document.body.style.overflow='hidden';
             self.btnNext.setEnabled(False)
         else:
             self.btnNext.setEnabled(True)
+
+    @pyqtSlot()
+    def on_actionPaged_triggered(self):
+        self.view.reload()
+
+    @pyqtSlot()
+    def on_actionScroll_triggered(self):
+        self.view.reload()
