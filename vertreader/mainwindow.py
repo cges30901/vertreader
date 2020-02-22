@@ -42,6 +42,15 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                         self.pageIndex += 1
                         self.gotoPage()
                     return True
+                elif e.type() == QEvent.KeyPress:
+                    if e.key() == Qt.Key_PageDown or e.key() == Qt.Key_Down:
+                        self.pageIndex += 1
+                        self.gotoPage()
+                        return True
+                    elif e.key() == Qt.Key_PageUp or e.key() == Qt.Key_Up:
+                        self.pageIndex -= 1
+                        self.gotoPage()
+                        return True
             else:
                 # The coordinate of javascript and Qt WebEngine is different.
                 # In javascript, the beginning of document is 0.
