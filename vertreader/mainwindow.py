@@ -35,8 +35,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         if source == self.view.focusProxy():
             if self.actionPaged.isChecked():
                 if e.type() == QEvent.Wheel:
-                    if self.pageIndex == -2:
-                        self.pageIndex = self.pageCount - 1
                     if e.angleDelta().y() > 0:
                         self.pageIndex -= 1
                         self.gotoPage()
@@ -186,6 +184,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         if self.actionPaged.isChecked():
             def paginateFinished(callback):
                 self.pageCount = callback
+                if self.pageIndex == -1:
+                    self.view.page().runJavaScript("window.scrollTo(0,document.body.scrollHeight);")
+                    self.pageIndex = self.pageCount - 1
 
             self.view.page().runJavaScript('''
 var el = document.querySelectorAll('img');
@@ -221,8 +222,7 @@ document.body.style.overflow = 'hidden';
 //send result to paginateFinished()
 column
 ''', paginateFinished)
-            if self.pageIndex == -2:
-                self.view.page().runJavaScript("window.scrollTo(0,document.body.scrollHeight);")
+
         if self.need_scroll is True:
             self.need_scroll = False
             settings = QSettings(QSettings.IniFormat, QSettings.UserScope, "cges30901", "VertReader")
@@ -250,12 +250,15 @@ column
         self.view.reload()
 
     def gotoPage(self):
+        # prevent crash is javascript failed go get pageCount
+        if not self.pageCount:
+            self.pageCount = round(self.view.page().contentsSize().height() / self.view.height())
+
         pageHeight = self.view.page().contentsSize().height() / self.pageCount
 
-        if self.pageIndex == -1:
+        if self.pageIndex < 0:
             if self.docIndex > 0:
                 self.docIndex -= 1
-                self.pageIndex = -2
                 self.setButtons()
                 self.view.load(QUrl.fromLocalFile(self.doc[self.docIndex]))
             else:
