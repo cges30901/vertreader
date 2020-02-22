@@ -35,7 +35,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         if source == self.view.focusProxy():
             if self.actionPaged.isChecked():
                 if e.type() == QEvent.Wheel:
-                    self.pageCount = round(self.view.page().contentsSize().height() / self.view.height())
                     if self.pageIndex == -2:
                         self.pageIndex = self.pageCount - 1
                     if e.angleDelta().y() > 0:
@@ -185,6 +184,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     @pyqtSlot(bool)
     def on_view_loadFinished(self):
         if self.actionPaged.isChecked():
+            def paginateFinished(callback):
+                self.pageCount = callback
+
             self.view.page().runJavaScript('''
 var el = document.querySelectorAll('img');
 for(var i = 0; i < el.length; i++){
@@ -201,7 +203,11 @@ for(var i = 0; i < el.length; i++){
 
 //paginate with CSS Multiple Columns
 var columnInit = Math.floor(document.body.scrollWidth / document.documentElement.clientWidth);
-for(var column = columnInit; column < columnInit * 2; column++){
+if(columnInit === 0){
+    columnInit = 1
+}
+var column = columnInit;
+for(column = columnInit; column < columnInit * 2; column++){
     document.body.style.columnCount = column;
     document.body.style.height = column + "00vh";
     if(document.body.scrollWidth <= document.documentElement.clientWidth){
@@ -211,7 +217,10 @@ for(var column = columnInit; column < columnInit * 2; column++){
 
 //hide scroll bar
 document.body.style.overflow = 'hidden';
-''')
+
+//send result to paginateFinished()
+column
+''', paginateFinished)
             if self.pageIndex == -2:
                 self.view.page().runJavaScript("window.scrollTo(0,document.body.scrollHeight);")
         if self.need_scroll is True:
@@ -241,7 +250,6 @@ document.body.style.overflow = 'hidden';
         self.view.reload()
 
     def gotoPage(self):
-        self.pageCount = round(self.view.page().contentsSize().height() / self.view.height())
         pageHeight = self.view.page().contentsSize().height() / self.pageCount
 
         if self.pageIndex == -1:
