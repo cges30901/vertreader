@@ -200,6 +200,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     @pyqtSlot(bool)
     def on_view_loadFinished(self):
+        self.view.page().runJavaScript("console.log(document.body.style.margin)")
         if self.actionPaged.isChecked():
             def paginateFinished(callback):
                 self.pageCount = callback
@@ -208,6 +209,11 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                     self.pageIndex = self.pageCount - 1
 
             self.view.page().runJavaScript('''
+//Set margin of body to prevent beginning of document not displaying.
+//This needs more investigation.
+document.body.style.marginLeft='8px'
+document.body.style.marginRight='8px'
+
 var el = document.querySelectorAll('img');
 for(var i = 0; i < el.length; i++){
     //wrap image in div so two consecutive images can be separated
