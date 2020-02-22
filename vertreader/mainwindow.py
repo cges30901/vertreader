@@ -120,7 +120,15 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         settings = QSettings(QSettings.IniFormat, QSettings.UserScope, "cges30901", "VertReader")
         settings.beginGroup(self.filename.replace('/', '>').replace('\\', '>'))
-        self.docIndex = int(settings.value("index", 0))
+        if settings.value("ispagedview", True, type = bool) == True:
+            self.actionPaged.setChecked(True)
+            self.actionScroll.setChecked(False)
+        else:
+            self.actionPaged.setChecked(False)
+            self.actionScroll.setChecked(True)
+
+        self.docIndex = int(settings.value("docIndex", 0))
+        self.pageIndex = int(settings.value("pageIndex", 0))
         settings.endGroup()
         self.need_scroll = True
         self.setButtons()
@@ -182,7 +190,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         # replace slash and backslash with '>'
         # because they have special meaning in QSettings
         settings.beginGroup(self.filename.replace('/', '>').replace('\\', '>'))
-        settings.setValue("index", self.docIndex)
+        settings.setValue("ispagedview", self.actionPaged.isChecked())
+        settings.setValue("docIndex", self.docIndex)
+        settings.setValue("pageIndex", self.pageIndex)
         settings.setValue("posX", self.view.page().scrollPosition().x()
             - self.view.page().contentsSize().width() + self.view.width())
         settings.setValue("posY", self.view.page().scrollPosition().y())
