@@ -42,7 +42,7 @@ class Ui_MainWindow(object):
         self.verticalLayout.addLayout(self.horizontalLayout)
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
-        self.menubar.setGeometry(QtCore.QRect(0, 0, 800, 30))
+        self.menubar.setGeometry(QtCore.QRect(0, 0, 800, 35))
         self.menubar.setObjectName("menubar")
         self.menuFile = QtWidgets.QMenu(self.menubar)
         self.menuFile.setObjectName("menuFile")
@@ -94,6 +94,6 @@ class Ui_MainWindow(object):
         self.action_Open.setText(_translate("MainWindow", "&Open"))
         self.action_About.setText(_translate("MainWindow", "&About"))
         self.actionLibrary.setText(_translate("MainWindow", "Libraries used"))
-        self.actionPaged.setText(_translate("MainWindow", "&Paged View"))
-        self.actionScroll.setText(_translate("MainWindow", "&Scroll View"))
+        self.actionPaged.setText(_translate("MainWindow", "&Paged Mode"))
+        self.actionScroll.setText(_translate("MainWindow", "&Continuous Mode"))
 from PyQt5 import QtWebEngineWidgets

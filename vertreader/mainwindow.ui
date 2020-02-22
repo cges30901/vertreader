@@ -75,7 +75,7 @@
      <x>0</x>
      <y>0</y>
      <width>800</width>
-     <height>30</height>
+     <height>35</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -132,7 +132,7 @@
     <bool>true</bool>
    </property>
    <property name="text">
-    <string>&amp;Paged View</string>
+    <string>&amp;Paged Mode</string>
    </property>
   </action>
   <action name="actionScroll">
@@ -140,7 +140,7 @@
     <bool>true</bool>
    </property>
    <property name="text">
-    <string>&amp;Scroll View</string>
+    <string>&amp;Continuous Mode</string>
    </property>
   </action>
  </widget>
