@@ -36,30 +36,14 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             if self.actionPaged.isChecked():
                 if e.type() == QEvent.Wheel:
                     self.pageCount = round(self.view.page().contentsSize().height() / self.view.height())
-                    pageHeight = self.view.page().contentsSize().height() / self.pageCount
-                    if self.pageIndex == -1:
+                    if self.pageIndex == -2:
                         self.pageIndex = self.pageCount - 1
-                    print(pageHeight, self.view.page().contentsSize().height(), self.pageCount)
                     if e.angleDelta().y() > 0:
-                        if self.pageIndex > 0:
-                            self.pageIndex -= 1
-                        elif self.docIndex > 0:
-                            self.docIndex -= 1
-                            self.pageIndex = -1
-                            self.setButtons()
-                            self.view.load(QUrl.fromLocalFile(self.doc[self.docIndex]))
-                            return True
+                        self.pageIndex -= 1
+                        self.gotoPage()
                     elif e.angleDelta().y() < 0:
-                        if self.pageIndex < self.pageCount - 1:
-                            self.pageIndex += 1
-                        elif self.docIndex < len(self.doc) - 1:
-                            self.docIndex += 1
-                            self.pageIndex = 0
-                            self.setButtons()
-                            self.view.load(QUrl.fromLocalFile(self.doc[self.docIndex]))
-                            return True
-                    self.view.page().runJavaScript("window.scrollTo({0}, {1});"
-                        .format(self.view.page().scrollPosition().x(), pageHeight * self.pageIndex))
+                        self.pageIndex += 1
+                        self.gotoPage()
                     return True
             else:
                 # The coordinate of javascript and Qt WebEngine is different.
@@ -228,7 +212,7 @@ for(var column = columnInit; column < columnInit * 2; column++){
 //hide scroll bar
 document.body.style.overflow = 'hidden';
 ''')
-            if self.pageIndex == -1:
+            if self.pageIndex == -2:
                 self.view.page().runJavaScript("window.scrollTo(0,document.body.scrollHeight);")
         if self.need_scroll is True:
             self.need_scroll = False
@@ -255,3 +239,30 @@ document.body.style.overflow = 'hidden';
     @pyqtSlot()
     def on_actionScroll_triggered(self):
         self.view.reload()
+
+    def gotoPage(self):
+        self.pageCount = round(self.view.page().contentsSize().height() / self.view.height())
+        pageHeight = self.view.page().contentsSize().height() / self.pageCount
+
+        if self.pageIndex == -1:
+            if self.docIndex > 0:
+                self.docIndex -= 1
+                self.pageIndex = -2
+                self.setButtons()
+                self.view.load(QUrl.fromLocalFile(self.doc[self.docIndex]))
+            else:
+                self.pageIndex = 0
+            return
+
+        if self.pageIndex > self.pageCount - 1:
+            if self.docIndex < len(self.doc) - 1:
+                self.docIndex += 1
+                self.pageIndex = 0
+                self.setButtons()
+                self.view.load(QUrl.fromLocalFile(self.doc[self.docIndex]))
+            else:
+                self.pageIndex = self.pageCount - 1
+            return
+
+        self.view.page().runJavaScript("window.scrollTo({0}, {1});"
+            .format(self.view.page().scrollPosition().x(), pageHeight * self.pageIndex))
