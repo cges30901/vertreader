@@ -3,10 +3,11 @@ from vertreader.ebooklib.ebooklib import epub
 import tempfile
 import zipfile
 import os
-from PyQt5.QtWidgets import QMainWindow, QFileDialog, QAction, QMessageBox, QApplication, QActionGroup
+from PyQt5.QtWidgets import QMainWindow, QFileDialog, QAction, QMessageBox, QApplication, QActionGroup, QDialog
 from PyQt5.QtCore import QUrl, QEvent, pyqtSlot, Qt, QSettings
 from PyQt5.QtGui import QIcon
 from vertreader.ui_mainwindow import Ui_MainWindow
+from vertreader.styledialog import StyleDialog
 
 
 class MainWindow(QMainWindow, Ui_MainWindow):
@@ -273,6 +274,13 @@ column
     @pyqtSlot()
     def on_actionScroll_triggered(self):
         self.view.reload()
+
+    @pyqtSlot()
+    def on_action_Style_triggered(self):
+        dlgStyle=StyleDialog(self)
+        if dlgStyle.exec_()==QDialog.Accepted:
+            self.view.setZoomFactor(dlgStyle.spbZoom.value())
+            self.view.reload()
 
     def gotoPage(self):
         # prevent crash is javascript failed go get pageCount

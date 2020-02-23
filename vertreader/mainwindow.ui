@@ -102,6 +102,8 @@
     </property>
     <addaction name="actionPaged"/>
     <addaction name="actionScroll"/>
+    <addaction name="separator"/>
+    <addaction name="action_Style"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menu_View"/>
@@ -141,6 +143,11 @@
    </property>
    <property name="text">
     <string>&amp;Continuous Mode</string>
+   </property>
+  </action>
+  <action name="action_Style">
+   <property name="text">
+    <string>&amp;Style</string>
    </property>
   </action>
  </widget>
