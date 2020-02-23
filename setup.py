@@ -29,12 +29,13 @@ setup(
     ],
     keywords='epub',
     project_urls={
-        'Source': 'https://github.com/cges30901/pdfhandoutcrop/',
+        'Source': 'https://github.com/cges30901/vertreader/',
     },
     packages=['vertreader'],
     install_requires=['PyQt5', 'PyQtWebEngine', 'six', 'lxml'],
     python_requires='>=3',
+    scripts=['scripts/vertreader'],
     package_data={
-        'vertreader': ['ebooklib/ebooklib/*.py'],
+        'vertreader': ['ebooklib/ebooklib/*.py', 'vertreader.svg', 'language/*.ts', 'language/*.qm'],
     },
 )
