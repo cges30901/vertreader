@@ -1,0 +1,3 @@
+[submodule "vertreader/ebooklib"]
+	path = vertreader/ebooklib
+	url = https://cges30901@github.com/cges30901/ebooklib.git

@@ -1,5 +1,5 @@
 # This Python file uses the following encoding: utf-8
-from ebooklib import epub
+from vertreader.ebooklib.ebooklib import epub
 import tempfile
 import zipfile
 import os

@@ -32,6 +32,6 @@ setup(
         'Source': 'https://github.com/cges30901/pdfhandoutcrop/',
     },
     packages=find_packages(exclude=['contrib', 'docs', 'tests']),
-    install_requires=['PyQt5', 'ebooklib'],
+    install_requires=['PyQt5', 'PyQtWebEngine', 'six', 'lxml'],
     python_requires='>=3',
 )
