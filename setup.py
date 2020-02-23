@@ -31,7 +31,10 @@ setup(
     project_urls={
         'Source': 'https://github.com/cges30901/pdfhandoutcrop/',
     },
-    packages=find_packages(exclude=['contrib', 'docs', 'tests']),
+    packages=['vertreader'],
     install_requires=['PyQt5', 'PyQtWebEngine', 'six', 'lxml'],
     python_requires='>=3',
+    package_data={
+        'vertreader': ['ebooklib/ebooklib/*.py'],
+    },
 )
