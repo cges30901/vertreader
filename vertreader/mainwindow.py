@@ -256,7 +256,7 @@ column
             settings = QSettings(QSettings.IniFormat, QSettings.UserScope, "cges30901", "VertReader")
             settings.beginGroup(self.filename.replace('/', '>').replace('\\', '>'))
             self.view.page().runJavaScript("window.scrollTo({0}, {1});"
-                .format(settings.value("posX", 0), settings.value("posY", 0)))
+                .format(settings.value("posX", 0), float(settings.value("posY", 0)) / self.view.zoomFactor()))
             settings.endGroup()
 
     def setButtons(self):
