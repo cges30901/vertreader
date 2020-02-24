@@ -128,6 +128,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.actionPaged.setChecked(False)
             self.actionScroll.setChecked(True)
 
+        self.view.setZoomFactor(float(settings.value("zoomFactor", 0)))
         self.docIndex = int(settings.value("docIndex", 0))
         self.pageIndex = int(settings.value("pageIndex", 0))
         settings.endGroup()
@@ -192,6 +193,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         # because they have special meaning in QSettings
         settings.beginGroup(self.filename.replace('/', '>').replace('\\', '>'))
         settings.setValue("ispagedview", self.actionPaged.isChecked())
+        settings.setValue("zoomFactor", self.view.zoomFactor())
         settings.setValue("docIndex", self.docIndex)
         settings.setValue("pageIndex", self.pageIndex)
         settings.setValue("posX", self.view.page().scrollPosition().x()
@@ -278,16 +280,17 @@ column
     @pyqtSlot()
     def on_action_Style_triggered(self):
         dlgStyle=StyleDialog(self)
+        dlgStyle.spbZoom.setValue(self.view.zoomFactor())
         if dlgStyle.exec_()==QDialog.Accepted:
             self.view.setZoomFactor(dlgStyle.spbZoom.value())
             self.view.reload()
 
     def gotoPage(self):
-        # prevent crash is javascript failed go get pageCount
+        # prevent crash is javascript failed to get pageCount
         if not self.pageCount:
             self.pageCount = round(self.view.page().contentsSize().height() / self.view.height())
 
-        pageHeight = self.view.page().contentsSize().height() / self.pageCount
+        pageHeight = self.view.page().contentsSize().height() / self.pageCount / self.view.zoomFactor()
 
         if self.pageIndex < 0:
             if self.docIndex > 0:
