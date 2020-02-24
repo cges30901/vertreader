@@ -58,6 +58,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 # In Qt WebEngine, the end of document is 0.
                 # So I have to convert it to use javascript to scroll.
                 pos_js = self.view.page().scrollPosition().x() - self.view.page().contentsSize().width() + self.view.width()
+                # Adjust position according to zoomFactor
+                pos_js /= self.view.zoomFactor()
 
                 if e.type() == QEvent.Wheel:
                     self.view.page().runJavaScript("window.scrollTo({0}, {1});"
