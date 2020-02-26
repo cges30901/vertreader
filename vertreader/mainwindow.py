@@ -27,6 +27,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.pageIndex = 0
         self.toc = []
         self.need_scroll = False
+        self.color = "black"
         self.view.focusProxy().installEventFilter(self)
         QApplication.instance().aboutToQuit.connect(self.writeSettings)
         if self.filename:
@@ -131,6 +132,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.actionScroll.setChecked(True)
 
         self.view.setZoomFactor(float(settings.value("zoomFactor", 0)))
+        self.color = settings.value("color", "black")
         self.docIndex = int(settings.value("docIndex", 0))
         self.pageIndex = int(settings.value("pageIndex", 0))
         settings.endGroup()
@@ -196,6 +198,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         settings.beginGroup(self.filename.replace('/', '>').replace('\\', '>'))
         settings.setValue("ispagedview", self.actionPaged.isChecked())
         settings.setValue("zoomFactor", self.view.zoomFactor())
+        settings.setValue("color", self.color)
         settings.setValue("docIndex", self.docIndex)
         settings.setValue("pageIndex", self.pageIndex)
         settings.setValue("posX", self.view.page().scrollPosition().x()
@@ -205,7 +208,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     @pyqtSlot(bool)
     def on_view_loadFinished(self):
-        self.view.page().runJavaScript("console.log(document.body.style.margin)")
+        self.view.page().runJavaScript('document.body.style.color="{}"'.format(self.color))
         if self.actionPaged.isChecked():
             def paginateFinished(callback):
                 self.pageCount = callback
@@ -283,9 +286,13 @@ column
     def on_action_Style_triggered(self):
         dlgStyle=StyleDialog(self)
         dlgStyle.spbZoom.setValue(self.view.zoomFactor())
+        dlgStyle.color = self.color
+        dlgStyle.btnColor.setStyleSheet("border: none; background-color: " + self.color)
         if dlgStyle.exec_()==QDialog.Accepted:
             self.view.setZoomFactor(dlgStyle.spbZoom.value())
+            self.color = dlgStyle.color
             self.view.reload()
+            self.pageIndex = 0
 
     def gotoPage(self):
         # prevent crash is javascript failed to get pageCount
