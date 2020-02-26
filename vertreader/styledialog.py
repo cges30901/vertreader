@@ -15,3 +15,10 @@ class StyleDialog(QDialog, Ui_StyleDialog):
         if color.isValid():
             self.color = color.name()
             self.btnColor.setStyleSheet("border: none; background-color: " + self.color)
+
+    @pyqtSlot()
+    def on_btnBgColor_clicked(self):
+        bgColor = QColorDialog.getColor(QColor(self.bgColor))
+        if bgColor.isValid():
+            self.bgColor = bgColor.name()
+            self.btnBgColor.setStyleSheet("border: none; background-color: " + self.bgColor)
