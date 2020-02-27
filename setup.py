@@ -36,6 +36,6 @@ setup(
     python_requires='>=3',
     scripts=['scripts/vertreader'],
     package_data={
-        'vertreader': ['ebooklib/ebooklib/*.py', 'vertreader.svg', 'language/*.ts', 'language/*.qm'],
+        'vertreader': ['ebooklib/ebooklib/*.py', 'ebooklib/LICENSE.txt', 'vertreader.svg', 'language/*.ts', 'language/*.qm'],
     },
 )
