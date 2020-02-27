@@ -40,6 +40,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def eventFilter(self, source, e):
         if source == self.view.focusProxy():
+            if e.type() == QEvent.Resize:
+                # Reload when resized to paginate again
+                self.view.reload()
+                self.pageIndex = 0
             if self.actionPaged.isChecked():
                 if e.type() == QEvent.Wheel:
                     if e.angleDelta().y() > 0:
