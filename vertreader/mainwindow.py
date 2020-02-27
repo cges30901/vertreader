@@ -133,6 +133,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                         if fullname.split('#')[0] == self.doc[i]:
                             toc.append([a.title, fullname, level, i])
                             break
+                        QMessageBox.warning(self, self.tr("Failed to read TOC"),
+                            self.tr("Link to unrecognized item is: ") + a.href)
             return toc
         self.toc = get_toc(self.book.toc, 0)
         self.actionTOC = [QAction('>' * self.toc[x][2] + self.toc[x][0]) for x in range(len(self.toc))]
