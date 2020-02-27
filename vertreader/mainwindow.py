@@ -97,15 +97,24 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def open(self, filename):
         self.tempdir = tempfile.TemporaryDirectory().name
         self.doc = []
-        with zipfile.ZipFile(filename, "r") as zip_ref:
-            zip_ref.extractall(self.tempdir)
-            zip_ref.close()
+
+        try:
+            with zipfile.ZipFile(filename, "r") as zip_ref:
+                zip_ref.extractall(self.tempdir)
+                zip_ref.close()
+        except Exception as e:
+            QMessageBox.warning(self, self.tr("Failed to extract"), str(e))
+            return
 
         # This is used instead of epub.read_epub()
         # because I need reader.opf_dir
-        reader = epub.EpubReader(filename)
-        self.book = reader.load()
-        reader.process()
+        try:
+            reader = epub.EpubReader(filename)
+            self.book = reader.load()
+            reader.process()
+        except Exception as e:
+            QMessageBox.warning(self, self.tr("Failed to read EPUB with EbookLib"), str(e))
+            return
 
         for i in self.book.spine:
             item = self.book.get_item_with_id(i[0])
