@@ -123,9 +123,19 @@
     </layout>
    </item>
    <item>
-    <widget class="QCheckBox" name="chbVertical">
+    <widget class="QRadioButton" name="btnVertical">
      <property name="text">
-      <string>Force vertical writing</string>
+      <string>Vertical writing</string>
+     </property>
+     <property name="checked">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QRadioButton" name="btnHorizontal">
+     <property name="text">
+      <string>Horizontal writing</string>
      </property>
     </widget>
    </item>

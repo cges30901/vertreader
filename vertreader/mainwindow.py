@@ -62,7 +62,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                         self.pageIndex -= 1
                         self.gotoPage()
                         return True
-            else:
+            elif self.actionScroll.isChecked() and self.isVertical:
                 # The coordinate of javascript and Qt WebEngine is different.
                 # In javascript, the beginning of document is 0.
                 # In Qt WebEngine, the end of document is 0.
@@ -83,6 +83,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                     self.view.page().runJavaScript("window.scrollTo({0}, {1});"
                         .format(pos_js - self.view.width() * 0.9, self.view.page().scrollPosition().y()))
                     return True
+            else: # No need to scroll manually in continuous mode and horizontal writing
+                return False
         return False
 
     @pyqtSlot()
@@ -253,14 +255,21 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.view.page().runJavaScript('document.body.style.backgroundColor="{}"'.format(self.bgColor))
         if self.isVertical:
             self.view.page().runJavaScript('document.body.style.writingMode="vertical-rl"')
+        else:
+            self.view.page().runJavaScript('document.body.style.writingMode="horizontal-tb"')
+
         if self.actionPaged.isChecked():
             def paginateFinished(callback):
                 self.pageCount = callback
                 if self.pageIndex == -1:
-                    self.view.page().runJavaScript("window.scrollTo(0,document.body.scrollHeight);")
+                    if self.isVertical:
+                        self.view.page().runJavaScript("window.scrollTo(0,document.body.scrollHeight);")
+                    else:
+                        self.view.page().runJavaScript("window.scrollTo(document.body.scrollWidth,0);")
                     self.pageIndex = self.pageCount - 1
 
-            self.view.page().runJavaScript('''
+            if self.isVertical:
+                self.view.page().runJavaScript('''
 //Set margin of body to prevent beginning of document not displaying.
 //This needs more investigation.
 document.body.style.marginLeft='8px'
@@ -289,6 +298,41 @@ for(column = columnInit; column < columnInit * 2; column++){
     document.body.style.columnCount = column;
     document.body.style.height = column + "00vh";
     if(document.body.scrollWidth <= document.documentElement.clientWidth){
+        break;
+    }
+}
+
+//hide scroll bar
+document.body.style.overflow = 'hidden';
+
+//send result to paginateFinished()
+column
+''', paginateFinished)
+            else:
+                self.view.page().runJavaScript('''
+var el = document.querySelectorAll('img');
+for(var i = 0; i < el.length; i++){
+    //wrap image in div so two consecutive images can be separated
+    var wrapper = document.createElement('div');
+    el[i].parentNode.insertBefore(wrapper, el[i]);
+    wrapper.appendChild(el[i]);
+
+    //prevent pagination failure when wide images exist
+    el[i].style.maxWidth = "100%";
+    el[i].style.maxHeight = document.documentElement.clientHeight + "px";
+    el[i].style.margin = 0;
+}
+
+//paginate with CSS Multiple Columns
+var columnInit = Math.floor(document.body.scrollHeight / document.documentElement.clientHeight);
+if(columnInit === 0){
+    columnInit = 1
+}
+var column = columnInit;
+for(column = columnInit; column < columnInit * 2; column++){
+    document.body.style.columnCount = column;
+    document.body.style.width = column + "00%";
+    if(document.body.scrollHeight <= document.documentElement.clientHeight){
         break;
     }
 }
@@ -334,21 +378,26 @@ column
         dlgStyle.btnColor.setStyleSheet("border: none; background-color: " + self.color)
         dlgStyle.bgColor = self.bgColor
         dlgStyle.btnBgColor.setStyleSheet("border: none; background-color: " + self.bgColor)
-        dlgStyle.chbVertical.setChecked(self.isVertical)
+        dlgStyle.btnVertical.setChecked(self.isVertical)
+        dlgStyle.btnVertical.setChecked(not self.isVertical)
         if dlgStyle.exec_()==QDialog.Accepted:
             self.view.setZoomFactor(dlgStyle.spbZoom.value())
             self.color = dlgStyle.color
             self.bgColor = dlgStyle.bgColor
-            self.isVertical = dlgStyle.chbVertical.isChecked()
+            self.isVertical = dlgStyle.btnVertical.isChecked()
             self.view.reload()
             self.pageIndex = 0
 
     def gotoPage(self):
-        # prevent crash if javascript failed to get pageCount
-        if not self.pageCount:
-            self.pageCount = round(self.view.page().contentsSize().height() / self.view.height())
-
-        pageHeight = self.view.page().contentsSize().height() / self.pageCount / self.view.zoomFactor()
+        if self.isVertical:
+            # prevent crash if javascript failed to get pageCount
+            if not self.pageCount:
+                self.pageCount = round(self.view.page().contentsSize().height() / self.view.height())
+            pageHeight = self.view.page().contentsSize().height() / self.pageCount / self.view.zoomFactor()
+        else:
+            if not self.pageCount:
+                self.pageCount = round(self.view.page().contentsSize().width() / self.view.width())
+            pageWidth = self.view.page().contentsSize().width() / self.pageCount / self.view.zoomFactor()
 
         if self.pageIndex < 0:
             if self.docIndex > 0:
@@ -369,5 +418,9 @@ column
                 self.pageIndex = self.pageCount - 1
             return
 
-        self.view.page().runJavaScript("window.scrollTo({0}, {1});"
-            .format(self.view.page().scrollPosition().x(), pageHeight * self.pageIndex))
+        if self.isVertical:
+            self.view.page().runJavaScript("window.scrollTo({0}, {1});"
+                .format(self.view.page().scrollPosition().x(), pageHeight * self.pageIndex))
+        else:
+            self.view.page().runJavaScript("window.scrollTo({0}, {1});"
+                .format(pageWidth * self.pageIndex, self.view.page().scrollPosition().y()))
