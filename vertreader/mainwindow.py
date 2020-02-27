@@ -27,9 +27,12 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.pageIndex = 0
         self.toc = []
         self.need_scroll = False
+
         self.color = "black"
         self.bgColor = "white"
         self.isVertical = True
+        self.readSettings()
+
         self.view.focusProxy().installEventFilter(self)
         QApplication.instance().aboutToQuit.connect(self.writeSettings)
         if self.filename:
@@ -124,22 +127,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             x.triggered.connect(self.toc_triggered)
         self.menuTOC.addActions(self.actionTOC)
 
-        settings = QSettings(QSettings.IniFormat, QSettings.UserScope, "cges30901", "VertReader")
-        settings.beginGroup(self.filename.replace('/', '>').replace('\\', '>'))
-        if settings.value("ispagedview", True, type = bool) == True:
-            self.actionPaged.setChecked(True)
-            self.actionScroll.setChecked(False)
-        else:
-            self.actionPaged.setChecked(False)
-            self.actionScroll.setChecked(True)
-
-        self.view.setZoomFactor(float(settings.value("zoomFactor", 0)))
-        self.color = settings.value("color", "black")
-        self.bgColor = settings.value("bgColor", "white")
-        self.isVertical = settings.value("isVertical", True, type = bool)
-        self.docIndex = int(settings.value("docIndex", 0))
-        self.pageIndex = int(settings.value("pageIndex", 0))
-        settings.endGroup()
+        self.readSettings()
         self.need_scroll = True
         self.setButtons()
 
@@ -193,23 +181,47 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     @pyqtSlot()
     def writeSettings(self):
-        # No need to write settings if no file is loaded
-        if self.view.url().fileName() == 'blank':
-            return
-        settings = QSettings(QSettings.IniFormat, QSettings.UserScope, "cges30901", "VertReader")
+        def writeGroup(group):
+            settings = QSettings(QSettings.IniFormat, QSettings.UserScope, "cges30901", "VertReader")
+            settings.beginGroup(group)
+            settings.setValue("ispagedview", self.actionPaged.isChecked())
+            settings.setValue("zoomFactor", self.view.zoomFactor())
+            settings.setValue("color", self.color)
+            settings.setValue("bgColor", self.bgColor)
+            settings.setValue("isVertical", self.isVertical)
+            settings.setValue("docIndex", self.docIndex)
+            settings.setValue("pageIndex", self.pageIndex)
+            settings.setValue("posX", self.view.page().scrollPosition().x()
+                - self.view.page().contentsSize().width() + self.view.width())
+            settings.setValue("posY", self.view.page().scrollPosition().y())
+            settings.endGroup()
+
+        # Also saves last used settings in Global group
+        writeGroup("Global")
         # replace slash and backslash with '>'
         # because they have special meaning in QSettings
-        settings.beginGroup(self.filename.replace('/', '>').replace('\\', '>'))
-        settings.setValue("ispagedview", self.actionPaged.isChecked())
-        settings.setValue("zoomFactor", self.view.zoomFactor())
-        settings.setValue("color", self.color)
-        settings.setValue("bgColor", self.bgColor)
-        settings.setValue("isVertical", self.isVertical)
-        settings.setValue("docIndex", self.docIndex)
-        settings.setValue("pageIndex", self.pageIndex)
-        settings.setValue("posX", self.view.page().scrollPosition().x()
-            - self.view.page().contentsSize().width() + self.view.width())
-        settings.setValue("posY", self.view.page().scrollPosition().y())
+        writeGroup(self.filename.replace('/', '>').replace('\\', '>'))
+
+    def readSettings(self):
+        settings = QSettings(QSettings.IniFormat, QSettings.UserScope, "cges30901", "VertReader")
+        if self.filename:
+            settings.beginGroup(self.filename.replace('/', '>').replace('\\', '>'))
+        else:
+            settings.beginGroup("Global")
+
+        if settings.value("ispagedview", self.actionPaged.isChecked(), type = bool) == True:
+            self.actionPaged.setChecked(True)
+            self.actionScroll.setChecked(False)
+        else:
+            self.actionPaged.setChecked(False)
+            self.actionScroll.setChecked(True)
+
+        self.view.setZoomFactor(float(settings.value("zoomFactor", 0)))
+        self.color = settings.value("color", self.color)
+        self.bgColor = settings.value("bgColor", self.bgColor)
+        self.isVertical = settings.value("isVertical", self.isVertical, type = bool)
+        self.docIndex = int(settings.value("docIndex", 0))
+        self.pageIndex = int(settings.value("pageIndex", 0))
         settings.endGroup()
 
     @pyqtSlot(bool)
