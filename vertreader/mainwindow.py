@@ -184,6 +184,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         def writeGroup(group):
             settings = QSettings(QSettings.IniFormat, QSettings.UserScope, "cges30901", "VertReader")
             settings.beginGroup(group)
+            settings.setValue("isMaximized", self.isMaximized())
+            settings.setValue("width", self.width())
+            settings.setValue("height", self.height())
             settings.setValue("ispagedview", self.actionPaged.isChecked())
             settings.setValue("zoomFactor", self.view.zoomFactor())
             settings.setValue("color", self.color)
@@ -209,6 +212,11 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         else:
             settings.beginGroup("Global")
 
+        if settings.value("isMaximized", self.isMaximized(), type = bool) == True:
+            self.showMaximized()
+        else:
+            self.showNormal()
+            self.resize(int(settings.value("width", self.width())), int(settings.value("height", self.height())))
         if settings.value("ispagedview", self.actionPaged.isChecked(), type = bool) == True:
             self.actionPaged.setChecked(True)
             self.actionScroll.setChecked(False)
