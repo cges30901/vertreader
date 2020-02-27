@@ -344,7 +344,7 @@ column
             self.pageIndex = 0
 
     def gotoPage(self):
-        # prevent crash is javascript failed to get pageCount
+        # prevent crash if javascript failed to get pageCount
         if not self.pageCount:
             self.pageCount = round(self.view.page().contentsSize().height() / self.view.height())
 
