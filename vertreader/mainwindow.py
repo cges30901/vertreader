@@ -29,6 +29,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.need_scroll = False
         self.color = "black"
         self.bgColor = "white"
+        self.isVertical = True
         self.view.focusProxy().installEventFilter(self)
         QApplication.instance().aboutToQuit.connect(self.writeSettings)
         if self.filename:
@@ -135,6 +136,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.view.setZoomFactor(float(settings.value("zoomFactor", 0)))
         self.color = settings.value("color", "black")
         self.bgColor = settings.value("bgColor", "white")
+        self.isVertical = settings.value("isVertical", True, type = bool)
         self.docIndex = int(settings.value("docIndex", 0))
         self.pageIndex = int(settings.value("pageIndex", 0))
         settings.endGroup()
@@ -202,6 +204,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         settings.setValue("zoomFactor", self.view.zoomFactor())
         settings.setValue("color", self.color)
         settings.setValue("bgColor", self.bgColor)
+        settings.setValue("isVertical", self.isVertical)
         settings.setValue("docIndex", self.docIndex)
         settings.setValue("pageIndex", self.pageIndex)
         settings.setValue("posX", self.view.page().scrollPosition().x()
@@ -213,6 +216,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def on_view_loadFinished(self):
         self.view.page().runJavaScript('document.body.style.color="{}"'.format(self.color))
         self.view.page().runJavaScript('document.body.style.backgroundColor="{}"'.format(self.bgColor))
+        if self.isVertical:
+            self.view.page().runJavaScript('document.body.style.writingMode="vertical-rl"')
         if self.actionPaged.isChecked():
             def paginateFinished(callback):
                 self.pageCount = callback
@@ -294,10 +299,12 @@ column
         dlgStyle.btnColor.setStyleSheet("border: none; background-color: " + self.color)
         dlgStyle.bgColor = self.bgColor
         dlgStyle.btnBgColor.setStyleSheet("border: none; background-color: " + self.bgColor)
+        dlgStyle.chbVertical.setChecked(self.isVertical)
         if dlgStyle.exec_()==QDialog.Accepted:
             self.view.setZoomFactor(dlgStyle.spbZoom.value())
             self.color = dlgStyle.color
             self.bgColor = dlgStyle.bgColor
+            self.isVertical = dlgStyle.chbVertical.isChecked()
             self.view.reload()
             self.pageIndex = 0
 
