@@ -211,7 +211,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 Author: {1}
 Description: {2}''').format(title, author, description))
         except Exception as e:
-            QMessageBox.warning(self, self.tr("Failed to read metadata: "), str(e))
+            QMessageBox.warning(self, self.tr("Failed to read metadata"), str(e))
 
     @pyqtSlot()
     def on_actionLibrary_triggered(self):
