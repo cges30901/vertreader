@@ -193,22 +193,25 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     @pyqtSlot()
     def on_action_Metadata_triggered(self):
-        if self.book.get_metadata('DC', 'title'):
-            title = self.book.get_metadata('DC', 'title')[0][0]
-        else:
-            title = self.tr("N/A")
-        if self.book.get_metadata('DC', 'creator'):
-            author = self.book.get_metadata('DC', 'creator')[0][0]
-        else:
-            author = self.tr("N/A")
-        if self.book.get_metadata('DC', 'description'):
-            description = self.book.get_metadata('DC', 'description')[0][0]
-        else:
-            description = self.tr("N/A")
-        QMessageBox.information(self, self.tr("Metadata"),
-            self.tr('''Title: {0}
+        try:
+            if self.book.get_metadata('DC', 'title'):
+                title = self.book.get_metadata('DC', 'title')[0][0]
+            else:
+                title = self.tr("N/A")
+            if self.book.get_metadata('DC', 'creator'):
+                author = self.book.get_metadata('DC', 'creator')[0][0]
+            else:
+                author = self.tr("N/A")
+            if self.book.get_metadata('DC', 'description'):
+                description = self.book.get_metadata('DC', 'description')[0][0]
+            else:
+                description = self.tr("N/A")
+            QMessageBox.information(self, self.tr("Metadata"),
+                self.tr('''Title: {0}
 Author: {1}
 Description: {2}''').format(title, author, description))
+        except Exception as e:
+            QMessageBox.warning(self, self.tr("Failed to read metadata: "), str(e))
 
     @pyqtSlot()
     def on_actionLibrary_triggered(self):
