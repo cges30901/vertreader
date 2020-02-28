@@ -75,7 +75,7 @@
      <x>0</x>
      <y>0</y>
      <width>800</width>
-     <height>35</height>
+     <height>30</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -83,6 +83,8 @@
      <string>&amp;File</string>
     </property>
     <addaction name="action_Open"/>
+    <addaction name="action_Metadata"/>
+    <addaction name="separator"/>
    </widget>
    <widget class="QMenu" name="menuTOC">
     <property name="title">
@@ -148,6 +150,11 @@
   <action name="action_Style">
    <property name="text">
     <string>&amp;Style</string>
+   </property>
+  </action>
+  <action name="action_Metadata">
+   <property name="text">
+    <string>&amp;Metadata</string>
    </property>
   </action>
  </widget>

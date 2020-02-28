@@ -192,6 +192,25 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 <p>License: GPL v3</p>''').format(version))
 
     @pyqtSlot()
+    def on_action_Metadata_triggered(self):
+        if self.book.get_metadata('DC', 'title'):
+            title = self.book.get_metadata('DC', 'title')[0][0]
+        else:
+            title = "N/A"
+        if self.book.get_metadata('DC', 'creator'):
+            author = self.book.get_metadata('DC', 'creator')[0][0]
+        else:
+            author = "N/A"
+        if self.book.get_metadata('DC', 'description'):
+            description = self.book.get_metadata('DC', 'description')[0][0]
+        else:
+            description = "N/A"
+        QMessageBox.information(self, self.tr("Metadata"),
+            self.tr('''Title: {0}
+Author: {1}
+Description: {2}''').format(title, author, description))
+
+    @pyqtSlot()
     def on_actionLibrary_triggered(self):
         QMessageBox.about(self, self.tr("Libraries used"),
             self.tr("<h3>Libraries:</h3>") +
