@@ -151,7 +151,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.setButtons()
 
         self.view.load(QUrl.fromLocalFile(self.doc[self.docIndex]))
-        self.setWindowTitle("{} - VertReader".format(self.book.get_metadata('DC', 'title')[0][0]))
+        self.setWindowTitle(self.tr("{} - VertReader").format(self.book.get_metadata('DC', 'title')[0][0]))
 
     @pyqtSlot(bool)
     def toc_triggered(self):
@@ -196,15 +196,15 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         if self.book.get_metadata('DC', 'title'):
             title = self.book.get_metadata('DC', 'title')[0][0]
         else:
-            title = "N/A"
+            title = self.tr("N/A")
         if self.book.get_metadata('DC', 'creator'):
             author = self.book.get_metadata('DC', 'creator')[0][0]
         else:
-            author = "N/A"
+            author = self.tr("N/A")
         if self.book.get_metadata('DC', 'description'):
             description = self.book.get_metadata('DC', 'description')[0][0]
         else:
-            description = "N/A"
+            description = self.tr("N/A")
         QMessageBox.information(self, self.tr("Metadata"),
             self.tr('''Title: {0}
 Author: {1}
