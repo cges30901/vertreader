@@ -19,17 +19,17 @@
         <translation>檔案(&amp;F)</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="89"/>
+        <location filename="../mainwindow.ui" line="91"/>
         <source>&amp;TOC</source>
         <translation>目錄(&amp;T)</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="114"/>
+        <location filename="../mainwindow.ui" line="118"/>
         <source>&amp;Open</source>
         <translation>開啟(&amp;O)</translation>
     </message>
     <message>
-        <location filename="../mainwindow.py" line="77"/>
+        <location filename="../mainwindow.py" line="92"/>
         <source>EPUB documents (*.epub)</source>
         <translation>EPUB 文件 (*.epub)</translation>
     </message>
@@ -44,22 +44,22 @@
         <translation>VertReader</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="94"/>
+        <location filename="../mainwindow.ui" line="96"/>
         <source>&amp;Help</source>
         <translation>說明(&amp;H)</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="119"/>
+        <location filename="../mainwindow.ui" line="123"/>
         <source>&amp;About</source>
         <translation>關於(&amp;A)</translation>
     </message>
     <message>
-        <location filename="../mainwindow.py" line="171"/>
+        <location filename="../mainwindow.py" line="188"/>
         <source>About</source>
         <translation>關於</translation>
     </message>
     <message>
-        <location filename="../mainwindow.py" line="171"/>
+        <location filename="../mainwindow.py" line="188"/>
         <source>&lt;h3&gt;VertReader {0}&lt;/h3&gt;
 &lt;p&gt;Author: Hsiu-Ming Chang&lt;/p&gt;
 &lt;p&gt;e-mail: cges30901@gmail.com&lt;/p&gt;
@@ -70,29 +70,121 @@
 &lt;p&gt;授權：GPL v3&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../mainwindow.py" line="179"/>
+        <location filename="../mainwindow.py" line="218"/>
         <source>Libraries used</source>
         <translation>使用的函式庫</translation>
     </message>
     <message>
-        <location filename="../mainwindow.py" line="179"/>
+        <location filename="../mainwindow.py" line="218"/>
         <source>&lt;h3&gt;Libraries:&lt;/h3&gt;</source>
         <translation>&lt;h3&gt;函式庫：&lt;/h3&gt;</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="101"/>
+        <location filename="../mainwindow.ui" line="103"/>
         <source>&amp;View</source>
         <translation>檢視(&amp;V)</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="135"/>
+        <location filename="../mainwindow.ui" line="139"/>
         <source>&amp;Paged Mode</source>
         <translation>頁面模式(&amp;P)</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="143"/>
+        <location filename="../mainwindow.ui" line="147"/>
         <source>&amp;Continuous Mode</source>
         <translation>連續模式(&amp;C)</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.ui" line="152"/>
+        <source>&amp;Style</source>
+        <translation>樣式(&amp;S)</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.ui" line="157"/>
+        <source>&amp;Metadata</source>
+        <translation>詮釋資料(&amp;M)</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.py" line="108"/>
+        <source>Failed to extract</source>
+        <translation>解壓縮失敗</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.py" line="118"/>
+        <source>Failed to read EPUB with EbookLib</source>
+        <translation>使用 EbookLib 讀取 EPUB 失敗</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.py" line="140"/>
+        <source>Failed to read TOC</source>
+        <translation>讀取目錄失敗</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.py" line="140"/>
+        <source>Link to unrecognized item is: </source>
+        <translation>無法辨識的連結是：</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.py" line="154"/>
+        <source>{} - VertReader</source>
+        <translation>{} - VertReader</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.py" line="208"/>
+        <source>N/A</source>
+        <translation>無</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.py" line="209"/>
+        <source>Metadata</source>
+        <translation>詮釋資料</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.py" line="209"/>
+        <source>Title: {0}
+Author: {1}
+Description: {2}</source>
+        <translation>書名：{0}
+作者：{1}
+描述：{2}</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.py" line="214"/>
+        <source>Failed to read metadata</source>
+        <translation>無法讀取詮釋資料</translation>
+    </message>
+</context>
+<context>
+    <name>StyleDialog</name>
+    <message>
+        <location filename="../styledialog.ui" line="14"/>
+        <source>Style</source>
+        <translation>樣式</translation>
+    </message>
+    <message>
+        <location filename="../styledialog.ui" line="22"/>
+        <source>Zoom Factor:</source>
+        <translation>縮放係數：</translation>
+    </message>
+    <message>
+        <location filename="../styledialog.ui" line="62"/>
+        <source>Text color:</source>
+        <translation>文字顏色：</translation>
+    </message>
+    <message>
+        <location filename="../styledialog.ui" line="96"/>
+        <source>Background color:</source>
+        <translation>背景顏色：</translation>
+    </message>
+    <message>
+        <location filename="../styledialog.ui" line="128"/>
+        <source>Vertical writing</source>
+        <translation>縱書</translation>
+    </message>
+    <message>
+        <location filename="../styledialog.ui" line="138"/>
+        <source>Horizontal writing</source>
+        <translation>橫書</translation>
     </message>
 </context>
 </TS>
