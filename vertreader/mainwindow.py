@@ -318,7 +318,9 @@ if(columnInit === 0){
     columnInit = 1
 }
 var column = columnInit;
-for(column = columnInit; column < columnInit * 2; column++){
+//column <= columnInit * 2 is used to prevent infinite loop.
+//I am not sure if this value is appropriate.
+for(column = columnInit; column <= columnInit * 2; column++){
     document.body.style.columnCount = column;
     document.body.style.height = column + "00vh";
     if(document.body.scrollWidth <= document.documentElement.clientWidth){
@@ -353,7 +355,9 @@ if(columnInit === 0){
     columnInit = 1
 }
 var column = columnInit;
-for(column = columnInit; column < columnInit * 2; column++){
+//column <= columnInit * 2 is used to prevent infinite loop.
+//I am not sure if this value is appropriate.
+for(column = columnInit; column <= columnInit * 2; column++){
     document.body.style.columnCount = column;
     document.body.style.width = column + "00%";
     if(document.body.scrollHeight <= document.documentElement.clientHeight){
