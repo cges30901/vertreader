@@ -308,12 +308,12 @@ for(var i = 0; i < el.length; i++){
 
     //prevent pagination failure when wide images exist
     el[i].style.maxHeight = "100%";
-    el[i].style.maxWidth = document.documentElement.clientWidth + "px";
+    el[i].style.maxWidth = window.innerWidth + "px";
     el[i].style.margin = 0;
 }
 
 //paginate with CSS Multiple Columns
-var columnInit = Math.floor(document.body.scrollWidth / document.documentElement.clientWidth);
+var columnInit = Math.floor(document.body.scrollWidth / window.innerWidth);
 if(columnInit === 0){
     columnInit = 1
 }
@@ -323,7 +323,7 @@ var column = columnInit;
 for(column = columnInit; column <= columnInit * 2; column++){
     document.body.style.columnCount = column;
     document.body.style.height = column + "00vh";
-    if(document.body.scrollWidth <= document.documentElement.clientWidth){
+    if(document.body.scrollWidth <= window.innerWidth){
         break;
     }
 }
@@ -345,12 +345,12 @@ for(var i = 0; i < el.length; i++){
 
     //prevent pagination failure when wide images exist
     el[i].style.maxWidth = "100%";
-    el[i].style.maxHeight = document.documentElement.clientHeight + "px";
+    el[i].style.maxHeight = window.innerHeight + "px";
     el[i].style.margin = 0;
 }
 
 //paginate with CSS Multiple Columns
-var columnInit = Math.floor(document.body.scrollHeight / document.documentElement.clientHeight);
+var columnInit = Math.floor(document.body.scrollHeight / window.innerHeight);
 if(columnInit === 0){
     columnInit = 1
 }
@@ -360,7 +360,7 @@ var column = columnInit;
 for(column = columnInit; column <= columnInit * 2; column++){
     document.body.style.columnCount = column;
     document.body.style.width = column + "00%";
-    if(document.body.scrollHeight <= document.documentElement.clientHeight){
+    if(document.body.scrollHeight <= window.innerHeight){
         break;
     }
 }
