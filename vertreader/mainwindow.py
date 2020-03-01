@@ -296,8 +296,9 @@ Description: {2}''').format(title, author, description))
                 self.view.page().runJavaScript('''
 //Set margin of body to prevent beginning of document not displaying.
 //This needs more investigation.
-document.body.style.marginLeft='8px'
-document.body.style.marginRight='8px'
+var bodyMargin = 8
+document.body.style.marginLeft = bodyMargin + 'px'
+document.body.style.marginRight = bodyMargin + 'px'
 
 var el = document.querySelectorAll('img');
 for(var i = 0; i < el.length; i++){
@@ -308,12 +309,12 @@ for(var i = 0; i < el.length; i++){
 
     //prevent pagination failure when wide images exist
     el[i].style.maxHeight = "100%";
-    el[i].style.maxWidth = window.innerWidth + "px";
+    el[i].style.maxWidth = window.innerWidth - bodyMargin * 2 + "px";
     el[i].style.margin = 0;
 }
 
 //paginate with CSS Multiple Columns
-var columnInit = Math.floor(document.body.scrollWidth / window.innerWidth);
+var columnInit = Math.floor(document.documentElement.scrollWidth / window.innerWidth);
 if(columnInit === 0){
     columnInit = 1
 }
@@ -323,7 +324,7 @@ var column = columnInit;
 for(column = columnInit; column <= columnInit * 2; column++){
     document.body.style.columnCount = column;
     document.body.style.height = column + "00vh";
-    if(document.body.scrollWidth <= window.innerWidth){
+    if(document.documentElement.scrollWidth <= window.innerWidth){
         break;
     }
 }
@@ -336,6 +337,10 @@ column
 ''', paginateFinished)
             else:
                 self.view.page().runJavaScript('''
+var bodyMargin = 8
+document.body.style.marginTop = bodyMargin + 'px'
+document.body.style.marginBottom = bodyMargin + 'px'
+
 var el = document.querySelectorAll('img');
 for(var i = 0; i < el.length; i++){
     //wrap image in div so two consecutive images can be separated
@@ -345,12 +350,12 @@ for(var i = 0; i < el.length; i++){
 
     //prevent pagination failure when wide images exist
     el[i].style.maxWidth = "100%";
-    el[i].style.maxHeight = window.innerHeight + "px";
+    el[i].style.maxHeight = window.innerHeight - bodyMargin * 2 + "px";
     el[i].style.margin = 0;
 }
 
 //paginate with CSS Multiple Columns
-var columnInit = Math.floor(document.body.scrollHeight / window.innerHeight);
+var columnInit = Math.floor(document.documentElement.scrollHeight / window.innerHeight);
 if(columnInit === 0){
     columnInit = 1
 }
@@ -360,7 +365,7 @@ var column = columnInit;
 for(column = columnInit; column <= columnInit * 2; column++){
     document.body.style.columnCount = column;
     document.body.style.width = column + "00%";
-    if(document.body.scrollHeight <= window.innerHeight){
+    if(document.documentElement.scrollHeight <= window.innerHeight){
         break;
     }
 }
