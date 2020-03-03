@@ -16,13 +16,14 @@ setup(
     description='EPUB reader supporting vertical text',
     long_description=long_description,
     long_description_content_type='text/markdown',
+    url='https://github.com/cges30901/vertreader',
     author='Hsiu-Ming Chang',
     author_email='cges30901@gmail.com',
     license='GPLv3+',
     classifiers=[
-        'Development Status :: 5 - Production/Stable',
+        'Development Status :: 3 - Alpha',
         'Intended Audience :: End Users/Desktop',
-        'Topic :: Office/Business',
+        'Topic :: Utilities',
         'License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)',
         'Programming Language :: Python :: 3',
         'Operating System :: OS Independent',
@@ -36,6 +37,6 @@ setup(
     python_requires='>=3',
     scripts=['scripts/vertreader'],
     package_data={
-        'vertreader': ['ebooklib/ebooklib/*.py', 'ebooklib/LICENSE.txt', 'vertreader.svg', 'language/*.ts', 'language/*.qm'],
+        'vertreader': ['ebooklib/ebooklib/*.py', 'ebooklib/LICENSE.txt', 'vertreader.svg', 'language/*'],
     },
 )
