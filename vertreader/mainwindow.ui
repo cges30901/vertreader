@@ -113,6 +113,15 @@
    <addaction name="menu_Help"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
+  <widget class="QToolBar" name="searchBar">
+   <attribute name="toolBarArea">
+    <enum>TopToolBarArea</enum>
+   </attribute>
+   <attribute name="toolBarBreak">
+    <bool>false</bool>
+   </attribute>
+   <addaction name="actionSearch"/>
+  </widget>
   <action name="action_Open">
    <property name="text">
     <string>&amp;Open</string>
@@ -155,6 +164,11 @@
   <action name="action_Metadata">
    <property name="text">
     <string>&amp;Metadata</string>
+   </property>
+  </action>
+  <action name="actionSearch">
+   <property name="text">
+    <string>&amp;Search</string>
    </property>
   </action>
  </widget>

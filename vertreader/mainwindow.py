@@ -3,9 +3,10 @@ from vertreader.ebooklib.ebooklib import epub
 import tempfile
 import zipfile
 import os
-from PyQt5.QtWidgets import QMainWindow, QFileDialog, QAction, QMessageBox, QApplication, QActionGroup, QDialog
+from PyQt5.QtWidgets import QMainWindow, QFileDialog, QAction, QMessageBox, QApplication, QActionGroup, QDialog, QLineEdit
 from PyQt5.QtCore import QUrl, QEvent, pyqtSlot, Qt, QSettings
 from PyQt5.QtGui import QIcon
+from PyQt5.QtWebEngineWidgets import QWebEnginePage
 from vertreader.ui_mainwindow import Ui_MainWindow
 from vertreader.styledialog import StyleDialog
 
@@ -19,6 +20,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         group = QActionGroup(self)
         group.addAction(self.actionPaged)
         group.addAction(self.actionScroll)
+        self.lneSearch = QLineEdit()
+        self.searchBar.insertWidget(self.actionSearch, self.lneSearch)
+
         self.filename = args.file
         self.tempdir = ''
         self.book = None
@@ -27,6 +31,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.pageIndex = 0
         self.toc = []
         self.need_scroll = False
+        self.isSearching = False
+        self.activeMatch_old = 0
+        self.searchText_old = ""
 
         self.color = "black"
         self.bgColor = "white"
@@ -35,6 +42,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         self.view.focusProxy().installEventFilter(self)
         QApplication.instance().aboutToQuit.connect(self.writeSettings)
+        self.lneSearch.returnPressed.connect(self.searchStart)
+        self.actionSearch.triggered.connect(self.searchStart)
+        self.view.page().findTextFinished.connect(self.findTextFinished)
+
         if self.filename:
             self.open(self.filename)
 
@@ -385,6 +396,9 @@ column
                 .format(settings.value("posX", 0), float(settings.value("posY", 0)) / self.view.zoomFactor()))
             settings.endGroup()
 
+        if self.isSearching:
+            self.search()
+
     def setButtons(self):
         if self.docIndex == 0:
             self.btnPrev.setEnabled(False)
@@ -457,3 +471,34 @@ column
         else:
             self.view.page().runJavaScript("window.scrollTo({0}, {1});"
                 .format(pageWidth * self.pageIndex, self.view.page().scrollPosition().y()))
+
+    @pyqtSlot()
+    def searchStart(self):
+        self.isSearching = True
+        self.docIndex_old = self.docIndex
+        self.search()
+
+    @pyqtSlot()
+    def search(self):
+        def callback(found):
+            pass
+        self.view.page().findText(self.lneSearch.text(), QWebEnginePage.FindFlags(), callback)
+
+    def findTextFinished(self, result):
+        if result.numberOfMatches() == 0 or (self.activeMatch_old == result.numberOfMatches()
+           and result.activeMatch() == 1 and self.searchText_old == self.lneSearch.text()):
+
+            if (self.docIndex == self.docIndex_old - 1 or
+               self.docIndex_old == 0 and self.docIndex == len(self.doc) - 1):
+                self.isSearching = False
+                return
+            if self.docIndex == len(self.doc) - 1:
+                self.docIndex = 0
+            else:
+                self.docIndex += 1
+            self.activeMatch_old = 0
+            self.view.load(QUrl.fromLocalFile(self.doc[self.docIndex]))
+        else:
+            self.activeMatch_old = result.activeMatch()
+            self.searchText_old = self.lneSearch.text()
+            self.isSearching = False
