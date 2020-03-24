@@ -15,6 +15,10 @@ for(var i = 0; i < el.length; i++){
     el[i].style.maxWidth = "100%";
     el[i].style.maxHeight = window.innerHeight - bodyMargin * 2 + "px";
     el[i].style.margin = 0;
+    //This is used to avoid area under baseline.
+    //See https://stackoverflow.com/a/60823927/3926429.
+    //display:block also works, but images are no longer inline.
+    el[i].style.verticalAlign = "middle";
 }
 
 //paginate with CSS Multiple Columns
