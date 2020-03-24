@@ -36,6 +36,11 @@ for(column = columnInit; column <= columnInit * 2; column++){
 //hide scroll bar
 document.body.style.overflow = 'hidden';
 
+if(column > columnInit * 2){
+    //pagination failed
+    column--
+}
+
 //send result to paginateFinished()
 column
 
