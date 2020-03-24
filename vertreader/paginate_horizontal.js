@@ -6,11 +6,6 @@ document.body.style.marginBottom = bodyMargin + 'px'
 
 var el = document.querySelectorAll('img');
 for(var i = 0; i < el.length; i++){
-    //wrap image in div so two consecutive images can be separated
-    var wrapper = document.createElement('div');
-    el[i].parentNode.insertBefore(wrapper, el[i]);
-    wrapper.appendChild(el[i]);
-
     //prevent pagination failure when wide images exist
     el[i].style.maxWidth = "100%";
     el[i].style.maxHeight = window.innerHeight - bodyMargin * 2 + "px";
@@ -19,6 +14,10 @@ for(var i = 0; i < el.length; i++){
     //See https://stackoverflow.com/a/60823927/3926429.
     //display:block also works, but images are no longer inline.
     el[i].style.verticalAlign = "middle";
+
+    //Set image display to block so two consecutive images can be separated.
+    //I should find a better method to keep images inline.
+    el[i].style.display = "block";
 }
 
 //paginate with CSS Multiple Columns
