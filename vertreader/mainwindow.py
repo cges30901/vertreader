@@ -9,6 +9,7 @@ from PyQt5.QtGui import QIcon
 from PyQt5.QtWebEngineWidgets import QWebEnginePage
 from vertreader.ui_mainwindow import Ui_MainWindow
 from vertreader.styledialog import StyleDialog
+from vertreader.searchdialog import SearchDialog
 
 
 class MainWindow(QMainWindow, Ui_MainWindow):
@@ -20,8 +21,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         group = QActionGroup(self)
         group.addAction(self.actionPaged)
         group.addAction(self.actionScroll)
-        self.lneSearch = QLineEdit()
-        self.searchBar.insertWidget(self.actionSearch, self.lneSearch)
 
         self.filename = args.file
         self.tempdir = ''
@@ -42,8 +41,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         self.view.focusProxy().installEventFilter(self)
         QApplication.instance().aboutToQuit.connect(self.writeSettings)
-        self.lneSearch.returnPressed.connect(self.searchStart)
-        self.actionSearch.triggered.connect(self.searchStart)
         self.view.page().findTextFinished.connect(self.findTextFinished)
 
         if self.filename:
@@ -398,6 +395,13 @@ Description: {2}''').format(title, author, description))
                 .format(pageWidth * self.pageIndex, self.view.page().scrollPosition().y()))
 
     @pyqtSlot()
+    def on_action_Search_triggered(self):
+        self.dlgSearch=SearchDialog(self)
+        self.dlgSearch.lneSearch.returnPressed.connect(self.searchStart)
+        self.dlgSearch.btnSearch.clicked.connect(self.searchStart)
+        self.dlgSearch.show()
+
+    @pyqtSlot()
     def searchStart(self):
         self.isSearching = True
         self.docIndex_old = self.docIndex
@@ -407,11 +411,11 @@ Description: {2}''').format(title, author, description))
     def search(self):
         def callback(found):
             pass
-        self.view.page().findText(self.lneSearch.text(), QWebEnginePage.FindFlags(), callback)
+        self.view.page().findText(self.dlgSearch.lneSearch.text(), QWebEnginePage.FindFlags(), callback)
 
     def findTextFinished(self, result):
         if result.numberOfMatches() == 0 or (self.activeMatch_old == result.numberOfMatches()
-           and result.activeMatch() == 1 and self.searchText_old == self.lneSearch.text()):
+           and result.activeMatch() == 1 and self.searchText_old == self.dlgSearch.lneSearch.text()):
 
             if (self.docIndex == self.docIndex_old - 1 or
                self.docIndex_old == 0 and self.docIndex == len(self.doc) - 1):
@@ -425,5 +429,5 @@ Description: {2}''').format(title, author, description))
             self.view.load(QUrl.fromLocalFile(self.doc[self.docIndex]))
         else:
             self.activeMatch_old = result.activeMatch()
-            self.searchText_old = self.lneSearch.text()
+            self.searchText_old = self.dlgSearch.lneSearch.text()
             self.isSearching = False
