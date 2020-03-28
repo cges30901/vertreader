@@ -347,7 +347,7 @@ Description: {2}''').format(title, author, description))
         dlgStyle.bgColor = self.bgColor
         dlgStyle.btnBgColor.setStyleSheet("border: none; background-color: " + self.bgColor)
         dlgStyle.btnVertical.setChecked(self.isVertical)
-        dlgStyle.btnVertical.setChecked(not self.isVertical)
+        dlgStyle.btnHorizontal.setChecked(not self.isVertical)
         if dlgStyle.exec_()==QDialog.Accepted:
             self.view.setZoomFactor(dlgStyle.spbZoom.value())
             self.color = dlgStyle.color
