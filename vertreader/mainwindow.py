@@ -279,6 +279,8 @@ Description: {2}''').format(title, author, description))
         self.isVertical = settings.value("isVertical", self.isVertical, type = bool)
         self.docIndex = int(settings.value("docIndex", 0))
         self.pageIndex = int(settings.value("pageIndex", 0))
+        self.posX = int(settings.value("posX", 0))
+        self.posY = int(settings.value("posY", 0))
         settings.endGroup()
 
     @pyqtSlot(bool)
@@ -312,11 +314,8 @@ Description: {2}''').format(title, author, description))
 
         if self.need_scroll is True:
             self.need_scroll = False
-            settings = QSettings(QSettings.IniFormat, QSettings.UserScope, "cges30901", "VertReader")
-            settings.beginGroup(self.filename.replace('/', '>').replace('\\', '>'))
             self.view.page().runJavaScript("window.scrollTo({0}, {1});"
-                .format(settings.value("posX", 0), float(settings.value("posY", 0)) / self.view.zoomFactor()))
-            settings.endGroup()
+                .format(self.posX, float(self.posY) / self.view.zoomFactor()))
 
         if self.isSearching:
             self.search()
