@@ -302,7 +302,6 @@ Description: {2}''').format(title, author, description))
                         self.view.page().runJavaScript("window.scrollTo(document.body.scrollWidth,0);")
                     self.pageIndex = self.pageCount - 1
 
-
             if self.isVertical:
                 with open(os.path.dirname(os.path.abspath(__file__))+'/paginate_vertical.js', 'r') as jsfile:
                     js = jsfile.read()
@@ -396,7 +395,6 @@ Description: {2}''').format(title, author, description))
     @pyqtSlot()
     def on_action_Search_triggered(self):
         self.dlgSearch=SearchDialog(self)
-        self.dlgSearch.lneSearch.returnPressed.connect(self.searchStart)
         self.dlgSearch.btnSearch.clicked.connect(self.searchStart)
         self.dlgSearch.show()
 
@@ -404,6 +402,8 @@ Description: {2}''').format(title, author, description))
     def searchStart(self):
         self.isSearching = True
         self.docIndex_old = self.docIndex
+        self.posX = self.view.page().scrollPosition().x() - self.view.page().contentsSize().width() + self.view.width()
+        self.posY = self.view.page().scrollPosition().y()
         self.search()
 
     @pyqtSlot()
@@ -419,6 +419,9 @@ Description: {2}''').format(title, author, description))
             if (self.docIndex == self.docIndex_old - 1 or
                self.docIndex_old == 0 and self.docIndex == len(self.doc) - 1):
                 self.isSearching = False
+                self.docIndex = self.docIndex_old
+                self.need_scroll = True
+                self.view.load(QUrl.fromLocalFile(self.doc[self.docIndex]))
                 return
             if self.docIndex == len(self.doc) - 1:
                 self.docIndex = 0
