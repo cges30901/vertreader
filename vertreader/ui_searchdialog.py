@@ -28,5 +28,5 @@ class Ui_SearchDialog(object):
 
     def retranslateUi(self, SearchDialog):
         _translate = QtCore.QCoreApplication.translate
-        SearchDialog.setWindowTitle(_translate("SearchDialog", "Dialog"))
+        SearchDialog.setWindowTitle(_translate("SearchDialog", "Search"))
         self.btnSearch.setText(_translate("SearchDialog", "Search"))
