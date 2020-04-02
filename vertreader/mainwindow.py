@@ -404,6 +404,11 @@ Description: {2}''').format(title, author, description))
         self.docIndex_old = self.docIndex
         self.posX = self.view.page().scrollPosition().x() - self.view.page().contentsSize().width() + self.view.width()
         self.posY = self.view.page().scrollPosition().y()
+
+        # Show scroll bar so that scrolling works when searching
+        if self.actionPaged.isChecked():
+            self.view.page().runJavaScript("document.body.style.overflow = 'auto';")
+
         self.search()
 
     @pyqtSlot()
@@ -433,3 +438,7 @@ Description: {2}''').format(title, author, description))
             self.activeMatch_old = result.activeMatch()
             self.searchText_old = self.dlgSearch.lneSearch.text()
             self.isSearching = False
+
+            # Hide scroll bar after search
+            if self.actionPaged.isChecked():
+                self.view.page().runJavaScript("document.body.style.overflow = 'hidden';")
