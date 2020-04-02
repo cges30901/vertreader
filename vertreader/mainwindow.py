@@ -55,20 +55,16 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             if self.actionPaged.isChecked():
                 if e.type() == QEvent.Wheel:
                     if e.angleDelta().y() > 0:
-                        self.pageIndex -= 1
-                        self.gotoPage()
+                        self.gotoPage(-1)
                     elif e.angleDelta().y() < 0:
-                        self.pageIndex += 1
-                        self.gotoPage()
+                        self.gotoPage(1)
                     return True
                 elif e.type() == QEvent.KeyPress:
                     if e.key() == Qt.Key_PageDown or e.key() == Qt.Key_Down:
-                        self.pageIndex += 1
-                        self.gotoPage()
+                        self.gotoPage(1)
                         return True
                     elif e.key() == Qt.Key_PageUp or e.key() == Qt.Key_Up:
-                        self.pageIndex -= 1
-                        self.gotoPage()
+                        self.gotoPage(-1)
                         return True
             elif self.actionScroll.isChecked() and self.isVertical:
                 # The coordinate of javascript and Qt WebEngine is different.
@@ -355,7 +351,7 @@ Description: {2}''').format(title, author, description))
             self.view.reload()
             self.pageIndex = 0
 
-    def gotoPage(self):
+    def gotoPage(self, diff = 0):
         if self.isVertical:
             # prevent crash if javascript failed to get pageCount
             if not self.pageCount:
@@ -365,6 +361,12 @@ Description: {2}''').format(title, author, description))
             if not self.pageCount:
                 self.pageCount = round(self.view.page().contentsSize().width() / self.view.width())
             pageWidth = self.view.page().contentsSize().width() / self.pageCount / self.view.zoomFactor()
+
+        # Change page number
+        if diff < 0:
+            self.pageIndex -= 1
+        elif diff > 0:
+            self.pageIndex += 1
 
         if self.pageIndex < 0:
             if self.docIndex > 0:
