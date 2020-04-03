@@ -356,11 +356,13 @@ Description: {2}''').format(title, author, description))
             # prevent crash if javascript failed to get pageCount
             if not self.pageCount:
                 self.pageCount = round(self.view.page().contentsSize().height() / self.view.height())
-            pageHeight = self.view.page().contentsSize().height() / self.pageCount / self.view.zoomFactor()
+            pageHeight = self.view.page().contentsSize().height() / self.pageCount
+            self.pageIndex = round(self.view.page().scrollPosition().y() / pageHeight)
         else:
             if not self.pageCount:
                 self.pageCount = round(self.view.page().contentsSize().width() / self.view.width())
-            pageWidth = self.view.page().contentsSize().width() / self.pageCount / self.view.zoomFactor()
+            pageWidth = self.view.page().contentsSize().width() / self.pageCount
+            self.pageIndex = round(self.view.page().scrollPosition().x() / pageWidth)
 
         # Change page number
         if diff < 0:
@@ -389,10 +391,10 @@ Description: {2}''').format(title, author, description))
 
         if self.isVertical:
             self.view.page().runJavaScript("window.scrollTo({0}, {1});"
-                .format(self.view.page().scrollPosition().x(), pageHeight * self.pageIndex))
+                .format(self.view.page().scrollPosition().x(), pageHeight / self.view.zoomFactor() * self.pageIndex))
         else:
             self.view.page().runJavaScript("window.scrollTo({0}, {1});"
-                .format(pageWidth * self.pageIndex, self.view.page().scrollPosition().y()))
+                .format(pageWidth / self.view.zoomFactor() * self.pageIndex, self.view.page().scrollPosition().y()))
 
     @pyqtSlot()
     def on_action_Search_triggered(self):
