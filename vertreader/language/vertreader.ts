@@ -18,17 +18,17 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="91"/>
+        <location filename="../mainwindow.ui" line="92"/>
         <source>&amp;TOC</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="118"/>
+        <location filename="../mainwindow.ui" line="119"/>
         <source>&amp;Open</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.py" line="92"/>
+        <location filename="../mainwindow.py" line="96"/>
         <source>EPUB documents (*.epub)</source>
         <translation type="unfinished"></translation>
     </message>
@@ -43,22 +43,22 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="96"/>
+        <location filename="../mainwindow.ui" line="97"/>
         <source>&amp;Help</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="123"/>
+        <location filename="../mainwindow.ui" line="124"/>
         <source>&amp;About</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.py" line="188"/>
+        <location filename="../mainwindow.py" line="192"/>
         <source>About</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.py" line="188"/>
+        <location filename="../mainwindow.py" line="192"/>
         <source>&lt;h3&gt;VertReader {0}&lt;/h3&gt;
 &lt;p&gt;Author: Hsiu-Ming Chang&lt;/p&gt;
 &lt;p&gt;e-mail: cges30901@gmail.com&lt;/p&gt;
@@ -66,85 +66,90 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.py" line="218"/>
+        <location filename="../mainwindow.py" line="222"/>
         <source>Libraries used</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.py" line="218"/>
+        <location filename="../mainwindow.py" line="222"/>
         <source>&lt;h3&gt;Libraries:&lt;/h3&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="103"/>
+        <location filename="../mainwindow.ui" line="104"/>
         <source>&amp;View</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="139"/>
+        <location filename="../mainwindow.ui" line="140"/>
         <source>&amp;Paged Mode</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="147"/>
+        <location filename="../mainwindow.ui" line="148"/>
         <source>&amp;Continuous Mode</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="152"/>
+        <location filename="../mainwindow.ui" line="153"/>
         <source>&amp;Style</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="157"/>
+        <location filename="../mainwindow.ui" line="158"/>
         <source>&amp;Metadata</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.py" line="108"/>
+        <location filename="../mainwindow.py" line="112"/>
         <source>Failed to extract</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.py" line="118"/>
+        <location filename="../mainwindow.py" line="122"/>
         <source>Failed to read EPUB with EbookLib</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.py" line="140"/>
+        <location filename="../mainwindow.py" line="144"/>
         <source>Failed to read TOC</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.py" line="140"/>
-        <source>Link to unrecognized item is: </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../mainwindow.py" line="154"/>
+        <location filename="../mainwindow.py" line="158"/>
         <source>{} - VertReader</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.py" line="208"/>
+        <location filename="../mainwindow.py" line="212"/>
         <source>N/A</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.py" line="209"/>
+        <location filename="../mainwindow.py" line="213"/>
         <source>Metadata</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.py" line="209"/>
+        <location filename="../mainwindow.py" line="213"/>
         <source>Title: {0}
 Author: {1}
 Description: {2}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.py" line="214"/>
+        <location filename="../mainwindow.py" line="218"/>
         <source>Failed to read metadata</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.ui" line="168"/>
+        <source>&amp;Search</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.py" line="144"/>
+        <source>Failed to read TOC: link to unrecognized item is &quot;{}&quot;</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

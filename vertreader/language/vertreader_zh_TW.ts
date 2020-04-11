@@ -19,17 +19,17 @@
         <translation>檔案(&amp;F)</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="91"/>
+        <location filename="../mainwindow.ui" line="92"/>
         <source>&amp;TOC</source>
         <translation>目錄(&amp;T)</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="118"/>
+        <location filename="../mainwindow.ui" line="119"/>
         <source>&amp;Open</source>
         <translation>開啟(&amp;O)</translation>
     </message>
     <message>
-        <location filename="../mainwindow.py" line="92"/>
+        <location filename="../mainwindow.py" line="96"/>
         <source>EPUB documents (*.epub)</source>
         <translation>EPUB 文件 (*.epub)</translation>
     </message>
@@ -44,22 +44,22 @@
         <translation>VertReader</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="96"/>
+        <location filename="../mainwindow.ui" line="97"/>
         <source>&amp;Help</source>
         <translation>說明(&amp;H)</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="123"/>
+        <location filename="../mainwindow.ui" line="124"/>
         <source>&amp;About</source>
         <translation>關於(&amp;A)</translation>
     </message>
     <message>
-        <location filename="../mainwindow.py" line="188"/>
+        <location filename="../mainwindow.py" line="192"/>
         <source>About</source>
         <translation>關於</translation>
     </message>
     <message>
-        <location filename="../mainwindow.py" line="188"/>
+        <location filename="../mainwindow.py" line="192"/>
         <source>&lt;h3&gt;VertReader {0}&lt;/h3&gt;
 &lt;p&gt;Author: Hsiu-Ming Chang&lt;/p&gt;
 &lt;p&gt;e-mail: cges30901@gmail.com&lt;/p&gt;
@@ -70,77 +70,77 @@
 &lt;p&gt;授權：GPL v3&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../mainwindow.py" line="218"/>
+        <location filename="../mainwindow.py" line="222"/>
         <source>Libraries used</source>
         <translation>使用的函式庫</translation>
     </message>
     <message>
-        <location filename="../mainwindow.py" line="218"/>
+        <location filename="../mainwindow.py" line="222"/>
         <source>&lt;h3&gt;Libraries:&lt;/h3&gt;</source>
         <translation>&lt;h3&gt;函式庫：&lt;/h3&gt;</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="103"/>
+        <location filename="../mainwindow.ui" line="104"/>
         <source>&amp;View</source>
         <translation>檢視(&amp;V)</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="139"/>
+        <location filename="../mainwindow.ui" line="140"/>
         <source>&amp;Paged Mode</source>
         <translation>頁面模式(&amp;P)</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="147"/>
+        <location filename="../mainwindow.ui" line="148"/>
         <source>&amp;Continuous Mode</source>
         <translation>連續模式(&amp;C)</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="152"/>
+        <location filename="../mainwindow.ui" line="153"/>
         <source>&amp;Style</source>
         <translation>樣式(&amp;S)</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="157"/>
+        <location filename="../mainwindow.ui" line="158"/>
         <source>&amp;Metadata</source>
         <translation>詮釋資料(&amp;M)</translation>
     </message>
     <message>
-        <location filename="../mainwindow.py" line="108"/>
+        <location filename="../mainwindow.py" line="112"/>
         <source>Failed to extract</source>
         <translation>解壓縮失敗</translation>
     </message>
     <message>
-        <location filename="../mainwindow.py" line="118"/>
+        <location filename="../mainwindow.py" line="122"/>
         <source>Failed to read EPUB with EbookLib</source>
         <translation>使用 EbookLib 讀取 EPUB 失敗</translation>
     </message>
     <message>
-        <location filename="../mainwindow.py" line="140"/>
+        <location filename="../mainwindow.py" line="144"/>
         <source>Failed to read TOC</source>
         <translation>讀取目錄失敗</translation>
     </message>
     <message>
-        <location filename="../mainwindow.py" line="140"/>
+        <location filename="../mainwindow.py" line="144"/>
         <source>Link to unrecognized item is: </source>
-        <translation>無法辨識的連結是：</translation>
+        <translation type="obsolete">無法辨識的連結是：</translation>
     </message>
     <message>
-        <location filename="../mainwindow.py" line="154"/>
+        <location filename="../mainwindow.py" line="158"/>
         <source>{} - VertReader</source>
         <translation>{} - VertReader</translation>
     </message>
     <message>
-        <location filename="../mainwindow.py" line="208"/>
+        <location filename="../mainwindow.py" line="212"/>
         <source>N/A</source>
         <translation>無</translation>
     </message>
     <message>
-        <location filename="../mainwindow.py" line="209"/>
+        <location filename="../mainwindow.py" line="213"/>
         <source>Metadata</source>
         <translation>詮釋資料</translation>
     </message>
     <message>
-        <location filename="../mainwindow.py" line="209"/>
+        <location filename="../mainwindow.py" line="213"/>
         <source>Title: {0}
 Author: {1}
 Description: {2}</source>
@@ -149,9 +149,19 @@ Description: {2}</source>
 描述：{2}</translation>
     </message>
     <message>
-        <location filename="../mainwindow.py" line="214"/>
+        <location filename="../mainwindow.py" line="218"/>
         <source>Failed to read metadata</source>
         <translation>無法讀取詮釋資料</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.ui" line="168"/>
+        <source>&amp;Search</source>
+        <translation>搜尋(&amp;S)</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.py" line="144"/>
+        <source>Failed to read TOC: link to unrecognized item is &quot;{}&quot;</source>
+        <translation>讀取目錄失敗：無法辨識的連結是 「{}」</translation>
     </message>
 </context>
 <context>
