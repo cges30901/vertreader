@@ -137,6 +137,11 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                     fullname = os.path.join(self.tempdir, reader.opf_dir, a.href)
                     for i in range(len(self.doc)):
                         if fullname.split('#')[0] == self.doc[i]:
+                            # If content of <a> element is empty, epub is broken.
+                            # To avoid concatenating None to str while creating
+                            # self.actionTOC, make a.title empty string.
+                            if(a.title is None):
+                                a.title = ''
                             toc.append([a.title, fullname, level, i])
                             break
                         # Show warning if document for this TOC item is not found
@@ -145,9 +150,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                                 self.tr('Failed to read TOC: link to unrecognized item is "{}"').format(a.href))
             return toc
         self.toc = get_toc(self.book.toc, 0)
-        self.actionTOC = [QAction('>' * self.toc[x][2] + self.toc[x][0]) for x in range(len(self.toc))]
-        for x in self.actionTOC:
-            x.triggered.connect(self.toc_triggered)
+        self.actionTOC = []
+        for x in range(len(self.toc)):
+            self.actionTOC.append(QAction('>' * self.toc[x][2] + self.toc[x][0]))
+            self.actionTOC[x].triggered.connect(self.toc_triggered)
         self.menuTOC.addActions(self.actionTOC)
 
         self.readSettings()
