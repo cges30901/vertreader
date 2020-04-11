@@ -156,7 +156,7 @@ Description: {2}</source>
     <message>
         <location filename="../mainwindow.py" line="144"/>
         <source>Failed to read TOC: link to unrecognized item is &quot;{}&quot;</source>
-        <translation>讀取目錄失敗：無法辨識的連結是 「{}」</translation>
+        <translation>讀取目錄失敗：無法辨識的連結是「{}」</translation>
     </message>
 </context>
 <context>
