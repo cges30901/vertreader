@@ -142,7 +142,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                         # Show warning if document for this TOC item is not found
                         if i == len(self.doc) - 1:
                             QMessageBox.warning(self, self.tr("Failed to read TOC"),
-                                self.tr("Link to unrecognized item is: ") + a.href)
+                                self.tr('Failed to read TOC: link to unrecognized item is "{}"').format(a.href))
             return toc
         self.toc = get_toc(self.book.toc, 0)
         self.actionTOC = [QAction('>' * self.toc[x][2] + self.toc[x][0]) for x in range(len(self.toc))]
