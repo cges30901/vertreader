@@ -120,11 +120,6 @@
         <translation>讀取目錄失敗</translation>
     </message>
     <message>
-        <location filename="../mainwindow.py" line="144"/>
-        <source>Link to unrecognized item is: </source>
-        <translation type="obsolete">無法辨識的連結是：</translation>
-    </message>
-    <message>
         <location filename="../mainwindow.py" line="158"/>
         <source>{} - VertReader</source>
         <translation>{} - VertReader</translation>
