@@ -118,6 +118,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             reader = epub.EpubReader(filename)
             self.book = reader.load()
             reader.process()
+            self.book.nav_item = next((item for item in self.book.items if isinstance(item, epub.EpubNav)), None)
         except Exception as e:
             QMessageBox.warning(self, self.tr("Failed to read EPUB with EbookLib"), str(e))
             return
@@ -134,6 +135,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 elif isinstance(a, list):
                     toc.extend(get_toc(a, level + 1))
                 else:
+                    if os.path.basename(a.href)[0] == '#':
+                        # This is internal link of Navigation Document.
+                        # I put filename in href to make it accessible in TOC menu.
+                        a.href = self.book.nav_item.file_name + os.path.basename(a.href)
                     fullname = os.path.join(self.tempdir, reader.opf_dir, a.href)
                     for i in range(len(self.doc)):
                         if fullname.split('#')[0] == self.doc[i]:
