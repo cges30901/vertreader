@@ -292,6 +292,12 @@ Description: {2}''').format(title, author, description))
 
     @pyqtSlot(bool)
     def on_view_loadFinished(self):
+        # Detect current docIndex after loading
+        for index, item in enumerate(self.doc):
+            if self.view.url().toLocalFile() == item:
+                self.docIndex = index
+                self.setButtons()
+
         self.view.page().runJavaScript('document.body.style.color="{}"'.format(self.color))
         self.view.page().runJavaScript('document.body.style.backgroundColor="{}"'.format(self.bgColor))
         if self.isVertical:
