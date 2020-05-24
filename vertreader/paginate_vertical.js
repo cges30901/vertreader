@@ -4,6 +4,11 @@ var bodyMargin = 8
 document.body.style.marginLeft = bodyMargin + 'px'
 document.body.style.marginRight = bodyMargin + 'px'
 
+//Set columnGap to look like body margin
+marginTop = parseInt(window.getComputedStyle(document.body).marginTop);
+marginBottom = parseInt(window.getComputedStyle(document.body).marginBottom);
+document.body.style.columnGap = marginTop + marginBottom + 'px';
+
 var el = document.querySelectorAll('img');
 for(var i = 0; i < el.length; i++){
     //prevent pagination failure when wide images exist
