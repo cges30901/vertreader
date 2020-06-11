@@ -47,8 +47,10 @@ document.body.style.overflow = 'hidden';
 if(column > columnInit * 2){
     //pagination failed
     column--
+    //send result to paginateFinished()
+    [column, 1]
 }
-
-//send result to paginateFinished()
-column
-
+else{
+    //send result to paginateFinished()
+    [column, 0]
+}

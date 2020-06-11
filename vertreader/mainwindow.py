@@ -307,7 +307,11 @@ Description: {2}''').format(title, author, description))
 
         if self.actionPaged.isChecked():
             def paginateFinished(callback):
-                self.pageCount = callback
+                self.pageCount = callback[0]
+                if callback[1] == 1:
+                    #pagination failed
+                    QMessageBox.warning(self, self.tr("Pagination failed"),
+                        self.tr('Pagination failed. Please report to developer.'))
                 if self.pageIndex == -1:
                     if self.isVertical:
                         self.view.page().runJavaScript("window.scrollTo(0,document.body.scrollHeight);")
