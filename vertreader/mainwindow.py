@@ -300,6 +300,12 @@ Description: {2}''').format(title, author, description))
 
         self.view.page().runJavaScript('document.body.style.color="{}"'.format(self.color))
         self.view.page().runJavaScript('document.body.style.backgroundColor="{}"'.format(self.bgColor))
+
+        # Support popup footnote
+        with open(os.path.dirname(os.path.abspath(__file__))+'/footnote.js', 'r') as jsfile:
+            js = jsfile.read()
+        self.view.page().runJavaScript(js)
+
         if self.isVertical:
             self.view.page().runJavaScript('document.body.style.writingMode="vertical-rl"')
         else:
