@@ -123,23 +123,6 @@
     </layout>
    </item>
    <item>
-    <widget class="QRadioButton" name="btnVertical">
-     <property name="text">
-      <string>Vertical writing</string>
-     </property>
-     <property name="checked">
-      <bool>true</bool>
-     </property>
-    </widget>
-   </item>
-   <item>
-    <widget class="QRadioButton" name="btnHorizontal">
-     <property name="text">
-      <string>Horizontal writing</string>
-     </property>
-    </widget>
-   </item>
-   <item>
     <spacer name="verticalSpacer">
      <property name="orientation">
       <enum>Qt::Vertical</enum>
