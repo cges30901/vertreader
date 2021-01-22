@@ -30,6 +30,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.isSearching = False
         self.activeMatch_old = 0
         self.searchText_old = ""
+        self.isLoading = False
 
         self.color = "black"
         self.bgColor = "white"
@@ -237,6 +238,10 @@ Description: {2}''').format(title, author, description))
         self.posY = int(settings.value("posY", 0))
         settings.endGroup()
 
+    @pyqtSlot()
+    def on_view_loadStarted(self):
+        self.isLoading = True
+
     @pyqtSlot(bool)
     def on_view_loadFinished(self):
         # Detect current docIndex after loading
@@ -263,6 +268,8 @@ Description: {2}''').format(title, author, description))
             if self.pageIndex == -1:
                 self.view.page().runJavaScript("window.scrollTo(0,document.body.scrollHeight);")
                 self.pageIndex = self.pageCount - 1
+
+            self.isLoading = False
 
         with open(os.path.dirname(os.path.abspath(__file__))+'/paginate_vertical.js', 'r') as jsfile:
             js = jsfile.read()
@@ -292,9 +299,10 @@ Description: {2}''').format(title, author, description))
             self.pageIndex = 0
 
     def gotoPage(self, diff = 0):
-        # prevent crash if javascript failed to get pageCount
-        if not self.pageCount:
-            self.pageCount = round(self.view.page().contentsSize().height() / self.view.height())
+        # Do not turn page if view is still loading
+        if self.isLoading == True:
+            return
+
         pageHeight = self.view.page().contentsSize().height() / self.pageCount
         self.pageIndex = round(self.view.page().scrollPosition().y() / pageHeight)
 
