@@ -51,16 +51,16 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 self.pageIndex = 0
             elif e.type() == QEvent.Wheel:
                 if e.angleDelta().y() > 0:
-                    self.gotoPage(-1)
+                    self.gotoPreviousPage()
                 elif e.angleDelta().y() < 0:
-                    self.gotoPage(1)
+                    self.gotoNextPage()
                 return True
             elif e.type() == QEvent.KeyPress:
                 if e.key() == Qt.Key_PageDown or e.key() == Qt.Key_Down:
-                    self.gotoPage(1)
+                    self.gotoNextPage()
                     return True
                 elif e.key() == Qt.Key_PageUp or e.key() == Qt.Key_Up:
-                    self.gotoPage(-1)
+                    self.gotoPreviousPage()
                     return True
         return False
 
@@ -298,7 +298,7 @@ Description: {2}''').format(title, author, description))
             self.view.reload()
             self.pageIndex = 0
 
-    def gotoPage(self, diff = 0):
+    def gotoPreviousPage(self):
         # Do not turn page if view is still loading
         if self.isLoading == True:
             return
@@ -306,11 +306,7 @@ Description: {2}''').format(title, author, description))
         pageHeight = self.view.page().contentsSize().height() / self.pageCount
         self.pageIndex = round(self.view.page().scrollPosition().y() / pageHeight)
 
-        # Change page number
-        if diff < 0:
-            self.pageIndex -= 1
-        elif diff > 0:
-            self.pageIndex += 1
+        self.pageIndex -= 1
 
         if self.pageIndex < 0:
             if self.docIndex > 0:
@@ -319,6 +315,20 @@ Description: {2}''').format(title, author, description))
             else:
                 self.pageIndex = 0
             return
+
+        self.view.page().runJavaScript("window.scrollTo({0}, {1});"
+            .format(self.view.page().scrollPosition().x(), pageHeight / self.view.zoomFactor() * self.pageIndex))
+
+    def gotoNextPage(self):
+        # Do not turn page if view is still loading
+        if self.isLoading == True:
+            return
+
+        pageHeight = self.view.page().contentsSize().height() / self.pageCount
+        self.pageIndex = round(self.view.page().scrollPosition().y() / pageHeight)
+
+        # Change page number
+        self.pageIndex += 1
 
         if self.pageIndex > self.pageCount - 1:
             if self.docIndex < len(self.doc) - 1:
