@@ -23,8 +23,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.tempdir = ''
         self.book = None
         self.doc = []
-        self.docIndex = 0
-        self.pageIndex = 0
+        self.doc_num = 0
+        self.page_num_doc = 0
         self.toc = []
         self.need_scroll = False
         self.isSearching = False
@@ -48,7 +48,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             if e.type() == QEvent.Resize:
                 # Reload when resized to paginate again
                 self.view.reload()
-                self.pageIndex = 0
+                self.page_num_doc = 0
             elif e.type() == QEvent.Wheel:
                 if e.angleDelta().y() > 0:
                     self.gotoPreviousPage()
@@ -137,7 +137,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.readSettings()
         self.need_scroll = True
 
-        self.view.load(QUrl.fromLocalFile(self.doc[self.docIndex]))
+        self.view.load(QUrl.fromLocalFile(self.doc[self.doc_num]))
         self.setWindowTitle(self.tr("{} - VertReader").format(self.book.get_metadata('DC', 'title')[0][0]))
 
     @pyqtSlot(bool)
@@ -151,7 +151,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                     url.setFragment(self.toc[x][1].split('#', 1)[1])
                 self.view.load(url)
 
-                self.docIndex = self.toc[x][3]
+                self.doc_num = self.toc[x][3]
                 break
 
     @pyqtSlot()
@@ -203,8 +203,8 @@ Description: {2}''').format(title, author, description))
             settings.setValue("zoomFactor", self.view.zoomFactor())
             settings.setValue("color", self.color)
             settings.setValue("bgColor", self.bgColor)
-            settings.setValue("docIndex", self.docIndex)
-            settings.setValue("pageIndex", self.pageIndex)
+            settings.setValue("doc_num", self.doc_num)
+            settings.setValue("page_num_doc", self.page_num_doc)
             settings.setValue("posX", self.view.page().scrollPosition().x()
                 - self.view.page().contentsSize().width() + self.view.width())
             settings.setValue("posY", self.view.page().scrollPosition().y())
@@ -232,8 +232,8 @@ Description: {2}''').format(title, author, description))
         self.view.setZoomFactor(float(settings.value("zoomFactor", 0)))
         self.color = settings.value("color", self.color)
         self.bgColor = settings.value("bgColor", self.bgColor)
-        self.docIndex = int(settings.value("docIndex", 0))
-        self.pageIndex = int(settings.value("pageIndex", 0))
+        self.doc_num = int(settings.value("doc_num", 0))
+        self.page_num_doc = int(settings.value("page_num_doc", 0))
         self.posX = int(settings.value("posX", 0))
         self.posY = int(settings.value("posY", 0))
         settings.endGroup()
@@ -244,10 +244,10 @@ Description: {2}''').format(title, author, description))
 
     @pyqtSlot(bool)
     def on_view_loadFinished(self):
-        # Detect current docIndex after loading
+        # Detect current doc_num after loading
         for index, item in enumerate(self.doc):
             if self.view.url().toLocalFile() == item:
-                self.docIndex = index
+                self.doc_num = index
 
         self.view.page().runJavaScript('document.body.style.color="{}"'.format(self.color))
         self.view.page().runJavaScript('document.body.style.backgroundColor="{}"'.format(self.bgColor))
@@ -260,14 +260,14 @@ Description: {2}''').format(title, author, description))
         self.view.page().runJavaScript('document.body.style.writingMode="vertical-rl"')
 
         def paginateFinished(callback):
-            self.pageCount = callback[0]
+            self.page_total_doc = callback[0]
             if callback[1] == 1:
                 #pagination failed
                 QMessageBox.warning(self, self.tr("Pagination failed"),
                     self.tr('Pagination failed. Please report to developer.'))
-            if self.pageIndex == -1:
+            if self.page_num_doc == -1:
                 self.view.page().runJavaScript("window.scrollTo(0,document.body.scrollHeight);")
-                self.pageIndex = self.pageCount - 1
+                self.page_num_doc = self.page_total_doc - 1
 
             self.isLoading = False
 
@@ -296,51 +296,51 @@ Description: {2}''').format(title, author, description))
             self.color = dlgStyle.color
             self.bgColor = dlgStyle.bgColor
             self.view.reload()
-            self.pageIndex = 0
+            self.page_num_doc = 0
 
     def gotoPreviousPage(self):
         # Do not turn page if view is still loading
         if self.isLoading == True:
             return
 
-        pageHeight = self.view.page().contentsSize().height() / self.pageCount
-        self.pageIndex = round(self.view.page().scrollPosition().y() / pageHeight)
+        pageHeight = self.view.page().contentsSize().height() / self.page_total_doc
+        self.page_num_doc = round(self.view.page().scrollPosition().y() / pageHeight)
 
-        self.pageIndex -= 1
+        self.page_num_doc -= 1
 
-        if self.pageIndex < 0:
-            if self.docIndex > 0:
-                self.docIndex -= 1
-                self.view.load(QUrl.fromLocalFile(self.doc[self.docIndex]))
+        if self.page_num_doc < 0:
+            if self.doc_num > 0:
+                self.doc_num -= 1
+                self.view.load(QUrl.fromLocalFile(self.doc[self.doc_num]))
             else:
-                self.pageIndex = 0
+                self.page_num_doc = 0
             return
 
         self.view.page().runJavaScript("window.scrollTo({0}, {1});"
-            .format(self.view.page().scrollPosition().x(), pageHeight / self.view.zoomFactor() * self.pageIndex))
+            .format(self.view.page().scrollPosition().x(), pageHeight / self.view.zoomFactor() * self.page_num_doc))
 
     def gotoNextPage(self):
         # Do not turn page if view is still loading
         if self.isLoading == True:
             return
 
-        pageHeight = self.view.page().contentsSize().height() / self.pageCount
-        self.pageIndex = round(self.view.page().scrollPosition().y() / pageHeight)
+        pageHeight = self.view.page().contentsSize().height() / self.page_total_doc
+        self.page_num_doc = round(self.view.page().scrollPosition().y() / pageHeight)
 
         # Change page number
-        self.pageIndex += 1
+        self.page_num_doc += 1
 
-        if self.pageIndex > self.pageCount - 1:
-            if self.docIndex < len(self.doc) - 1:
-                self.docIndex += 1
-                self.pageIndex = 0
-                self.view.load(QUrl.fromLocalFile(self.doc[self.docIndex]))
+        if self.page_num_doc > self.page_total_doc - 1:
+            if self.doc_num < len(self.doc) - 1:
+                self.doc_num += 1
+                self.page_num_doc = 0
+                self.view.load(QUrl.fromLocalFile(self.doc[self.doc_num]))
             else:
-                self.pageIndex = self.pageCount - 1
+                self.page_num_doc = self.page_total_doc - 1
             return
 
         self.view.page().runJavaScript("window.scrollTo({0}, {1});"
-            .format(self.view.page().scrollPosition().x(), pageHeight / self.view.zoomFactor() * self.pageIndex))
+            .format(self.view.page().scrollPosition().x(), pageHeight / self.view.zoomFactor() * self.page_num_doc))
 
     @pyqtSlot()
     def on_action_Search_triggered(self):
@@ -351,7 +351,7 @@ Description: {2}''').format(title, author, description))
     @pyqtSlot()
     def searchStart(self):
         self.isSearching = True
-        self.docIndex_old = self.docIndex
+        self.doc_num_old = self.doc_num
         self.posX = self.view.page().scrollPosition().x() - self.view.page().contentsSize().width() + self.view.width()
         self.posY = self.view.page().scrollPosition().y()
 
@@ -370,19 +370,19 @@ Description: {2}''').format(title, author, description))
         if result.numberOfMatches() == 0 or (self.activeMatch_old == result.numberOfMatches()
            and result.activeMatch() == 1 and self.searchText_old == self.dlgSearch.lneSearch.text()):
 
-            if (self.docIndex == self.docIndex_old - 1 or
-               self.docIndex_old == 0 and self.docIndex == len(self.doc) - 1):
+            if (self.doc_num == self.doc_num_old - 1 or
+               self.doc_num_old == 0 and self.doc_num == len(self.doc) - 1):
                 self.isSearching = False
-                self.docIndex = self.docIndex_old
+                self.doc_num = self.doc_num_old
                 self.need_scroll = True
-                self.view.load(QUrl.fromLocalFile(self.doc[self.docIndex]))
+                self.view.load(QUrl.fromLocalFile(self.doc[self.doc_num]))
                 return
-            if self.docIndex == len(self.doc) - 1:
-                self.docIndex = 0
+            if self.doc_num == len(self.doc) - 1:
+                self.doc_num = 0
             else:
-                self.docIndex += 1
+                self.doc_num += 1
             self.activeMatch_old = 0
-            self.view.load(QUrl.fromLocalFile(self.doc[self.docIndex]))
+            self.view.load(QUrl.fromLocalFile(self.doc[self.doc_num]))
         else:
             self.activeMatch_old = result.activeMatch()
             self.searchText_old = self.dlgSearch.lneSearch.text()
