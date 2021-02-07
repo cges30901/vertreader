@@ -6,7 +6,7 @@ import os
 from PyQt5.QtWidgets import QMainWindow, QFileDialog, QAction, QMessageBox, QApplication, QActionGroup, QDialog, QLineEdit
 from PyQt5.QtCore import QUrl, QEvent, pyqtSlot, Qt, QSettings
 from PyQt5.QtGui import QIcon
-from PyQt5.QtWebEngineWidgets import QWebEnginePage
+from PyQt5.QtWebEngineWidgets import QWebEnginePage, QWebEngineView
 from vertreader.ui_mainwindow import Ui_MainWindow
 from vertreader.styledialog import StyleDialog
 from vertreader.searchdialog import SearchDialog
@@ -48,6 +48,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             if e.type() == QEvent.Resize:
                 # Reload when resized to paginate again
                 self.view.reload()
+                self.calculate_doc_size()
                 self.page_num_doc = 0
             elif e.type() == QEvent.Wheel:
                 if e.angleDelta().y() > 0:
@@ -138,6 +139,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.need_scroll = True
 
         self.view.load(QUrl.fromLocalFile(self.doc[self.doc_num]))
+        self.calculate_doc_size()
         self.setWindowTitle(self.tr("{} - VertReader").format(self.book.get_metadata('DC', 'title')[0][0]))
 
     @pyqtSlot(bool)
@@ -273,6 +275,10 @@ Description: {2}''').format(title, author, description))
 
         with open(os.path.dirname(os.path.abspath(__file__))+'/paginate_vertical.js', 'r') as jsfile:
             js = jsfile.read()
+        window_width = self.view.size().width() / self.view.zoomFactor()
+        window_height = self.view.size().height() / self.view.zoomFactor()
+        self.view.page().runJavaScript("var window_width = {};var window_height = {};".format(window_width, window_height))
+        self.view.page().runJavaScript('document.documentElement.style.height = "{}px";'.format(window_height))
         self.view.page().runJavaScript(js, paginateFinished)
 
         if self.need_scroll is True:
@@ -282,6 +288,38 @@ Description: {2}''').format(title, author, description))
 
         if self.isSearching:
             self.search()
+
+    def calculate_doc_size(self):
+        self.txtPageNum.setText(self.tr("Calculating..."))
+        with open(os.path.dirname(os.path.abspath(__file__))+'/paginate_vertical.js', 'r') as jsfile:
+            js = jsfile.read()
+
+        view_cal = QWebEngineView(self)
+        self.doc_num_cal = 0
+        self.page_cal_doc = []
+
+        def loadFinished():
+            view_cal.page().runJavaScript('document.body.style.writingMode="vertical-rl"')
+
+            def paginateFinished(callback):
+                self.page_cal_doc.append(callback[0])
+                if self.doc_num_cal + 1 < len(self.doc):
+                    self.doc_num_cal = self.doc_num_cal + 1
+                    view_cal.load(QUrl.fromLocalFile(self.doc[self.doc_num_cal]))
+                else:
+                    self.page_cal_book = 0
+                    for i in range(len(self.doc)):
+                        self.page_cal_book += self.page_cal_doc[i]
+                    self.txtPageNum.setText(str(self.page_cal_book))
+
+            window_width = self.view.size().width()/self.view.zoomFactor()
+            window_height = self.view.size().height()/self.view.zoomFactor()
+            view_cal.page().runJavaScript("var window_width = {}, window_height = {};".format(window_width, window_height))
+            view_cal.page().runJavaScript('document.documentElement.style.height = "{}px";'.format(window_height))
+            view_cal.page().runJavaScript(js, paginateFinished)
+        view_cal.loadFinished.connect(loadFinished)
+        view_cal.load(QUrl.fromLocalFile(self.doc[self.doc_num_cal]))
+
 
     @pyqtSlot()
     def on_action_Style_triggered(self):
@@ -296,6 +334,7 @@ Description: {2}''').format(title, author, description))
             self.color = dlgStyle.color
             self.bgColor = dlgStyle.bgColor
             self.view.reload()
+            self.calculate_doc_size()
             self.page_num_doc = 0
 
     def gotoPreviousPage(self):
