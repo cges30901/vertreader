@@ -31,6 +31,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.activeMatch_old = 0
         self.searchText_old = ""
         self.isLoading = False
+        self.isCalculating = False
+
 
         self.color = "black"
         self.bgColor = "white"
@@ -272,6 +274,8 @@ Description: {2}''').format(title, author, description))
                 self.page_num_doc = self.page_total_doc - 1
 
             self.isLoading = False
+            if not self.isCalculating:
+                self.update_page_num_book()
 
         with open(os.path.dirname(os.path.abspath(__file__))+'/paginate_vertical.js', 'r') as jsfile:
             js = jsfile.read()
@@ -289,7 +293,17 @@ Description: {2}''').format(title, author, description))
         if self.isSearching:
             self.search()
 
+    def update_page_num_book(self):
+        page_num_book = 0
+        for i in range(self.doc_num):
+            page_num_book += self.page_cal_doc[i]
+        page_num_book += self.page_num_doc
+        self.txtPageNum.setText("{}/{}".format(page_num_book + 1, self.page_cal_book))
+
     def calculate_doc_size(self):
+        if self.isCalculating == True:
+            return
+        self.isCalculating = True
         self.txtPageNum.setText(self.tr("Calculating..."))
         with open(os.path.dirname(os.path.abspath(__file__))+'/paginate_vertical.js', 'r') as jsfile:
             js = jsfile.read()
@@ -310,7 +324,8 @@ Description: {2}''').format(title, author, description))
                     self.page_cal_book = 0
                     for i in range(len(self.doc)):
                         self.page_cal_book += self.page_cal_doc[i]
-                    self.txtPageNum.setText(str(self.page_cal_book))
+                    self.update_page_num_book()
+                    self.isCalculating = False
 
             window_width = self.view.size().width()/self.view.zoomFactor()
             window_height = self.view.size().height()/self.view.zoomFactor()
@@ -319,7 +334,6 @@ Description: {2}''').format(title, author, description))
             view_cal.page().runJavaScript(js, paginateFinished)
         view_cal.loadFinished.connect(loadFinished)
         view_cal.load(QUrl.fromLocalFile(self.doc[self.doc_num_cal]))
-
 
     @pyqtSlot()
     def on_action_Style_triggered(self):
@@ -353,10 +367,10 @@ Description: {2}''').format(title, author, description))
                 self.view.load(QUrl.fromLocalFile(self.doc[self.doc_num]))
             else:
                 self.page_num_doc = 0
-            return
-
-        self.view.page().runJavaScript("window.scrollTo({0}, {1});"
-            .format(self.view.page().scrollPosition().x(), pageHeight / self.view.zoomFactor() * self.page_num_doc))
+        else:
+            self.view.page().runJavaScript("window.scrollTo({0}, {1});"
+                .format(self.view.page().scrollPosition().x(), pageHeight / self.view.zoomFactor() * self.page_num_doc))
+        self.update_page_num_book()
 
     def gotoNextPage(self):
         # Do not turn page if view is still loading
@@ -376,10 +390,10 @@ Description: {2}''').format(title, author, description))
                 self.view.load(QUrl.fromLocalFile(self.doc[self.doc_num]))
             else:
                 self.page_num_doc = self.page_total_doc - 1
-            return
-
-        self.view.page().runJavaScript("window.scrollTo({0}, {1});"
-            .format(self.view.page().scrollPosition().x(), pageHeight / self.view.zoomFactor() * self.page_num_doc))
+        else:
+            self.view.page().runJavaScript("window.scrollTo({0}, {1});"
+                .format(self.view.page().scrollPosition().x(), pageHeight / self.view.zoomFactor() * self.page_num_doc))
+        self.update_page_num_book()
 
     @pyqtSlot()
     def on_action_Search_triggered(self):
