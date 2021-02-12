@@ -294,6 +294,9 @@ Description: {2}''').format(title, author, description))
             self.search()
 
     def update_page_num_book(self, pos = -1):
+        if self.isCalculating == True:
+            return
+
         page_num_book = 0
         for i in range(self.doc_num):
             page_num_book += self.page_cal_doc[i]
