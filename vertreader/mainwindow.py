@@ -270,7 +270,7 @@ Description: {2}''').format(title, author, description))
                 QMessageBox.warning(self, self.tr("Pagination failed"),
                     self.tr('Pagination failed. Please report to developer.'))
             if self.page_num_doc == -1:
-                self.view.page().runJavaScript("window.scrollTo(0,document.body.scrollHeight);")
+                self.viewScrollTo(0, "document.body.scrollHeight")
                 self.page_num_doc = self.page_total_doc - 1
 
             self.isLoading = False
@@ -287,8 +287,7 @@ Description: {2}''').format(title, author, description))
 
         if self.need_scroll is True:
             self.need_scroll = False
-            self.view.page().runJavaScript("window.scrollTo({0}, {1});"
-                .format(self.posX, float(self.posY) / self.view.zoomFactor()))
+            self.viewScrollTo(self.posX, float(self.posY) / self.view.zoomFactor())
 
         if self.isSearching:
             self.search()
@@ -332,8 +331,8 @@ Description: {2}''').format(title, author, description))
                     self.page_cal_book = 0
                     for i in range(len(self.doc)):
                         self.page_cal_book += self.page_cal_doc[i]
-                    self.update_page_num_book()
                     self.isCalculating = False
+                    self.update_page_num_book()
 
             window_width = self.view.size().width()/self.view.zoomFactor()
             window_height = self.view.size().height()/self.view.zoomFactor()
@@ -359,6 +358,10 @@ Description: {2}''').format(title, author, description))
             self.calculate_doc_size()
             self.page_num_doc = 0
 
+    def viewScrollTo(self, posX, posY):
+        self.view.page().runJavaScript("window.scrollTo({}, {});window.scrollY;"
+            .format(posX, posY), self.update_page_num_book)
+
     def gotoPreviousPage(self):
         # Do not turn page if view is still loading
         if self.isLoading == True:
@@ -376,9 +379,7 @@ Description: {2}''').format(title, author, description))
             else:
                 self.page_num_doc = 0
         else:
-
-            self.view.page().runJavaScript("window.scrollTo({0}, {1});window.scrollY;"
-                .format(self.view.page().scrollPosition().x(), pageHeight / self.view.zoomFactor() * self.page_num_doc),self.update_page_num_book)
+            self.viewScrollTo(0, pageHeight / self.view.zoomFactor() * self.page_num_doc)
 
     def gotoNextPage(self):
         # Do not turn page if view is still loading
@@ -399,8 +400,7 @@ Description: {2}''').format(title, author, description))
             else:
                 self.page_num_doc = self.page_total_doc - 1
         else:
-            self.view.page().runJavaScript("window.scrollTo({0}, {1});window.scrollY;"
-                .format(self.view.page().scrollPosition().x(), pageHeight / self.view.zoomFactor() * self.page_num_doc),self.update_page_num_book)
+            self.viewScrollTo(0, pageHeight / self.view.zoomFactor() * self.page_num_doc)
 
     @pyqtSlot()
     def on_action_Search_triggered(self):
