@@ -293,10 +293,15 @@ Description: {2}''').format(title, author, description))
         if self.isSearching:
             self.search()
 
-    def update_page_num_book(self):
+    def update_page_num_book(self, pos = -1):
         page_num_book = 0
         for i in range(self.doc_num):
             page_num_book += self.page_cal_doc[i]
+        pageHeight = self.view.page().contentsSize().height() / self.page_total_doc
+        if pos == -1 or pos is None:
+            self.page_num_doc = round(self.view.page().scrollPosition().y() / pageHeight)
+        else:
+            self.page_num_doc = round(pos * self.view.zoomFactor() / pageHeight)
         page_num_book += self.page_num_doc
         self.txtPageNum.setText("{}/{}".format(page_num_book + 1, self.page_cal_book))
 
@@ -368,9 +373,9 @@ Description: {2}''').format(title, author, description))
             else:
                 self.page_num_doc = 0
         else:
-            self.view.page().runJavaScript("window.scrollTo({0}, {1});"
-                .format(self.view.page().scrollPosition().x(), pageHeight / self.view.zoomFactor() * self.page_num_doc))
-        self.update_page_num_book()
+
+            self.view.page().runJavaScript("window.scrollTo({0}, {1});window.scrollY;"
+                .format(self.view.page().scrollPosition().x(), pageHeight / self.view.zoomFactor() * self.page_num_doc),self.update_page_num_book)
 
     def gotoNextPage(self):
         # Do not turn page if view is still loading
@@ -391,9 +396,8 @@ Description: {2}''').format(title, author, description))
             else:
                 self.page_num_doc = self.page_total_doc - 1
         else:
-            self.view.page().runJavaScript("window.scrollTo({0}, {1});"
-                .format(self.view.page().scrollPosition().x(), pageHeight / self.view.zoomFactor() * self.page_num_doc))
-        self.update_page_num_book()
+            self.view.page().runJavaScript("window.scrollTo({0}, {1});window.scrollY;"
+                .format(self.view.page().scrollPosition().x(), pageHeight / self.view.zoomFactor() * self.page_num_doc),self.update_page_num_book)
 
     @pyqtSlot()
     def on_action_Search_triggered(self):
