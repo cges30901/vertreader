@@ -272,7 +272,6 @@ Description: {2}''').format(title, author, description))
             if self.page_num_doc == -1:
                 self.viewScrollTo(0, "document.body.scrollHeight")
                 self.page_num_doc = self.page_total_doc - 1
-
             self.isLoading = False
             if not self.isCalculating:
                 self.update_page_num_book()
@@ -292,20 +291,19 @@ Description: {2}''').format(title, author, description))
         if self.isSearching:
             self.search()
 
-    def update_page_num_book(self, pos = -1):
+    def update_page_num_book(self, dummy = None):
         if self.isCalculating == True:
             return
 
-        page_num_book = 0
-        for i in range(self.doc_num):
-            page_num_book += self.page_cal_doc[i]
-        pageHeight = self.view.page().contentsSize().height() / self.page_total_doc
-        if pos == -1 or pos is None:
-            self.page_num_doc = round(self.view.page().scrollPosition().y() / pageHeight)
-        else:
-            self.page_num_doc = round(pos * self.view.zoomFactor() / pageHeight)
-        page_num_book += self.page_num_doc
-        self.txtPageNum.setText("{}/{}".format(page_num_book + 1, self.page_cal_book))
+        def callback(result):
+            page_num_book = 0
+            for i in range(self.doc_num):
+                page_num_book += self.page_cal_doc[i]
+            pageHeight = self.view.size().height()
+            self.page_num_doc = round(result * self.view.page().zoomFactor() / pageHeight)
+            page_num_book += self.page_num_doc
+            self.txtPageNum.setText("{}/{}".format(page_num_book + 1, self.page_cal_book))
+        self.view.page().runJavaScript("window.scrollY",callback)
 
     def calculate_doc_size(self):
         if self.isCalculating == True:
@@ -359,7 +357,7 @@ Description: {2}''').format(title, author, description))
             self.page_num_doc = 0
 
     def viewScrollTo(self, posX, posY):
-        self.view.page().runJavaScript("window.scrollTo({}, {});window.scrollY;"
+        self.view.page().runJavaScript("window.scrollTo({}, {});"
             .format(posX, posY), self.update_page_num_book)
 
     def gotoPreviousPage(self):
