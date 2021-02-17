@@ -291,18 +291,23 @@ Description: {2}''').format(title, author, description))
         if self.isSearching:
             self.search()
 
+    def on_slider_valueChanged(self, value):
+        if value != self.page_num_book:
+            self.gotoPage(value)
+
     def update_page_num_book(self, dummy = None):
         if self.isCalculating == True:
             return
 
         def callback(result):
-            page_num_book = 0
+            self.page_num_book = 1
             for i in range(self.doc_num):
-                page_num_book += self.page_cal_doc[i]
+                self.page_num_book += self.page_cal_doc[i]
             pageHeight = self.view.size().height()
             self.page_num_doc = round(result * self.view.page().zoomFactor() / pageHeight)
-            page_num_book += self.page_num_doc
-            self.txtPageNum.setText("{}/{}".format(page_num_book + 1, self.page_cal_book))
+            self.page_num_book += self.page_num_doc
+            self.txtPageNum.setText("{}/{}".format(self.page_num_book, self.page_cal_book))
+            self.slider.setValue(self.page_num_book)
         self.view.page().runJavaScript("window.scrollY",callback)
 
     def calculate_doc_size(self):
@@ -329,6 +334,7 @@ Description: {2}''').format(title, author, description))
                     self.page_cal_book = 0
                     for i in range(len(self.doc)):
                         self.page_cal_book += self.page_cal_doc[i]
+                    self.slider.setMaximum(self.page_cal_book)
                     self.isCalculating = False
                     self.update_page_num_book()
 
