@@ -274,6 +274,7 @@ Description: {2}''').format(title, author, description))
             if self.page_num_doc == -1:
                 self.viewScrollTo(0, "document.body.scrollHeight")
                 self.page_num_doc = self.page_total_doc - 1
+
             self.isLoaded = True
             if not self.isCalculating:
                 self.update_page_num_book()
@@ -373,7 +374,21 @@ Description: {2}''').format(title, author, description))
             .format(posX, posY), self.update_page_num_book)
 
     def gotoPage_book(self, page):
-        pass
+        # page_num_book is 1-based
+        page -= 1
+        doc = 0
+        for i in range(len(self.page_cal_doc)):
+            if page<self.page_cal_doc[i]:
+                break
+            page -= self.page_cal_doc[i]
+            doc += 1
+        if self.doc_num == doc:
+            self.gotoPage_doc(page)
+        else:
+            self.doc_num = doc
+            self.page_num_doc = page
+            self.need_scroll = True
+            self.view.load(QUrl.fromLocalFile(self.doc[self.doc_num]))
 
     def gotoPage_doc(self, page):
         self.viewScrollTo(0, self.view.size().height() / self.view.zoomFactor() * page)
