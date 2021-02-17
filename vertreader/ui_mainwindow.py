@@ -32,6 +32,7 @@ class Ui_MainWindow(object):
         self.horizontalLayout.setObjectName("horizontalLayout")
         self.slider = QtWidgets.QSlider(self.centralwidget)
         self.slider.setMinimum(1)
+        self.slider.setMaximum(1)
         self.slider.setTracking(False)
         self.slider.setOrientation(QtCore.Qt.Horizontal)
         self.slider.setObjectName("slider")

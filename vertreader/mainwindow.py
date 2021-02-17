@@ -30,7 +30,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.isSearching = False
         self.activeMatch_old = 0
         self.searchText_old = ""
-        self.isLoading = False
+        self.isLoaded = False
         self.isCalculating = False
 
 
@@ -46,10 +46,11 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.open(self.filename)
 
     def eventFilter(self, source, e):
+        if not self.isLoaded:
+            return False
+
         if source == self.view.focusProxy():
             if e.type() == QEvent.Resize:
-                if self.isLoading:
-                    return False
                 # Reload when resized to paginate again
                 self.view.reload()
                 self.calculate_doc_size()
@@ -79,6 +80,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.open(filename)
 
     def open(self, filename):
+        self.isLoaded = False
         self.tempdir = tempfile.TemporaryDirectory().name
         self.doc = []
 
@@ -139,7 +141,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.actionTOC[x].triggered.connect(self.toc_triggered)
         self.menuTOC.addActions(self.actionTOC)
 
-        self.isLoading = True
         self.readSettings()
         self.need_scroll = True
 
@@ -242,10 +243,13 @@ Description: {2}''').format(title, author, description))
 
     @pyqtSlot()
     def on_view_loadStarted(self):
-        self.isLoading = True
+        self.isLoaded = False
 
     @pyqtSlot(bool)
     def on_view_loadFinished(self):
+        if self.view.url().toString() == "about:blank":
+            return
+
         # Detect current doc_num after loading
         for index, item in enumerate(self.doc):
             if self.view.url().toLocalFile() == item:
@@ -270,7 +274,7 @@ Description: {2}''').format(title, author, description))
             if self.page_num_doc == -1:
                 self.viewScrollTo(0, "document.body.scrollHeight")
                 self.page_num_doc = self.page_total_doc - 1
-            self.isLoading = False
+            self.isLoaded = True
             if not self.isCalculating:
                 self.update_page_num_book()
 
@@ -291,7 +295,7 @@ Description: {2}''').format(title, author, description))
 
     def on_slider_valueChanged(self, value):
         if value != self.page_num_book:
-            self.gotoPage(value)
+            self.gotoPage_book(value)
 
     def update_page_num_doc(self):
         pageHeight = self.view.size().height()
@@ -368,14 +372,13 @@ Description: {2}''').format(title, author, description))
         self.view.page().runJavaScript("window.scrollTo({}, {});"
             .format(posX, posY), self.update_page_num_book)
 
+    def gotoPage_book(self, page):
+        pass
+
     def gotoPage_doc(self, page):
         self.viewScrollTo(0, self.view.size().height() / self.view.zoomFactor() * page)
 
     def gotoPreviousPage(self):
-        # Do not turn page if view is still loading
-        if self.isLoading == True:
-            return
-
         self.update_page_num_doc()
 
         self.page_num_doc -= 1
@@ -390,10 +393,6 @@ Description: {2}''').format(title, author, description))
             self.gotoPage_doc(self.page_num_doc)
 
     def gotoNextPage(self):
-        # Do not turn page if view is still loading
-        if self.isLoading == True:
-            return
-
         self.update_page_num_doc()
 
         self.page_num_doc += 1

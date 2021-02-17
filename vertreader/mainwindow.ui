@@ -37,6 +37,9 @@
         <property name="minimum">
          <number>1</number>
         </property>
+        <property name="maximum">
+         <number>1</number>
+        </property>
         <property name="tracking">
          <bool>false</bool>
         </property>
