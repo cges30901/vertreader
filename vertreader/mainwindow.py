@@ -48,6 +48,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def eventFilter(self, source, e):
         if source == self.view.focusProxy():
             if e.type() == QEvent.Resize:
+                if self.isLoading:
+                    return False
                 # Reload when resized to paginate again
                 self.view.reload()
                 self.calculate_doc_size()
@@ -137,6 +139,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.actionTOC[x].triggered.connect(self.toc_triggered)
         self.menuTOC.addActions(self.actionTOC)
 
+        self.isLoading = True
         self.readSettings()
         self.need_scroll = True
 
@@ -209,9 +212,6 @@ Description: {2}''').format(title, author, description))
             settings.setValue("bgColor", self.bgColor)
             settings.setValue("doc_num", self.doc_num)
             settings.setValue("page_num_doc", self.page_num_doc)
-            settings.setValue("posX", self.view.page().scrollPosition().x()
-                - self.view.page().contentsSize().width() + self.view.width())
-            settings.setValue("posY", self.view.page().scrollPosition().y())
             settings.endGroup()
 
         # Also saves last used settings in Global group
@@ -238,8 +238,6 @@ Description: {2}''').format(title, author, description))
         self.bgColor = settings.value("bgColor", self.bgColor)
         self.doc_num = int(settings.value("doc_num", 0))
         self.page_num_doc = int(settings.value("page_num_doc", 0))
-        self.posX = int(settings.value("posX", 0))
-        self.posY = int(settings.value("posY", 0))
         settings.endGroup()
 
     @pyqtSlot()
@@ -286,7 +284,7 @@ Description: {2}''').format(title, author, description))
 
         if self.need_scroll is True:
             self.need_scroll = False
-            self.viewScrollTo(self.posX, float(self.posY) / self.view.zoomFactor())
+            self.gotoPage_doc(self.page_num_doc)
 
         if self.isSearching:
             self.search()
@@ -294,6 +292,10 @@ Description: {2}''').format(title, author, description))
     def on_slider_valueChanged(self, value):
         if value != self.page_num_book:
             self.gotoPage(value)
+
+    def update_page_num_doc(self):
+        pageHeight = self.view.size().height()
+        self.page_num_doc = round(self.view.page().scrollPosition().y() / pageHeight)
 
     def update_page_num_book(self, dummy = None):
         if self.isCalculating == True:
@@ -366,13 +368,15 @@ Description: {2}''').format(title, author, description))
         self.view.page().runJavaScript("window.scrollTo({}, {});"
             .format(posX, posY), self.update_page_num_book)
 
+    def gotoPage_doc(self, page):
+        self.viewScrollTo(0, self.view.size().height() / self.view.zoomFactor() * page)
+
     def gotoPreviousPage(self):
         # Do not turn page if view is still loading
         if self.isLoading == True:
             return
 
-        pageHeight = self.view.page().contentsSize().height() / self.page_total_doc
-        self.page_num_doc = round(self.view.page().scrollPosition().y() / pageHeight)
+        self.update_page_num_doc()
 
         self.page_num_doc -= 1
 
@@ -383,17 +387,15 @@ Description: {2}''').format(title, author, description))
             else:
                 self.page_num_doc = 0
         else:
-            self.viewScrollTo(0, pageHeight / self.view.zoomFactor() * self.page_num_doc)
+            self.gotoPage_doc(self.page_num_doc)
 
     def gotoNextPage(self):
         # Do not turn page if view is still loading
         if self.isLoading == True:
             return
 
-        pageHeight = self.view.page().contentsSize().height() / self.page_total_doc
-        self.page_num_doc = round(self.view.page().scrollPosition().y() / pageHeight)
+        self.update_page_num_doc()
 
-        # Change page number
         self.page_num_doc += 1
 
         if self.page_num_doc > self.page_total_doc - 1:
@@ -404,7 +406,7 @@ Description: {2}''').format(title, author, description))
             else:
                 self.page_num_doc = self.page_total_doc - 1
         else:
-            self.viewScrollTo(0, pageHeight / self.view.zoomFactor() * self.page_num_doc)
+            self.gotoPage_doc(self.page_num_doc)
 
     @pyqtSlot()
     def on_action_Search_triggered(self):
@@ -416,8 +418,7 @@ Description: {2}''').format(title, author, description))
     def searchStart(self):
         self.isSearching = True
         self.doc_num_old = self.doc_num
-        self.posX = self.view.page().scrollPosition().x() - self.view.page().contentsSize().width() + self.view.width()
-        self.posY = self.view.page().scrollPosition().y()
+        self.page_num_old = self.page_num_doc
 
         # Show scroll bar so that scrolling works when searching
         self.view.page().runJavaScript("document.body.style.overflow = 'auto';")
@@ -438,6 +439,7 @@ Description: {2}''').format(title, author, description))
                self.doc_num_old == 0 and self.doc_num == len(self.doc) - 1):
                 self.isSearching = False
                 self.doc_num = self.doc_num_old
+                self.page_num_doc = self.page_num_old
                 self.need_scroll = True
                 self.view.load(QUrl.fromLocalFile(self.doc[self.doc_num]))
                 return
