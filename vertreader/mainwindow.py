@@ -441,9 +441,7 @@ Description: {2}''').format(title, author, description))
 
     @pyqtSlot()
     def search(self):
-        def callback(found):
-            pass
-        self.view.page().findText(self.dlgSearch.lneSearch.text(), QWebEnginePage.FindFlags(), callback)
+        self.view.page().findText(self.dlgSearch.lneSearch.text(), QWebEnginePage.FindFlags())
 
     def findTextFinished(self, result):
         if result.numberOfMatches() == 0 or (self.activeMatch_old == result.numberOfMatches()
