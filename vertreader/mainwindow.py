@@ -467,5 +467,4 @@ Description: {2}''').format(title, author, description))
             self.isSearching = False
 
             # Hide scroll bar after search
-            if self.actionPaged.isChecked():
-                self.view.page().runJavaScript("document.body.style.overflow = 'hidden';")
+            self.view.page().runJavaScript("document.body.style.overflow = 'hidden';")

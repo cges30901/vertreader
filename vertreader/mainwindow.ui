@@ -116,25 +116,6 @@
     <string>Libraries used</string>
    </property>
   </action>
-  <action name="actionPaged">
-   <property name="checkable">
-    <bool>true</bool>
-   </property>
-   <property name="checked">
-    <bool>true</bool>
-   </property>
-   <property name="text">
-    <string>&amp;Paged Mode</string>
-   </property>
-  </action>
-  <action name="actionScroll">
-   <property name="checkable">
-    <bool>true</bool>
-   </property>
-   <property name="text">
-    <string>&amp;Continuous Mode</string>
-   </property>
-  </action>
   <action name="action_Style">
    <property name="text">
     <string>&amp;Style</string>
@@ -143,11 +124,6 @@
   <action name="action_Metadata">
    <property name="text">
     <string>&amp;Metadata</string>
-   </property>
-  </action>
-  <action name="actionSearch">
-   <property name="text">
-    <string>&amp;Search</string>
    </property>
   </action>
   <action name="action_Search">
