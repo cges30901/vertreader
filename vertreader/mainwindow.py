@@ -468,3 +468,10 @@ Description: {2}''').format(title, author, description))
 
             # Hide scroll bar after search
             self.view.page().runJavaScript("document.body.style.overflow = 'hidden';")
+
+        # Adjust position to prevent showing halves of two pages
+        def callback(result):
+            pageHeight = self.view.size().height()
+            self.page_num_doc = round(result * self.view.page().zoomFactor() / pageHeight)
+            self.gotoPage_doc(self.page_num_doc)
+        self.view.page().runJavaScript("window.scrollY",callback)
