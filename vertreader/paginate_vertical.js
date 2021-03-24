@@ -3,9 +3,9 @@ document.body.style.overflow = 'hidden';
 
 //Set margin of body to prevent beginning of document not displaying.
 //This needs more investigation.
-var bodyMargin = 8
-document.body.style.marginLeft = bodyMargin + 'px'
-document.body.style.marginRight = bodyMargin + 'px'
+var bodyMargin = 8;
+document.body.style.marginLeft = bodyMargin + 'px';
+document.body.style.marginRight = bodyMargin + 'px';
 
 //Set columnGap to look like body margin
 marginTop = parseInt(window.getComputedStyle(document.body).marginTop);
@@ -18,7 +18,7 @@ for(var i = 0; i < el.length; i++){
     el[i].style.maxHeight = "100%";
     el[i].style.maxWidth = window_width - bodyMargin * 2 + "px";
     // Fix image aspect ratio when publisher set "width: 100%;"
-    el[i].style.width = "auto"
+    el[i].style.width = "auto";
     el[i].style.margin = 0;
     //This is used to avoid area under baseline.
     //See https://stackoverflow.com/a/60823927/3926429.
@@ -34,7 +34,7 @@ for(var i = 0; i < el.length; i++){
 
 var columnInit = Math.floor(document.documentElement.scrollWidth / window_width);
 if(columnInit === 0){
-    columnInit = 1
+    columnInit = 1;
 }
 var column = columnInit;
 //column <= columnInit * 2 is used to prevent infinite loop.
@@ -49,11 +49,11 @@ for(column = columnInit; column <= columnInit * 2; column++){
 
 if(column > columnInit * 2){
     //pagination failed
-    column--
-    var fail = 1
+    column--;
+    var fail = 1;
 }
 else{
-    var fail = 0
+    var fail = 0;
 }
 //send result to paginateFinished()
-[column, fail]
+[column, fail];
