@@ -17,6 +17,8 @@ for(var i = 0; i < el.length; i++){
     //prevent pagination failure when wide images exist
     el[i].style.maxHeight = "100%";
     el[i].style.maxWidth = window_width - bodyMargin * 2 + "px";
+    // Fix image aspect ratio when publisher set "width: 100%;"
+    el[i].style.width = "auto"
     el[i].style.margin = 0;
     //This is used to avoid area under baseline.
     //See https://stackoverflow.com/a/60823927/3926429.
