@@ -41,7 +41,7 @@ var column = columnInit;
 //I am not sure if this value is appropriate.
 for(column = columnInit; column <= columnInit * 2; column++){
     document.body.style.columnCount = column;
-    document.body.style.height = column * window_height + "px";
+    document.documentElement.style.height = column * window_height + "px";
     if(document.body.scrollWidth + bodyMargin * 2 <= window_width){
         break;
     }
