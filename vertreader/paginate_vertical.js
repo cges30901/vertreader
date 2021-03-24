@@ -48,10 +48,10 @@ for(column = columnInit; column <= columnInit * 2; column++){
 if(column > columnInit * 2){
     //pagination failed
     column--
-    //send result to paginateFinished()
-    [column, 1]
+    var fail = 1
 }
 else{
-    //send result to paginateFinished()
-    [column, 0]
+    var fail = 0
 }
+//send result to paginateFinished()
+[column, fail]
