@@ -40,7 +40,7 @@ var column = columnInit;
 for(column = columnInit; column <= columnInit * 2; column++){
     document.body.style.columnCount = column;
     document.body.style.height = column * window_height + "px";
-    if(document.documentElement.scrollWidth <= window_width){
+    if(document.body.scrollWidth + bodyMargin * 2 <= window_width){
         break;
     }
 }
