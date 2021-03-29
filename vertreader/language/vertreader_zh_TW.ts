@@ -4,32 +4,22 @@
 <context>
     <name>MainWindow</name>
     <message>
-        <location filename="../mainwindow.ui" line="41"/>
-        <source>&amp;Next</source>
-        <translation>下一個(&amp;N)</translation>
-    </message>
-    <message>
-        <location filename="../mainwindow.ui" line="51"/>
-        <source>&amp;Previous</source>
-        <translation>上一個(&amp;P)</translation>
-    </message>
-    <message>
-        <location filename="../mainwindow.ui" line="83"/>
+        <location filename="../mainwindow.ui" line="73"/>
         <source>&amp;File</source>
         <translation>檔案(&amp;F)</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="92"/>
+        <location filename="../mainwindow.ui" line="82"/>
         <source>&amp;TOC</source>
         <translation>目錄(&amp;T)</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="119"/>
+        <location filename="../mainwindow.ui" line="106"/>
         <source>&amp;Open</source>
         <translation>開啟(&amp;O)</translation>
     </message>
     <message>
-        <location filename="../mainwindow.py" line="96"/>
+        <location filename="../mainwindow.py" line="76"/>
         <source>EPUB documents (*.epub)</source>
         <translation>EPUB 文件 (*.epub)</translation>
     </message>
@@ -44,22 +34,22 @@
         <translation>VertReader</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="97"/>
+        <location filename="../mainwindow.ui" line="87"/>
         <source>&amp;Help</source>
         <translation>說明(&amp;H)</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="124"/>
+        <location filename="../mainwindow.ui" line="111"/>
         <source>&amp;About</source>
         <translation>關於(&amp;A)</translation>
     </message>
     <message>
-        <location filename="../mainwindow.py" line="192"/>
+        <location filename="../mainwindow.py" line="169"/>
         <source>About</source>
         <translation>關於</translation>
     </message>
     <message>
-        <location filename="../mainwindow.py" line="192"/>
+        <location filename="../mainwindow.py" line="169"/>
         <source>&lt;h3&gt;VertReader {0}&lt;/h3&gt;
 &lt;p&gt;Author: Hsiu-Ming Chang&lt;/p&gt;
 &lt;p&gt;e-mail: cges30901@gmail.com&lt;/p&gt;
@@ -70,72 +60,62 @@
 &lt;p&gt;授權：GPL v3&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../mainwindow.py" line="222"/>
+        <location filename="../mainwindow.py" line="199"/>
         <source>Libraries used</source>
         <translation>使用的函式庫</translation>
     </message>
     <message>
-        <location filename="../mainwindow.py" line="222"/>
+        <location filename="../mainwindow.py" line="199"/>
         <source>&lt;h3&gt;Libraries:&lt;/h3&gt;</source>
         <translation>&lt;h3&gt;函式庫：&lt;/h3&gt;</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="104"/>
+        <location filename="../mainwindow.ui" line="94"/>
         <source>&amp;View</source>
         <translation>檢視(&amp;V)</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="140"/>
-        <source>&amp;Paged Mode</source>
-        <translation>頁面模式(&amp;P)</translation>
-    </message>
-    <message>
-        <location filename="../mainwindow.ui" line="148"/>
-        <source>&amp;Continuous Mode</source>
-        <translation>連續模式(&amp;C)</translation>
-    </message>
-    <message>
-        <location filename="../mainwindow.ui" line="153"/>
+        <location filename="../mainwindow.ui" line="121"/>
         <source>&amp;Style</source>
         <translation>樣式(&amp;S)</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="158"/>
+        <location filename="../mainwindow.ui" line="126"/>
         <source>&amp;Metadata</source>
         <translation>詮釋資料(&amp;M)</translation>
     </message>
     <message>
-        <location filename="../mainwindow.py" line="112"/>
+        <location filename="../mainwindow.py" line="93"/>
         <source>Failed to extract</source>
         <translation>解壓縮失敗</translation>
     </message>
     <message>
-        <location filename="../mainwindow.py" line="122"/>
+        <location filename="../mainwindow.py" line="104"/>
         <source>Failed to read EPUB with EbookLib</source>
         <translation>使用 EbookLib 讀取 EPUB 失敗</translation>
     </message>
     <message>
-        <location filename="../mainwindow.py" line="144"/>
+        <location filename="../mainwindow.py" line="135"/>
         <source>Failed to read TOC</source>
         <translation>讀取目錄失敗</translation>
     </message>
     <message>
-        <location filename="../mainwindow.py" line="158"/>
+        <location filename="../mainwindow.py" line="150"/>
         <source>{} - VertReader</source>
         <translation>{} - VertReader</translation>
     </message>
     <message>
-        <location filename="../mainwindow.py" line="212"/>
+        <location filename="../mainwindow.py" line="189"/>
         <source>N/A</source>
         <translation>無</translation>
     </message>
     <message>
-        <location filename="../mainwindow.py" line="213"/>
+        <location filename="../mainwindow.py" line="190"/>
         <source>Metadata</source>
         <translation>詮釋資料</translation>
     </message>
     <message>
-        <location filename="../mainwindow.py" line="213"/>
+        <location filename="../mainwindow.py" line="190"/>
         <source>Title: {0}
 Author: {1}
 Description: {2}</source>
@@ -144,19 +124,29 @@ Description: {2}</source>
 描述：{2}</translation>
     </message>
     <message>
-        <location filename="../mainwindow.py" line="218"/>
+        <location filename="../mainwindow.py" line="195"/>
         <source>Failed to read metadata</source>
         <translation>無法讀取詮釋資料</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="168"/>
+        <location filename="../mainwindow.ui" line="131"/>
         <source>&amp;Search</source>
         <translation>搜尋(&amp;S)</translation>
     </message>
     <message>
-        <location filename="../mainwindow.py" line="144"/>
+        <location filename="../mainwindow.py" line="135"/>
         <source>Failed to read TOC: link to unrecognized item is &quot;{}&quot;</source>
         <translation>讀取目錄失敗：無法辨識的連結是「{}」</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.py" line="273"/>
+        <source>Pagination failed. Please report this issue to the developer.</source>
+        <translation>分頁失敗。請回報問題給開發人員。</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.py" line="325"/>
+        <source>Calculating...</source>
+        <translation>計算中...</translation>
     </message>
 </context>
 <context>
@@ -180,16 +170,6 @@ Description: {2}</source>
         <location filename="../styledialog.ui" line="96"/>
         <source>Background color:</source>
         <translation>背景顏色：</translation>
-    </message>
-    <message>
-        <location filename="../styledialog.ui" line="128"/>
-        <source>Vertical writing</source>
-        <translation>縱書</translation>
-    </message>
-    <message>
-        <location filename="../styledialog.ui" line="138"/>
-        <source>Horizontal writing</source>
-        <translation>橫書</translation>
     </message>
 </context>
 </TS>
