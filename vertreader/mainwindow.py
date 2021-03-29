@@ -46,16 +46,17 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.open(self.filename)
 
     def eventFilter(self, source, e):
-        if not self.isLoaded:
-            return False
-
         if source == self.view.focusProxy():
             if e.type() == QEvent.Resize:
+                if not self.isLoaded:
+                    return False
                 # Reload when resized to paginate again
                 self.view.reload()
                 self.calculate_doc_size()
                 self.page_num_doc = 0
             elif e.type() == QEvent.Wheel:
+                if not self.isLoaded:
+                    return True
                 if e.angleDelta().y() > 0:
                     self.gotoPreviousPage()
                 elif e.angleDelta().y() < 0:
