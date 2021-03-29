@@ -270,8 +270,8 @@ Description: {2}''').format(title, author, description))
             self.page_total_doc = callback[0]
             if callback[1] == 1:
                 #pagination failed
-                QMessageBox.warning(self, self.tr("Pagination failed"),
-                    self.tr('Pagination failed. Please report to developer.'))
+                self.statusBar().showMessage(self.tr('Pagination failed. '
+                    'Please report this issue to the developer.'), 3000)
             if self.page_num_doc == -1:
                 self.viewScrollTo(0, "document.body.scrollHeight")
                 self.page_num_doc = self.page_total_doc - 1
