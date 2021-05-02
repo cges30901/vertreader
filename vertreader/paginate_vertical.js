@@ -1,11 +1,12 @@
 //hide scroll bar
 document.body.style.overflow = 'hidden';
 
-//Set margin of body to prevent beginning of document not displaying.
-//This needs more investigation.
-var bodyMargin = 8;
-document.body.style.marginLeft = bodyMargin + 'px';
-document.body.style.marginRight = bodyMargin + 'px';
+//Set margin of body to prevent large margin at left and right
+//when margin is percentage.
+marginLeft = parseInt(window.getComputedStyle(document.body).marginLeft);
+marginRight = parseInt(window.getComputedStyle(document.body).marginRight);
+document.body.style.marginRight = marginRight + "px";
+document.body.style.marginLeft = marginLeft + "px";
 
 //Set columnGap to look like body margin
 marginTop = parseInt(window.getComputedStyle(document.body).marginTop);
@@ -16,7 +17,7 @@ var el = document.querySelectorAll('img');
 for(var i = 0; i < el.length; i++){
     //prevent pagination failure when wide images exist
     el[i].style.maxHeight = "100%";
-    el[i].style.maxWidth = window_width - bodyMargin * 2 + "px";
+    el[i].style.maxWidth = window_width - marginLeft - marginRight + "px";
     // Fix image aspect ratio when publisher set "width: 100%;"
     el[i].style.width = "auto";
     el[i].style.margin = 0;
@@ -42,7 +43,7 @@ var column = columnInit;
 for(column = columnInit; column <= columnInit * 2; column++){
     document.body.style.columnCount = column;
     document.documentElement.style.height = column * window_height + "px";
-    if(document.body.scrollWidth + bodyMargin * 2 <= window_width){
+    if(document.body.scrollWidth + marginLeft + marginRight <= window_width){
         break;
     }
 }
