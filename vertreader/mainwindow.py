@@ -5,7 +5,7 @@ import zipfile
 import os
 from PyQt5.QtWidgets import QMainWindow, QFileDialog, QAction, QMessageBox, QApplication, QActionGroup, QDialog, QLineEdit
 from PyQt5.QtCore import QUrl, QEvent, pyqtSlot, Qt, QSettings
-from PyQt5.QtGui import QIcon
+from PyQt5.QtGui import QIcon, QFont
 from PyQt5.QtWebEngineWidgets import QWebEnginePage, QWebEngineView
 from vertreader.ui_mainwindow import Ui_MainWindow
 from vertreader.styledialog import StyleDialog
@@ -33,9 +33,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.isLoaded = False
         self.isCalculating = False
 
-
-        self.color = "black"
-        self.bgColor = "white"
         self.readSettings()
 
         self.view.focusProxy().installEventFilter(self)
@@ -210,8 +207,16 @@ Description: {2}''').format(title, author, description))
             settings.setValue("width", self.width())
             settings.setValue("height", self.height())
             settings.setValue("zoomFactor", self.view.zoomFactor())
-            settings.setValue("color", self.color)
-            settings.setValue("bgColor", self.bgColor)
+            settings.setValue("color", self.style['color'])
+            settings.setValue("bgColor", self.style['bgColor'])
+            settings.setValue("chbFont", self.style['chbFont'])
+            settings.setValue("font", self.style['font'])
+            settings.setValue("chbHeight", self.style['chbHeight'])
+            settings.setValue("lineheight", self.style['height'])
+            settings.setValue("chbMargin", self.style['chbMargin'])
+            settings.setValue("margin", self.style['margin'])
+            settings.setValue("chbIndent", self.style['chbIndent'])
+            settings.setValue("indent", self.style['indent'])
             settings.setValue("doc_num", self.doc_num)
             settings.setValue("page_num_doc", self.page_num_doc)
             settings.endGroup()
@@ -234,10 +239,18 @@ Description: {2}''').format(title, author, description))
         else:
             self.showNormal()
             self.resize(int(settings.value("width", self.width())), int(settings.value("height", self.height())))
-
         self.view.setZoomFactor(float(settings.value("zoomFactor", 0)))
-        self.color = settings.value("color", self.color)
-        self.bgColor = settings.value("bgColor", self.bgColor)
+        self.style = {'color': settings.value("color", "black"),
+                      'bgColor': settings.value("bgColor", "white"),
+                      'chbFont': settings.value("chbFont", False, type=bool),
+                      'font': settings.value("font", ''),
+                      'chbHeight': settings.value("chbHeight", False, type=bool),
+                      'height': settings.value("lineheight", 1.2, type=float),
+                      'chbMargin': settings.value("chbMargin", False, type=bool),
+                      'margin': settings.value("margin", 8, type=int),
+                      'chbIndent': settings.value("chbIndent", False, type=bool),
+                      'indent': settings.value("indent", 2.0, type=float)}
+
         self.doc_num = int(settings.value("doc_num", 0))
         self.page_num_doc = int(settings.value("page_num_doc", 0))
         settings.endGroup()
@@ -256,8 +269,22 @@ Description: {2}''').format(title, author, description))
             if self.view.url().toLocalFile() == item:
                 self.doc_num = index
 
-        self.view.page().runJavaScript('document.body.style.color="{}"'.format(self.color))
-        self.view.page().runJavaScript('document.body.style.backgroundColor="{}"'.format(self.bgColor))
+        self.view.page().runJavaScript('document.body.style.color="{}"'.format(self.style['color']))
+        self.view.page().runJavaScript('document.body.style.backgroundColor="{}"'.format(self.style['bgColor']))
+        if self.style.get('chbFont'):
+            self.view.page().runJavaScript('document.body.style.fontFamily="{}"'.format(self.style.get('font')))
+        if self.style.get('chbHeight'):
+            self.view.page().runJavaScript('''var p = document.getElementsByTagName("p");
+                                              for (var i = 0; i < p.length; i++) {{
+                                                  p[i].style.lineHeight = "{}";
+                                              }}'''.format(self.style.get('height')))
+        #if self.style.get('chbMargin'):
+            #self.view.page().runJavaScript('document.body.style.margin="{}"'.format(self.style.get('margin')))
+        if self.style.get('chbIndent'):
+            self.view.page().runJavaScript('''var p = document.getElementsByTagName("p");
+                                              for (var i = 0; i < p.length; i++) {{
+                                                  p[i].style.textIndent = "{}em";
+                                              }}'''.format(self.style.get('indent')))
 
         # Support popup footnote
         with open(os.path.dirname(os.path.abspath(__file__))+'/footnote.js', 'r') as jsfile:
@@ -358,14 +385,30 @@ Description: {2}''').format(title, author, description))
     def on_action_Style_triggered(self):
         dlgStyle=StyleDialog(self)
         dlgStyle.spbZoom.setValue(self.view.zoomFactor())
-        dlgStyle.color = self.color
-        dlgStyle.btnColor.setStyleSheet("border: none; background-color: " + self.color)
-        dlgStyle.bgColor = self.bgColor
-        dlgStyle.btnBgColor.setStyleSheet("border: none; background-color: " + self.bgColor)
+        dlgStyle.color = self.style['color']
+        dlgStyle.btnColor.setStyleSheet("border: none; background-color: " + self.style['color'])
+        dlgStyle.bgColor = self.style['bgColor']
+        dlgStyle.btnBgColor.setStyleSheet("border: none; background-color: " + self.style['bgColor'])
+        dlgStyle.chbFont.setChecked(self.style['chbFont'])
+        dlgStyle.boxFont.setCurrentFont(QFont(self.style['font']))
+        dlgStyle.chbHeight.setChecked(self.style['chbHeight'])
+        dlgStyle.spbHeight.setValue(self.style['height'])
+        dlgStyle.chbMargin.setChecked(self.style['chbMargin'])
+        dlgStyle.spbMargin.setValue(self.style['margin'])
+        dlgStyle.chbIndent.setChecked(self.style['chbIndent'])
+        dlgStyle.spbIndent.setValue(self.style['indent'])
         if dlgStyle.exec_()==QDialog.Accepted:
             self.view.setZoomFactor(dlgStyle.spbZoom.value())
-            self.color = dlgStyle.color
-            self.bgColor = dlgStyle.bgColor
+            self.style = {'color': dlgStyle.color,
+                          'bgColor': dlgStyle.bgColor,
+                          'chbFont': dlgStyle.chbFont.isChecked(),
+                          'font': dlgStyle.boxFont.currentFont().family(),
+                          'chbHeight': dlgStyle.chbHeight.isChecked(),
+                          'height': dlgStyle.spbHeight.value(),
+                          'chbMargin': dlgStyle.chbMargin.isChecked(),
+                          'margin': dlgStyle.spbMargin.value(),
+                          'chbIndent': dlgStyle.chbIndent.isChecked(),
+                          'indent': dlgStyle.spbIndent.value()}
             self.view.reload()
             self.calculate_doc_size()
             self.page_num_doc = 0
