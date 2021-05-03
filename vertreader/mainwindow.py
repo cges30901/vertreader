@@ -278,8 +278,8 @@ Description: {2}''').format(title, author, description))
                                               for (var i = 0; i < p.length; i++) {{
                                                   p[i].style.lineHeight = "{}";
                                               }}'''.format(self.style.get('height')))
-        #if self.style.get('chbMargin'):
-            #self.view.page().runJavaScript('document.body.style.margin="{}"'.format(self.style.get('margin')))
+        if self.style.get('chbMargin'):
+            self.view.page().runJavaScript('document.body.style.margin="{}px"'.format(self.style.get('margin')))
         if self.style.get('chbIndent'):
             self.view.page().runJavaScript('''var p = document.getElementsByTagName("p");
                                               for (var i = 0; i < p.length; i++) {{
