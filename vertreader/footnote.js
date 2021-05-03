@@ -14,7 +14,6 @@ modalContent.style.backgroundColor = document.body.style.backgroundColor;
 modalContent.style.maxWidth = "50%";
 modalContent.style.overflow = "auto";
 modalContent.style.height = "100%";
-modalContent.style.padding = "10px";
 modalContent.style.border = "1px solid";
 
 modal.appendChild(modalContent);
