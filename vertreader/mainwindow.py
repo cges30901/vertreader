@@ -440,31 +440,36 @@ Description: {2}''').format(title, author, description))
     def gotoPreviousPage(self):
         self.update_page_num_doc()
 
-        self.page_num_doc -= 1
-
-        if self.page_num_doc < 0:
-            if self.doc_num > 0:
-                self.doc_num -= 1
-                self.view.load(QUrl.fromLocalFile(self.doc[self.doc_num]))
-            else:
-                self.page_num_doc = 0
-        else:
+        if self.page_num_doc > 0:
+            # Go to previous page in same fragment,
+            # no need to load.
+            self.page_num_doc -= 1
             self.gotoPage_doc(self.page_num_doc)
+        elif self.doc_num > 0:
+            # Go to last page in previous fragment
+            self.doc_num -= 1
+            self.page_num_doc = -1
+            self.view.load(QUrl.fromLocalFile(self.doc[self.doc_num]))
+        else:
+            # First page of book, no need to turn page
+            pass
 
     def gotoNextPage(self):
         self.update_page_num_doc()
 
-        self.page_num_doc += 1
-
-        if self.page_num_doc > self.page_total_doc - 1:
-            if self.doc_num < len(self.doc) - 1:
-                self.doc_num += 1
-                self.page_num_doc = 0
-                self.view.load(QUrl.fromLocalFile(self.doc[self.doc_num]))
-            else:
-                self.page_num_doc = self.page_total_doc - 1
-        else:
+        if self.page_num_doc < self.page_total_doc - 1:
+            # Go to next page in same fragment,
+            # no need to load.
+            self.page_num_doc += 1
             self.gotoPage_doc(self.page_num_doc)
+        elif self.doc_num < len(self.doc) - 1:
+            # Go to first page in next fragment
+            self.doc_num += 1
+            self.page_num_doc = 0
+            self.view.load(QUrl.fromLocalFile(self.doc[self.doc_num]))
+        else:
+            # Last page of book, no need to turn page
+            pass
 
     @pyqtSlot()
     def on_action_Search_triggered(self):
