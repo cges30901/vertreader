@@ -60,6 +60,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                     self.gotoNextPage()
                 return True
             elif e.type() == QEvent.KeyPress:
+                if not self.isLoaded:
+                    return True
                 if e.key() == Qt.Key_PageDown or e.key() == Qt.Key_Down:
                     self.gotoNextPage()
                     return True
