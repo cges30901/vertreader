@@ -297,6 +297,11 @@ Description: {2}''').format(title, author, description))
 
         def paginateFinished(callback):
             self.page_total_doc = callback[0]
+            if self.doc_num < len(self.page_cal_doc):
+                # TODO: Fix calculated page number,
+                # so no need to update it after loading.
+                self.page_cal_doc[self.doc_num] = callback[0]
+                self.update_page_cal_book()
             if callback[1] == 1:
                 #pagination failed
                 self.statusBar().showMessage(self.tr('Pagination failed. '
@@ -367,10 +372,7 @@ Description: {2}''').format(title, author, description))
                     self.doc_num_cal = self.doc_num_cal + 1
                     view_cal.load(QUrl.fromLocalFile(self.doc[self.doc_num_cal]))
                 else:
-                    self.page_cal_book = 0
-                    for i in range(len(self.doc)):
-                        self.page_cal_book += self.page_cal_doc[i]
-                    self.slider.setMaximum(self.page_cal_book)
+                    self.update_page_cal_book()
                     self.isCalculating = False
                     self.update_page_num_book()
 
@@ -382,6 +384,11 @@ Description: {2}''').format(title, author, description))
         view_cal.loadFinished.connect(loadFinished)
         view_cal.load(QUrl.fromLocalFile(self.doc[self.doc_num_cal]))
 
+    def update_page_cal_book(self):
+        self.page_cal_book = 0
+        for i in range(len(self.doc)):
+            self.page_cal_book += self.page_cal_doc[i]
+        self.slider.setMaximum(self.page_cal_book)
     @pyqtSlot()
     def on_action_Style_triggered(self):
         dlgStyle=StyleDialog(self)
