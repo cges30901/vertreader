@@ -324,9 +324,8 @@ Description: {2}''').format(title, author, description))
         if self.isSearching:
             self.search()
 
-    def on_slider_valueChanged(self, value):
-        if value != self.page_num_book:
-            self.gotoPage_book(value)
+    def on_slider_sliderReleased(self):
+        self.gotoPage_book(self.slider.value())
 
     def update_page_num_doc(self):
         pageHeight = self.view.size().height()
