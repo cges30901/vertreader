@@ -297,7 +297,7 @@ Description: {2}''').format(title, author, description))
 
         def paginateFinished(callback):
             self.page_total_doc = callback[0]
-            if self.doc_num < len(self.page_cal_doc):
+            if not self.isCalculating:
                 # TODO: Fix calculated page number,
                 # so no need to update it after loading.
                 self.page_cal_doc[self.doc_num] = callback[0]
