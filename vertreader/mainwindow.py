@@ -38,6 +38,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.view.focusProxy().installEventFilter(self)
         QApplication.instance().aboutToQuit.connect(self.writeSettings)
         self.view.page().findTextFinished.connect(self.findTextFinished)
+        self.view.page().scrollPositionChanged.connect(self.scrollPositionChanged)
 
         if self.filename:
             self.open(self.filename)
@@ -446,8 +447,6 @@ Description: {2}''').format(title, author, description))
         self.viewScrollTo(0, self.view.size().height() / self.view.zoomFactor() * page)
 
     def gotoPreviousPage(self):
-        self.update_page_num_doc()
-
         if self.page_num_doc > 0:
             # Go to previous page in same fragment,
             # no need to load.
@@ -463,8 +462,6 @@ Description: {2}''').format(title, author, description))
             pass
 
     def gotoNextPage(self):
-        self.update_page_num_doc()
-
         if self.page_num_doc < self.page_total_doc - 1:
             # Go to next page in same fragment,
             # no need to load.
@@ -532,3 +529,6 @@ Description: {2}''').format(title, author, description))
             self.page_num_doc = round(result * self.view.page().zoomFactor() / pageHeight)
             self.gotoPage_doc(self.page_num_doc)
         self.view.page().runJavaScript("window.scrollY",callback)
+
+    def scrollPositionChanged(self, position):
+        self.update_page_num_book()
