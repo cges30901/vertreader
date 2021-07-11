@@ -470,9 +470,8 @@ Description: {2}''').format(title, author, description))
             self.gotoPage_doc(self.page_num_doc)
         elif self.doc_num < len(self.doc) - 1:
             # Go to first page in next fragment
-            self.doc_num += 1
             self.page_num_doc = 0
-            self.view.load(QUrl.fromLocalFile(self.doc[self.doc_num]))
+            self.view.load(QUrl.fromLocalFile(self.doc[self.doc_num+1]))
         else:
             # Last page of book, no need to turn page
             pass
@@ -532,4 +531,5 @@ Description: {2}''').format(title, author, description))
         self.view.page().runJavaScript("window.scrollY",callback)
 
     def scrollPositionChanged(self, position):
-        self.update_page_num_book()
+        if self.isLoaded:
+            self.update_page_num_book()
