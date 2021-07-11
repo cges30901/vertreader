@@ -32,6 +32,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.searchText_old = ""
         self.isLoaded = False
         self.isCalculating = False
+        self.to_bottom = False
 
         self.readSettings()
 
@@ -307,9 +308,10 @@ Description: {2}''').format(title, author, description))
                 #pagination failed
                 self.statusBar().showMessage(self.tr('Pagination failed. '
                     'Please report this issue to the developer.'), 3000)
-            if self.page_num_doc == -1:
+            if self.to_bottom == True:
                 self.viewScrollTo(0, "document.body.scrollHeight")
                 self.page_num_doc = self.page_total_doc - 1
+                self.to_bottom = False
 
             self.isLoaded = True
             if not self.isCalculating:
@@ -424,7 +426,7 @@ Description: {2}''').format(title, author, description))
 
     def viewScrollTo(self, posX, posY):
         self.view.page().runJavaScript("window.scrollTo({}, {});"
-            .format(posX, posY), self.update_page_num_book)
+            .format(posX, posY))
 
     def gotoPage_book(self, page):
         # page_num_book is 1-based
@@ -454,9 +456,8 @@ Description: {2}''').format(title, author, description))
             self.gotoPage_doc(self.page_num_doc)
         elif self.doc_num > 0:
             # Go to last page in previous fragment
-            self.doc_num -= 1
-            self.page_num_doc = -1
-            self.view.load(QUrl.fromLocalFile(self.doc[self.doc_num]))
+            self.to_bottom = True
+            self.view.load(QUrl.fromLocalFile(self.doc[self.doc_num-1]))
         else:
             # First page of book, no need to turn page
             pass
