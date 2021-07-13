@@ -303,8 +303,6 @@ Description: {2}''').format(title, author, description))
         def paginateFinished(callback):
             self.page_total_doc = callback[0]
             if not self.isCalculating:
-                # TODO: Fix calculated page number,
-                # so no need to update it after loading.
                 self.page_cal_doc[self.doc_num] = callback[0]
                 self.update_page_cal_book()
             if callback[1] == 1:
@@ -317,8 +315,7 @@ Description: {2}''').format(title, author, description))
                 self.to_bottom = False
 
             self.isLoaded = True
-            if not self.isCalculating:
-                self.update_page_num_book()
+            self.update_page_num_book()
 
         with open(os.path.dirname(os.path.abspath(__file__))+'/paginate_vertical.js', 'r') as jsfile:
             js = jsfile.read()
@@ -337,10 +334,6 @@ Description: {2}''').format(title, author, description))
 
     def on_slider_sliderReleased(self):
         self.gotoPage_book(self.slider.value())
-
-    def update_page_num_doc(self):
-        pageHeight = self.view.size().height()
-        self.page_num_doc = round(self.view.page().scrollPosition().y() / pageHeight)
 
     def update_page_num_book(self, dummy = None):
         if self.isCalculating == True:
