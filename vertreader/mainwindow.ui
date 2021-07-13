@@ -74,11 +74,6 @@
     <addaction name="separator"/>
     <addaction name="action_Search"/>
    </widget>
-   <widget class="QMenu" name="menuTOC">
-    <property name="title">
-     <string>&amp;TOC</string>
-    </property>
-   </widget>
    <widget class="QMenu" name="menu_Help">
     <property name="title">
      <string>&amp;Help</string>
@@ -94,7 +89,6 @@
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menu_View"/>
-   <addaction name="menuTOC"/>
    <addaction name="menu_Help"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>

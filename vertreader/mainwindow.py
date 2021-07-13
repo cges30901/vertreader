@@ -10,6 +10,7 @@ from PyQt5.QtWebEngineWidgets import QWebEnginePage, QWebEngineView
 from vertreader.ui_mainwindow import Ui_MainWindow
 from vertreader.styledialog import StyleDialog
 from vertreader.searchdialog import SearchDialog
+from vertreader.tocdialog import TOCDialog
 
 
 class MainWindow(QMainWindow, Ui_MainWindow):
@@ -18,6 +19,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         super().__init__()
         self.setWindowIcon(QIcon(os.path.dirname(os.path.abspath(__file__))+'/vertreader.svg'))
         self.setupUi(self)
+        self.actTOC = QAction(self.tr("&TOC"))
+        self.actTOC.triggered.connect(self.showTOC)
+        self.menubar.insertAction(self.menu_Help.menuAction(), self.actTOC)
 
         self.filename = args.file
         self.tempdir = ''
@@ -137,11 +141,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                                 self.tr('Failed to read TOC: link to unrecognized item is "{}"').format(a.href))
             return toc
         self.toc = get_toc(self.book.toc, 0)
-        self.actionTOC = []
-        for x in range(len(self.toc)):
-            self.actionTOC.append(QAction('>' * self.toc[x][2] + self.toc[x][0]))
-            self.actionTOC[x].triggered.connect(self.toc_triggered)
-        self.menuTOC.addActions(self.actionTOC)
 
         self.readSettings()
         self.need_scroll = True
@@ -150,19 +149,23 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.calculate_doc_size()
         self.setWindowTitle(self.tr("{} - VertReader").format(self.book.get_metadata('DC', 'title')[0][0]))
 
-    @pyqtSlot(bool)
-    def toc_triggered(self):
-        sender = self.sender()
-        for x in range(len(self.actionTOC)):
-            if self.actionTOC[x] == sender:
-                href_split = self.toc[x][1].split('#', 1)
-                url = QUrl.fromLocalFile(href_split[0])
-                if len(href_split) > 1:
-                    url.setFragment(self.toc[x][1].split('#', 1)[1])
-                self.view.load(url)
-
-                self.doc_num = self.toc[x][3]
-                break
+    def showTOC(self):
+        dialog = TOCDialog(self)
+        for i in range(len(self.toc)):
+            dialog.listWidget.addItem('>' * self.toc[i][2] + self.toc[i][0])
+        def itemSelected(item):
+            dialog.accept()
+            index = dialog.listWidget.row(item)
+            # href might contain fragment
+            href_split = self.toc[index][1].split('#', 1)
+            url = QUrl.fromLocalFile(href_split[0])
+            if len(href_split) > 1:
+                url.setFragment(href_split[1])
+            self.view.load(url)
+            self.doc_num = self.toc[index][3]
+        dialog.listWidget.itemActivated.connect(itemSelected)
+        dialog.listWidget.itemClicked.connect(itemSelected)
+        dialog.exec()
 
     @pyqtSlot()
     def on_action_About_triggered(self):

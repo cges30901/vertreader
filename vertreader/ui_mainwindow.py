@@ -47,8 +47,6 @@ class Ui_MainWindow(object):
         self.menubar.setObjectName("menubar")
         self.menuFile = QtWidgets.QMenu(self.menubar)
         self.menuFile.setObjectName("menuFile")
-        self.menuTOC = QtWidgets.QMenu(self.menubar)
-        self.menuTOC.setObjectName("menuTOC")
         self.menu_Help = QtWidgets.QMenu(self.menubar)
         self.menu_Help.setObjectName("menu_Help")
         self.menu_View = QtWidgets.QMenu(self.menubar)
@@ -78,7 +76,6 @@ class Ui_MainWindow(object):
         self.menu_View.addAction(self.action_Style)
         self.menubar.addAction(self.menuFile.menuAction())
         self.menubar.addAction(self.menu_View.menuAction())
-        self.menubar.addAction(self.menuTOC.menuAction())
         self.menubar.addAction(self.menu_Help.menuAction())
 
         self.retranslateUi(MainWindow)
@@ -88,7 +85,6 @@ class Ui_MainWindow(object):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "VertReader"))
         self.menuFile.setTitle(_translate("MainWindow", "&File"))
-        self.menuTOC.setTitle(_translate("MainWindow", "&TOC"))
         self.menu_Help.setTitle(_translate("MainWindow", "&Help"))
         self.menu_View.setTitle(_translate("MainWindow", "&View"))
         self.action_Open.setText(_translate("MainWindow", "&Open"))
