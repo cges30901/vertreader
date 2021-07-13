@@ -340,14 +340,14 @@ Description: {2}''').format(title, author, description))
             return
 
         def callback(result):
-            self.page_num_book = 1
+            page_num_book = 1
             for i in range(self.doc_num):
-                self.page_num_book += self.page_cal_doc[i]
+                page_num_book += self.page_cal_doc[i]
             pageHeight = self.view.size().height()
             self.page_num_doc = round(result * self.view.page().zoomFactor() / pageHeight)
-            self.page_num_book += self.page_num_doc
-            self.txtPageNum.setText("{}/{}".format(self.page_num_book, self.page_cal_book))
-            self.slider.setValue(self.page_num_book)
+            page_num_book += self.page_num_doc
+            self.txtPageNum.setText("{}/{}".format(page_num_book, self.page_cal_book))
+            self.slider.setValue(page_num_book)
         self.view.page().runJavaScript("window.scrollY",callback)
 
     def calculate_doc_size(self):
