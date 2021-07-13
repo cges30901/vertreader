@@ -78,7 +78,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     @pyqtSlot()
     def on_action_Open_triggered(self):
-        filename = QFileDialog.getOpenFileName(self, "", "",
+        filename = QFileDialog.getOpenFileName(self, "", self.filename,
             self.tr("EPUB documents (*.epub)"))[0]
         if filename:
             self.writeSettings()
