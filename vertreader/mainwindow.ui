@@ -43,6 +43,9 @@
         <property name="orientation">
          <enum>Qt::Horizontal</enum>
         </property>
+        <property name="invertedAppearance">
+         <bool>true</bool>
+        </property>
        </widget>
       </item>
       <item>

@@ -34,6 +34,7 @@ class Ui_MainWindow(object):
         self.slider.setMinimum(1)
         self.slider.setMaximum(1)
         self.slider.setOrientation(QtCore.Qt.Horizontal)
+        self.slider.setInvertedAppearance(True)
         self.slider.setObjectName("slider")
         self.horizontalLayout.addWidget(self.slider)
         self.txtPageNum = QtWidgets.QLabel(self.centralwidget)
