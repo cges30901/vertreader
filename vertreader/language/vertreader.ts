@@ -8,17 +8,17 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="82"/>
+        <location filename="../mainwindow.py" line="22"/>
         <source>&amp;TOC</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="106"/>
+        <location filename="../mainwindow.ui" line="105"/>
         <source>&amp;Open</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.py" line="76"/>
+        <location filename="../mainwindow.py" line="81"/>
         <source>EPUB documents (*.epub)</source>
         <translation type="unfinished"></translation>
     </message>
@@ -33,22 +33,22 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="87"/>
+        <location filename="../mainwindow.ui" line="82"/>
         <source>&amp;Help</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="111"/>
+        <location filename="../mainwindow.ui" line="110"/>
         <source>&amp;About</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.py" line="169"/>
+        <location filename="../mainwindow.py" line="173"/>
         <source>About</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.py" line="169"/>
+        <location filename="../mainwindow.py" line="173"/>
         <source>&lt;h3&gt;VertReader {0}&lt;/h3&gt;
 &lt;p&gt;Author: Hsiu-Ming Chang&lt;/p&gt;
 &lt;p&gt;e-mail: cges30901@gmail.com&lt;/p&gt;
@@ -56,12 +56,12 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.py" line="199"/>
+        <location filename="../mainwindow.py" line="203"/>
         <source>Libraries used</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.py" line="199"/>
+        <location filename="../mainwindow.py" line="203"/>
         <source>&lt;h3&gt;Libraries:&lt;/h3&gt;</source>
         <translation type="unfinished"></translation>
     </message>
@@ -71,27 +71,27 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="121"/>
+        <location filename="../mainwindow.ui" line="120"/>
         <source>&amp;Style</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="126"/>
+        <location filename="../mainwindow.ui" line="125"/>
         <source>&amp;Metadata</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.py" line="93"/>
+        <location filename="../mainwindow.py" line="98"/>
         <source>Failed to extract</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.py" line="104"/>
+        <location filename="../mainwindow.py" line="109"/>
         <source>Failed to read EPUB with EbookLib</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.py" line="135"/>
+        <location filename="../mainwindow.py" line="140"/>
         <source>Failed to read TOC</source>
         <translation type="unfinished"></translation>
     </message>
@@ -101,45 +101,70 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.py" line="189"/>
+        <location filename="../mainwindow.py" line="193"/>
         <source>N/A</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.py" line="190"/>
+        <location filename="../mainwindow.py" line="194"/>
         <source>Metadata</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.py" line="190"/>
+        <location filename="../mainwindow.py" line="194"/>
         <source>Title: {0}
 Author: {1}
 Description: {2}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.py" line="195"/>
+        <location filename="../mainwindow.py" line="199"/>
         <source>Failed to read metadata</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="131"/>
+        <location filename="../mainwindow.ui" line="130"/>
         <source>&amp;Search</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.py" line="135"/>
+        <location filename="../mainwindow.py" line="140"/>
         <source>Failed to read TOC: link to unrecognized item is &quot;{}&quot;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.py" line="273"/>
+        <location filename="../mainwindow.py" line="326"/>
         <source>Pagination failed. Please report this issue to the developer.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.py" line="325"/>
+        <location filename="../mainwindow.py" line="373"/>
         <source>Calculating...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.ui" line="115"/>
+        <source>&amp;Libraries used</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.ui" line="135"/>
+        <source>&amp;Website</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.ui" line="140"/>
+        <source>&amp;Project page</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.ui" line="145"/>
+        <source>&amp;Blog</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.ui" line="150"/>
+        <source>&amp;Donate</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -163,6 +188,26 @@ Description: {2}</source>
     <message>
         <location filename="../styledialog.ui" line="96"/>
         <source>Background color:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../styledialog.ui" line="130"/>
+        <source>Font:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../styledialog.ui" line="157"/>
+        <source>Line height:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../styledialog.ui" line="194"/>
+        <source>Margin:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../styledialog.ui" line="231"/>
+        <source>Indent:</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
