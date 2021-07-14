@@ -81,8 +81,13 @@
     <property name="title">
      <string>&amp;Help</string>
     </property>
-    <addaction name="action_About"/>
+    <addaction name="actionHomepage"/>
+    <addaction name="actionProject_page"/>
+    <addaction name="action_Donate"/>
+    <addaction name="actionBlog"/>
+    <addaction name="separator"/>
     <addaction name="actionLibrary"/>
+    <addaction name="action_About"/>
    </widget>
    <widget class="QMenu" name="menu_View">
     <property name="title">
@@ -107,7 +112,7 @@
   </action>
   <action name="actionLibrary">
    <property name="text">
-    <string>Libraries used</string>
+    <string>&amp;Libraries used</string>
    </property>
   </action>
   <action name="action_Style">
@@ -123,6 +128,26 @@
   <action name="action_Search">
    <property name="text">
     <string>&amp;Search</string>
+   </property>
+  </action>
+  <action name="actionHomepage">
+   <property name="text">
+    <string>&amp;Website</string>
+   </property>
+  </action>
+  <action name="actionProject_page">
+   <property name="text">
+    <string>&amp;Project page</string>
+   </property>
+  </action>
+  <action name="actionBlog">
+   <property name="text">
+    <string>&amp;Blog</string>
+   </property>
+  </action>
+  <action name="action_Donate">
+   <property name="text">
+    <string>&amp;Donate</string>
    </property>
   </action>
  </widget>

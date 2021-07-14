@@ -5,7 +5,7 @@ import zipfile
 import os
 from PyQt5.QtWidgets import QMainWindow, QFileDialog, QAction, QMessageBox, QApplication, QActionGroup, QDialog, QLineEdit
 from PyQt5.QtCore import QUrl, QEvent, pyqtSlot, Qt, QSettings
-from PyQt5.QtGui import QIcon, QFont
+from PyQt5.QtGui import QIcon, QFont, QDesktopServices
 from PyQt5.QtWebEngineWidgets import QWebEnginePage, QWebEngineView
 from vertreader.ui_mainwindow import Ui_MainWindow
 from vertreader.styledialog import StyleDialog
@@ -204,6 +204,22 @@ Description: {2}''').format(title, author, description))
             self.tr("<h3>Libraries:</h3>") +
 '''<p>PyQt5 (GPL v3)</p>
 <p>EbookLib (AGPL v3)<p>''')
+
+    @pyqtSlot()
+    def on_actionHomepage_triggered(self):
+        QDesktopServices.openUrl(QUrl("https://cges30901.github.io/vertreader/"))
+
+    @pyqtSlot()
+    def on_actionProject_page_triggered(self):
+        QDesktopServices.openUrl(QUrl("https://github.com/cges30901/vertreader"))
+
+    @pyqtSlot()
+    def on_action_Donate_triggered(self):
+        QDesktopServices.openUrl(QUrl("https://cges30901.github.io/pdfhandoutcrop/donate.html"))
+
+    @pyqtSlot()
+    def on_actionBlog_triggered(self):
+        QDesktopServices.openUrl(QUrl("https://hsiu-ming.blogspot.com/"))
 
     @pyqtSlot()
     def writeSettings(self):
